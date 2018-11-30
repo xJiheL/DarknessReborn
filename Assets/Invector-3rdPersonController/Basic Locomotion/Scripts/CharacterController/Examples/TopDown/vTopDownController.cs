@@ -80,7 +80,7 @@ namespace Invector.vCharacterController.TopDownShooter
                 strafeMagnitude = 0f;
             }
 
-            animator.SetFloat("InputMagnitude", strafeMagnitude, .2f, Time.deltaTime);
+            //animator.SetFloat("InputMagnitude", strafeMagnitude, .2f, Time.deltaTime);
         }
 
         protected virtual void UpdateCameraToTopDown()

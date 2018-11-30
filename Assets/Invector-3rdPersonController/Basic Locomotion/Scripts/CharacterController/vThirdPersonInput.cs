@@ -107,7 +107,7 @@ namespace Invector.vCharacterController
         protected virtual void LateUpdate()
         {
             if (cc == null || Time.timeScale == 0) return;
-            if ((!updateIK && animator.updateMode == AnimatorUpdateMode.AnimatePhysics)) return;
+            //if ((!updateIK && animator.updateMode == AnimatorUpdateMode.AnimatePhysics)) return;
 
             CameraInput();                      // update camera input
             UpdateCameraStates();               // update camera states
@@ -158,9 +158,9 @@ namespace Invector.vCharacterController
             {
                 cc.input = Vector2.zero;
                 cc.isSprinting = false;
-                cc.animator.SetFloat("InputHorizontal", 0, 0.25f, Time.deltaTime);
-                cc.animator.SetFloat("InputVertical", 0, 0.25f, Time.deltaTime);
-                cc.animator.SetFloat("InputMagnitude", 0, 0.25f, Time.deltaTime);
+                //cc.animator.SetFloat("InputHorizontal", 0, 0.25f, Time.deltaTime);
+                //cc.animator.SetFloat("InputVertical", 0, 0.25f, Time.deltaTime);
+                //cc.animator.SetFloat("InputMagnitude", 0, 0.25f, Time.deltaTime);
             }
         }
 

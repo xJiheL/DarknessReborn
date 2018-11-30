@@ -214,7 +214,7 @@ namespace Invector.vCharacterController
         {
             base.Init();
 
-            animator.updateMode = AnimatorUpdateMode.AnimatePhysics;
+            //animator.updateMode = AnimatorUpdateMode.AnimatePhysics;
 
             // slides the character through walls and edges
             frictionPhysics = new PhysicMaterial();
