@@ -86,10 +86,10 @@ namespace Invector.vCharacterController
             jumpCounter = jumpTimer;
             isJumping = true;
             // trigger jump animations
-            //if (input.sqrMagnitude < 0.1f)
-            //    animator.CrossFadeInFixedTime("Jump", 0.1f);
-            //else
-            //    animator.CrossFadeInFixedTime("JumpMove", .2f);
+            if (input.sqrMagnitude < 0.1f)
+                animator.CrossFadeInFixedTime("Jump", 0.1f);
+            else
+                animator.CrossFadeInFixedTime("JumpMove", .2f);
             // reduce stamina
             if (consumeStamina)
             {
@@ -108,7 +108,7 @@ namespace Invector.vCharacterController
 
             if (!rollConditions || isRolling) return;
 
-            //animator.CrossFadeInFixedTime("Roll", 0.1f);
+            animator.CrossFadeInFixedTime("Roll", 0.1f);
             ReduceStamina(rollStamina, false);
             currentStaminaRecoveryDelay = 2f;
         }

@@ -18,7 +18,7 @@ namespace Invector.vCharacterController
         public GenericInput horizontalInput = new GenericInput("Horizontal", "LeftAnalogHorizontal", "Horizontal");
         public GenericInput verticallInput = new GenericInput("Vertical", "LeftAnalogVertical", "Vertical");
         public GenericInput jumpInput = new GenericInput("Space", "X", "X");
-        public GenericInput rollInput = new GenericInput("Q", "B", "B");
+        public GenericInput rollInput = new GenericInput("A", "B", "B");
         public GenericInput strafeInput = new GenericInput("Tab", "RightStickClick", "RightStickClick");
         public GenericInput sprintInput = new GenericInput("LeftShift", "LeftStickClick", "LeftStickClick");
         public GenericInput crouchInput = new GenericInput("C", "Y", "Y");
@@ -107,7 +107,7 @@ namespace Invector.vCharacterController
         protected virtual void LateUpdate()
         {
             if (cc == null || Time.timeScale == 0) return;
-            //if ((!updateIK && animator.updateMode == AnimatorUpdateMode.AnimatePhysics)) return;
+            if ((!updateIK && animator.updateMode == AnimatorUpdateMode.AnimatePhysics)) return;
 
             CameraInput();                      // update camera input
             UpdateCameraStates();               // update camera states
@@ -158,9 +158,9 @@ namespace Invector.vCharacterController
             {
                 cc.input = Vector2.zero;
                 cc.isSprinting = false;
-                //cc.animator.SetFloat("InputHorizontal", 0, 0.25f, Time.deltaTime);
-                //cc.animator.SetFloat("InputVertical", 0, 0.25f, Time.deltaTime);
-                //cc.animator.SetFloat("InputMagnitude", 0, 0.25f, Time.deltaTime);
+                cc.animator.SetFloat("InputHorizontal", 0, 0.25f, Time.deltaTime);
+                cc.animator.SetFloat("InputVertical", 0, 0.25f, Time.deltaTime);
+                cc.animator.SetFloat("InputMagnitude", 0, 0.25f, Time.deltaTime);
             }
         }
 
