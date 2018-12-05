@@ -1,17 +1,14 @@
 fileFormatVersion: 2
-guid: 4a2101dd34e034e448df9faa9db886ad
+guid: 0650bdf6536d14c48aa5efba663aca1a
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
-    100000: Group29722
-    100002: //RootNode
-    400000: Group29722
-    400002: //RootNode
-    2100000: Group29722Mat
-    2300000: Group29722
-    3300000: Group29722
-    4300000: Group29722
-    2186277476908879412: ImportLogs
+    100000: //RootNode
+    400000: //RootNode
+    2100000: MALE-neutral-Julien_default
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: MESH_Character_Test
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -84,7 +81,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1

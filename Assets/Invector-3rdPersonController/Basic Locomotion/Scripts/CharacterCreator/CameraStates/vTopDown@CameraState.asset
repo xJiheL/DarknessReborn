@@ -16,23 +16,23 @@ MonoBehaviour:
   - Name: Default
     forward: -1
     right: 0
-    defaultDistance: 10
+    defaultDistance: 9
     maxDistance: 15
     minDistance: 3
-    height: 0
+    height: 5
     smooth: 10
     smoothDamp: 0
     xMouseSensitivity: 3
     yMouseSensitivity: 3
-    yMinLimit: 0
-    yMaxLimit: 0
-    xMinLimit: 0
-    xMaxLimit: 0
+    yMinLimit: 38.167572
+    yMaxLimit: 38.167572
+    xMinLimit: -360
+    xMaxLimit: 360
     rotationOffSet: {x: 0, y: 0, z: 0}
     cullingHeight: 0.2
     cullingMinDist: 0.1
-    fov: 60
+    fov: 55
     useZoom: 0
-    fixedAngle: {x: 0, y: 65}
+    fixedAngle: {x: 90, y: 40}
     lookPoints: []
-    cameraMode: 1
+    cameraMode: 0
