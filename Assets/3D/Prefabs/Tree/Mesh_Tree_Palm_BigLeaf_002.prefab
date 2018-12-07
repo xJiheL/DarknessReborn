@@ -22,12 +22,12 @@ GameObject:
   - component: {fileID: 33137089336978432}
   - component: {fileID: 23390749087845210}
   - component: {fileID: 64273072284736242}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Mesh_Tree_Palm_BigLeaf_002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4797703705690056
 Transform:

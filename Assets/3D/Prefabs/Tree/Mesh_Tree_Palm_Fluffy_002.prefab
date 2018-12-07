@@ -22,12 +22,12 @@ GameObject:
   - component: {fileID: 33248416688582546}
   - component: {fileID: 23440091987171896}
   - component: {fileID: 64591906712415778}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Mesh_Tree_Palm_Fluffy_002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4190327884069120
 Transform:

@@ -22,12 +22,12 @@ GameObject:
   - component: {fileID: 33431435063693202}
   - component: {fileID: 23865235821969642}
   - component: {fileID: 64939176409367318}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Mesh_Tree_Palm_Bean_002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4952631530676780
 Transform:

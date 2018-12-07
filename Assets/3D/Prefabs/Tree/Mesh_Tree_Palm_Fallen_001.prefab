@@ -22,12 +22,12 @@ GameObject:
   - component: {fileID: 33183551145505848}
   - component: {fileID: 23383163107459342}
   - component: {fileID: 64610124571123138}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Mesh_Tree_Palm_Fallen_001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4799953733307242
 Transform:
