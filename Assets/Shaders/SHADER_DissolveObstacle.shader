@@ -16,12 +16,13 @@ Shader "Custom/SHADER_DissolveObstacle" {
 		LOD 200
 
 		CGPROGRAM
-		#pragma surface surf Standard fullforwardshadows
+		#pragma surface surf Standard vertex:vert fullforwardshadows
 		#pragma target 3.0
 
 		struct Input {
 			float2 uv_MainTex;
 			float4 screenPos;
+			float viewDist;
 		};
 
 		sampler2D _MainTex;
@@ -32,6 +33,13 @@ Shader "Custom/SHADER_DissolveObstacle" {
 		half _Cutout;
 
 		fixed4 _Color;
+		
+		void vert (inout appdata_full v, out Input o)
+		{
+		    UNITY_INITIALIZE_OUTPUT (Input, o);
+		    half3 viewDirW = WorldSpaceViewDir (v.vertex);
+		    o.viewDist = length (viewDirW);
+		}
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
 			fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
@@ -40,9 +48,10 @@ Shader "Custom/SHADER_DissolveObstacle" {
 			fixed m = tex2D(_DissolveTex, uv).r;
 
 			o.Albedo = c.rgb;
+			//o.Albedo = saturate (IN.viewDist - .5);
 			o.Metallic = _Metallic;
 			o.Smoothness = _Glossiness;
-			clip(m - _Cutout);
+			clip(IN.viewDist - 10);
 		}
 		ENDCG
 	}
