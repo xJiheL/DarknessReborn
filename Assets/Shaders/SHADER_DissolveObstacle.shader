@@ -14,10 +14,43 @@ Shader "Custom/SHADER_DissolveObstacle" {
 	SubShader {
 		Tags { "RenderType"="Opaque" }
 		LOD 200
-
+		
+		        Cull Front
 		CGPROGRAM
 		#pragma surface surf Standard vertex:vert fullforwardshadows
-		#pragma target 3.0
+		#pragma target 4.0
+
+		struct Input {
+			float2 uv_MainTex;
+			float viewDist;
+			float4 screenPos;
+		};
+		
+		sampler2D _DissolveTex;
+		
+		void vert (inout appdata_full v, out Input o)
+		{
+		    UNITY_INITIALIZE_OUTPUT (Input, o);
+		    half3 viewDirW = WorldSpaceViewDir (v.vertex);
+		    o.viewDist = length (viewDirW);
+		}
+		
+		void surf (Input IN, inout SurfaceOutputStandard o) {
+			half2 uv = IN.screenPos.xy / IN.screenPos.w;
+			fixed m = saturate (pow(tex2D(_DissolveTex, uv).r,1));
+			
+			o.Emission = float3 (0,0,0);
+            clip((IN.viewDist - 8) * m);
+		}
+		ENDCG
+		
+				Tags { "RenderType"="Transparent" "Queue"="Transparent"}
+		LOD 200
+
+        Cull Back
+		CGPROGRAM
+		#pragma surface surf Standard vertex:vert alpha:fade fullforwardshadows
+		#pragma target 4.0
 
 		struct Input {
 			float2 uv_MainTex;
@@ -44,14 +77,14 @@ Shader "Custom/SHADER_DissolveObstacle" {
 		void surf (Input IN, inout SurfaceOutputStandard o) {
 			fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
 
-			half2 uv = IN.screenPos.xy / IN.screenPos.w;
-			fixed m = tex2D(_DissolveTex, uv).r;
+			half2 uv = (((IN.screenPos.xy / IN.screenPos.w) - .5) * .5)+.5;
+			fixed m = 1 - saturate ((tex2D(_DissolveTex, uv).r - .1) * 2);
 
 			o.Albedo = c.rgb;
-			//o.Albedo = saturate (IN.viewDist - .5);
 			o.Metallic = _Metallic;
 			o.Smoothness = _Glossiness;
-			clip(IN.viewDist - 10);
+			o.Alpha = (IN.viewDist - 9) * (1 - m);
+			//clip((IN.viewDist - 11) * m);
 		}
 		ENDCG
 	}
