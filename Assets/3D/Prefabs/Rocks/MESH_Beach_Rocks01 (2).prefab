@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2367894381329038048}
   - component: {fileID: 5357199295567654451}
   - component: {fileID: 7515521986813287742}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: MESH_Beach_Rocks01 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5296c1e25d20ee245b66b07b8b3b8457, type: 3}
+  - {fileID: 2100000, guid: e4b3c2bf4183b5c438d2672f39594225, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

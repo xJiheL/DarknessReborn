@@ -1,6 +1,6 @@
 ﻿// basic and fast version
 // TODO : need improvment to share the dissolve mask
-Shader "Custom/SHADER_DissolveObstacle" {
+Shader "DarknessReborn/DissolveObstacle" {
 	Properties {
 		_Color ("Color", Color) = (1,1,1,1)
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}

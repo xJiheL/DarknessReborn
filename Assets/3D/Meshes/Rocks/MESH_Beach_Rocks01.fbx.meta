@@ -10,7 +10,12 @@ ModelImporter:
     3300000: //RootNode
     4300000: MESH_Beach_Rocks01
     6400000: //RootNode
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MAT_Beach_Rocks01
+    second: {fileID: 2100000, guid: e4b3c2bf4183b5c438d2672f39594225, type: 2}
   materials:
     importMaterials: 1
     materialName: 0

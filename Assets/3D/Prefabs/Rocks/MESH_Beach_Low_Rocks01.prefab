@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8131556418762125763}
   - component: {fileID: 2549656330837408159}
   - component: {fileID: 2502048104646238659}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: MESH_Beach_Low_Rocks01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4056827ba8f24aa4ab63e009bdf688c9, type: 3}
+  - {fileID: 2100000, guid: 0d8497ccc182ef14385fdba1d154bba5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

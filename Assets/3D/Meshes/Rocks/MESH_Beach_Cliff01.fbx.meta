@@ -10,7 +10,12 @@ ModelImporter:
     3300000: //RootNode
     4300000: MESH_Beach_Cliff01
     6400000: //RootNode
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MAT_Beach_Cliff01
+    second: {fileID: 2100000, guid: 83830d0b3a5cfd148bdf65f84188f83b, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
