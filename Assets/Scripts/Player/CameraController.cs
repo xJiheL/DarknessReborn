@@ -24,15 +24,26 @@ public class CameraController : MonoBehaviour
 
     private bool _updateCamera;
     
-    private void FixedUpdate()
+    private void OnEnable()
+    {
+        Command.Instance.Add(EnumCommand.OrbitCamera, Rotate);
+    }
+
+    private void OnDisable()
+    {
+        // TODO isInstanciated
+        //Command.Instance.Remove(EnumCommand.OrbitCamera);
+    }
+
+    private void Rotate(Vector2 inputValue) 
     {
         _currentRotation.x = Mathf.Clamp(
-            _currentRotation.x + Input.GetAxis("Camera Vertical") * rotateSpeed.y * Time.fixedDeltaTime,
+            _currentRotation.x - inputValue.y * (Command.Instance.joystickConnected ? Time.deltaTime * rotateSpeed.y : 1f),
             -90f,
             90f);
         
         _currentRotation.y = Mathf.Repeat(
-            _currentRotation.y + Input.GetAxis("Camera Horizontal") * rotateSpeed.x * Time.fixedDeltaTime,
+            _currentRotation.y + inputValue.x * (Command.Instance.joystickConnected ? Time.deltaTime * rotateSpeed.x : 1f),
             360f);
 
         _updateCamera = true;

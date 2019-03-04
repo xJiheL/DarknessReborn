@@ -5,7 +5,7 @@ using UnityEngine;
 // TODO : need improvment to get the correct material back and not instanced material
 public class ObstacleDetection : MonoBehaviour
 {
-    [SerializeField] Texture _dissolveMask;
+    [SerializeField] Texture _dissolveMask = null;
     [Range (0f,1f)]
     [SerializeField] float _cutout = .5f;
 
