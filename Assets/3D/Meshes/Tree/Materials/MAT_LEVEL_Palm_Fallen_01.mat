@@ -71,12 +71,16 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
+    - _Hardness: 1.008
     - _IntensityEmiss: 1
+    - _Metal: 0
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _RampPower: 1
+    - _RampPower: 0.92
+    - _Rough: 0.5
+    - _ShadowHardness: -0.05
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1

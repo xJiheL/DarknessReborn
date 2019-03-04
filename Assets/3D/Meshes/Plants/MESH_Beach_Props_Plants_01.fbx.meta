@@ -9,7 +9,12 @@ ModelImporter:
     2300000: //RootNode
     3300000: //RootNode
     4300000: MESH_Beach_Props_Plants_01
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MAT_Beach_Props_Plants_01_02_03_04_05
+    second: {fileID: 2100000, guid: fc1f1a45ec2453741acad96c99c0c4e6, type: 2}
   materials:
     importMaterials: 1
     materialName: 0

@@ -15,7 +15,7 @@
         
         [Header(Lighting)]
         _RampPower ("Ramp Power", float) = 1
-        _Hardness ("Hardness", float) = 1
+        _Hardness ("Hardness", range (0,2)) = .1
         _ShadowHardness ("Shadow Intensity", float) = 1
     }
     SubShader
@@ -59,7 +59,7 @@
             float2 uv_MainTex;
         };
 
-       half4 BRDF1_Unity_PBS_Custom (half3 diffColor, half3 specColor, half oneMinusReflectivity, half smoothness,
+        half4 BRDF1_Unity_PBS_Custom (half3 diffColor, half3 specColor, half oneMinusReflectivity, half smoothness,
             float3 normal, float3 viewDir,
             UnityLight light, UnityIndirect gi)
         {
@@ -85,7 +85,7 @@
         #else
             half nv = abs(dot(normal, viewDir));    // This abs allow to limit artifact
         #endif
-            float nl = saturate (saturate((dot(normal, light.dir)+ _RampPower) * _Hardness)/ _ShadowHardness);
+            float nl = saturate((dot(normal, light.dir)+ _RampPower));
             float nh = saturate(dot(normal, halfDir));
         
             half lv = saturate(dot(light.dir, viewDir));
@@ -139,6 +139,7 @@
         #endif
 
             half grazingTerm = saturate(smoothness + (1-oneMinusReflectivity));
+            diffuseTerm = saturate (smoothstep(0,_Hardness,diffuseTerm) + _ShadowHardness );
             half3 color =   diffColor * (gi.diffuse + light.color * diffuseTerm)
                             + specularTerm * light.color * FresnelTerm (specColor, lh)
                             + surfaceReduction * gi.specular * FresnelLerp (specColor, grazingTerm, nv);
@@ -146,7 +147,7 @@
             return half4(color, 1);
         }
         
-          inline half4 LightingStandardCartoon(SurfaceOutputStandard_Custom s, half3 viewDir, UnityGI gi)
+        inline half4 LightingStandardCartoon(SurfaceOutputStandard_Custom s, half3 viewDir, UnityGI gi)
         {
             s.Normal = normalize(s.Normal);
         

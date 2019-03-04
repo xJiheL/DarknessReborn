@@ -71,22 +71,22 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
-    - _Hardness: 2.7
+    - _Hardness: 0.609
     - _IntensityEmiss: 1
     - _Metal: 0
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _RampPower: 0.1
+    - _RampPower: -0.29
     - _Rough: 0.5
-    - _ShadowHardness: 0.72
+    - _ShadowHardness: -0.1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.25490198, g: 0.25490198, b: 0.25490198, a: 1}
+    - _Color: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 1}
     - _ColorE: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
