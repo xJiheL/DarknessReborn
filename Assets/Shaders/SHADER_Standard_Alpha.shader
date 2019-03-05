@@ -1,10 +1,10 @@
-﻿Shader "DarknessReborn/Standard"
+﻿Shader "DarknessReborn/Standard/Alpha"
 {
     Properties
     {
         [Header(Base)]
         _Color ("Color", Color) = (1,1,1,1)
-        _MainTex ("Albedo (RGB)", 2D) = "white" {}
+        _MainTex ("Albedo (RGB) Alpha (A)", 2D) = "white" {}
         [noscaleoffset]_Metallic ("Metal (R)/AO (G)/Rough (A)", 2D) = "white" {}
         _Metal ("Metallic", Range(0,1)) = 0
         _Rough ("Rough", Range(0,1)) = 0.5
@@ -20,11 +20,11 @@
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType"="Transparent" "Queue"="Transparent"}
         LOD 200
 
         CGPROGRAM
-        #pragma surface surf StandardCartoon fullforwardshadows 
+        #pragma surface surf StandardCartoon alpha:fade fullforwardshadows 
         #pragma target 3.0
         #include "UnityPBSLighting.cginc"
 
@@ -175,11 +175,13 @@
         {
             fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
             fixed4 m = tex2D (_Metallic, IN.uv_MainTex);
+            
             o.Albedo = c.rgb;
             o.Emission = _ColorE.rgb * _IntensityEmiss; 
             o.Metallic = m.r * _Metal;
             o.Smoothness = m.a * _Rough;
             o.Occlusion = m.g;
+            o.Alpha = c.a;
         }
         ENDCG
     }
