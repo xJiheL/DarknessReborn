@@ -25,7 +25,7 @@
         LOD 200
 
         CGPROGRAM
-        #pragma surface surf StandardCartoon fullforwardshadows
+        #pragma surface surf StandardCartoon addshadow
         #pragma target 3.0
         #include "UnityPBSLighting.cginc"
 
