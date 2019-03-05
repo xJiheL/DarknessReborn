@@ -185,5 +185,5 @@
         }
         ENDCG
     }
-    FallBack "Diffuse"
+    FallBack "Transparent/VertexLit"
 }

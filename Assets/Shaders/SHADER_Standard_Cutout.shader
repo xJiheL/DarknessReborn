@@ -25,7 +25,7 @@
         LOD 200
 
         CGPROGRAM
-        #pragma surface surf StandardCartoon fullforwardshadows 
+        #pragma surface surf StandardCartoon fullforwardshadows
         #pragma target 3.0
         #include "UnityPBSLighting.cginc"
 
@@ -187,5 +187,5 @@
         }
         ENDCG
     }
-    FallBack "Diffuse"
+    FallBack "Transparent/VertexLit"
 }
