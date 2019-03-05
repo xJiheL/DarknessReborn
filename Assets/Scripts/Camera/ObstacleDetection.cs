@@ -12,7 +12,7 @@ public class ObstacleDetection : MonoBehaviour
     private int _layerMask = 1 << 16;
 
     private string _dissolveName = "DarknessReborn/DissolveObstacle";
-    private string _standardName = "DarknessReborn/Standard";
+    private string _standardName = "DarknessReborn/Standard/Base";
 
     private Shader _dissolveShader;
     private Shader _standardShader;
