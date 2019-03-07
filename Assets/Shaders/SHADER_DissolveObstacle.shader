@@ -15,9 +15,9 @@ Shader "DarknessReborn/DissolveObstacle" {
 		Tags { "RenderType"="Opaque" }
 		LOD 200
 		
-		        Cull Front
+		Cull Front
 		CGPROGRAM
-		#pragma surface surf Standard vertex:vert fullforwardshadows
+		#pragma surface surf Standard vertex:vert alpha:fade addshadow
 		#pragma target 4.0
 
 		struct Input {
@@ -37,19 +37,21 @@ Shader "DarknessReborn/DissolveObstacle" {
 		
 		void surf (Input IN, inout SurfaceOutputStandard o) {
 			half2 uv = IN.screenPos.xy / IN.screenPos.w;
-			fixed m = saturate (pow(tex2D(_DissolveTex, uv).r,1));
+			fixed m = 1 - saturate (pow(tex2D(_DissolveTex, uv).r,1));
 			
 			o.Emission = float3 (0,0,0);
-            clip((IN.viewDist - 8) * m);
+            o.Alpha = saturate (1 - (1 - (IN.viewDist - 7)) * m);
+//            clip((IN.viewDist - 8) * m);
 		}
 		ENDCG
 		
-				Tags { "RenderType"="Transparent" "Queue"="Transparent"}
+		Tags { "RenderType"="Transparent" "Queue"="Transparent"}
 		LOD 200
 
         Cull Back
+        
 		CGPROGRAM
-		#pragma surface surf Standard vertex:vert alpha:fade fullforwardshadows
+		#pragma surface surf Standard vertex:vert alpha:fade 
 		#pragma target 4.0
 
 		struct Input {
@@ -81,12 +83,13 @@ Shader "DarknessReborn/DissolveObstacle" {
 			fixed m = 1 - saturate ((tex2D(_DissolveTex, uv).r - .1) * 2);
 
 			o.Albedo = c.rgb;
+//			o.Albedo = saturate ((IN.viewDist - 2));
 			o.Metallic = _Metallic;
 			o.Smoothness = _Glossiness;
-			o.Alpha = (IN.viewDist - 9) * (1 - m);
-			//clip((IN.viewDist - 11) * m);
+			o.Alpha = saturate (1 - (1 - (IN.viewDist - 8)) * m);
+//			clip((IN.viewDist - 11) * m);
 		}
 		ENDCG
 	}
-	FallBack "Diffuse"
+	FallBack "Transparent/VertexLit"
 }
