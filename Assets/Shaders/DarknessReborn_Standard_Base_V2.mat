@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DarknessReborn_Standard_Base_V2
+  m_Shader: {fileID: 4800000, guid: f50a512d9c8909c4e971a972f999540e, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Metallic:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Hardness: 0.52
+    - _IntensityEmiss: 1
+    - _MaxShadow: 0.32
+    - _MaxSpec: 0.92
+    - _Metal: 0
+    - _MinMaxSpec: 0
+    - _MinShadow: 0.18
+    - _MinSpec: 0.8
+    - _RampPower: 1
+    - _Rough: 0.5
+    - _ShadowHardness: 1
+    - _ShadowStrength: 0.94
+    - _SpecStrength: 0.36
+    m_Colors:
+    - _Color: {r: 0.7169812, g: 0.7169812, b: 0.7169812, a: 1}
+    - _ColorE: {r: 0, g: 0, b: 0, a: 0}
+    - _MinMax: {r: 0.09, g: 0.18, b: 0, a: 0}
+    - _MinMaxSpec: {r: 0.85, g: 0.96, b: 0, a: 0}
+    - _TintShadow: {r: 0, g: 0.35022116, b: 0.52156866, a: 1}
+    - _TintSpec: {r: 0, g: 0.34901962, b: 0.52156866, a: 1}

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1895334278827487016}
   - component: {fileID: 4386371384977532157}
   - component: {fileID: 2890929592057496673}
-  m_Layer: 16
+  m_Layer: 0
   m_Name: MESH_Beach_Cliff01 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
