@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 4086018075685410}
   - component: {fileID: 20453931649632964}
   - component: {fileID: 81634581105297684}
-  - component: {fileID: 114737350340191660}
+  - component: {fileID: 7894719310344756493}
   m_Layer: 0
   m_Name: vThirdPersonCamera
   m_TagString: MainCamera
@@ -181,7 +181,7 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1578557473992682}
   m_Enabled: 1
---- !u!114 &114737350340191660
+--- !u!114 &7894719310344756493
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -194,8 +194,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  smoothBetweenState: 10
-  smoothCameraRotation: 12
+  smoothBetweenState: 6
+  smoothCameraRotation: 6
   scrollSpeed: 10
   cullingLayer:
     serializedVersion: 2
@@ -204,7 +204,7 @@ MonoBehaviour:
   checkHeightRadius: 0
   showGizmos: 0
   startUsingTargetRotation: 1
-  startSmooth: 1
+  startSmooth: 0
   lockCamera: 0
   offsetMouse: {x: 0, y: 0}
   indexList: 0
@@ -237,7 +237,7 @@ MonoBehaviour:
     fixedAngle: {x: 0, y: 0}
     lookPoints: []
     cameraMode: 0
-  CameraStateList: {fileID: 11400000, guid: 77e476d6f5332c14fbf0525e160c60e6, type: 2}
+  CameraStateList: {fileID: 0}
   lockTarget: {fileID: 0}
   movementSpeed: {x: 0, y: 0}
   lerpState:
