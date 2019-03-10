@@ -4,7 +4,8 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -16,10 +17,10 @@ MonoBehaviour:
   - Name: Default
     forward: -1
     right: 0
-    defaultDistance: 9
-    maxDistance: 15
-    minDistance: 3
-    height: 5
+    defaultDistance: 8.7
+    maxDistance: 50
+    minDistance: 35.79
+    height: 2.92
     smooth: 10
     smoothDamp: 0
     xMouseSensitivity: 3
@@ -28,7 +29,7 @@ MonoBehaviour:
     yMaxLimit: 38.167572
     xMinLimit: -360
     xMaxLimit: 360
-    rotationOffSet: {x: 0, y: 0, z: 0}
+    rotationOffSet: {x: 2.22, y: 0, z: 0}
     cullingHeight: 0.2
     cullingMinDist: 0.1
     fov: 55
