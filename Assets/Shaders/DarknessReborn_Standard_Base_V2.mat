@@ -61,7 +61,9 @@ Material:
     - _MinShadow: 0.18
     - _MinSpec: 0.38
     - _RampPower: 1
-    - _RimPower: 4.8
+    - _RangeTransition: -0
+    - _RimHardness: 1.13
+    - _RimPower: 2.4
     - _Rough: 0.5
     - _ShadowHardness: 1
     - _ShadowStrength: 0.85
@@ -76,5 +78,7 @@ Material:
     - _MinMax: {r: 0.09, g: 0.18, b: 0, a: 0}
     - _MinMaxSpec: {r: 0.85, g: 0.96, b: 0, a: 0}
     - _RimColor: {r: 1, g: 0, b: 0, a: 1}
+    - _RimLightColor: {r: 1, g: 0.0047169924, b: 0.0047169924, a: 0}
+    - _RimShadowColor: {r: 0, g: 0.5125196, b: 1, a: 0}
     - _TintShadow: {r: 0, g: 0.35022116, b: 0.52156866, a: 1}
     - _TintSpec: {r: 0, g: 0.34901962, b: 0.52156866, a: 1}
