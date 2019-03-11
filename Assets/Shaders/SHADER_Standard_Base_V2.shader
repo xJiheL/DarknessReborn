@@ -69,16 +69,28 @@
             float3 viewDir;
         };
         
+        struct CustomSurfaceOutput
+        {
+            half3 Albedo;
+            half Alpha;
+            half3 Normal;
+            half3 Emission;
+            half Specular;
+            half RimLight;
+        };
+        
         //half3 viewDir
-        half4 LightingCartoon (SurfaceOutput s, half3 lightDir, half3 viewDir, half atten)
+        half4 LightingCartoon (CustomSurfaceOutput s, half3 lightDir, half3 viewDir, half atten)
         {
             s.Normal = normalize (s.Normal);
             
             half nDotl = dot(s.Normal, lightDir);
             
+            // Shadow
             half shadow = smoothstep (_MinShadow, _MaxShadow, nDotl);            
             shadow = lerp (1, shadow, _ShadowStrength);
 
+            // Spec
             half3 h = normalize (lightDir + viewDir);
             half diff = max (0, dot(s.Normal, lightDir));
             float nh = max (0, dot(s.Normal, h));
@@ -87,10 +99,16 @@
             spec = lerp (0, spec, _SpecStrength);
             spec *= s.Specular;
             
+            
+            // Rim light
+            half3 rim = _RimColor.rgb * s.RimLight * _LightColor0;
+            rim *= nh;
+            
             half4 c;
             
             c.rgb = saturate (s.Albedo  * _LightColor0.rgb * ( (shadow * .5 + spec) * 2));
             c.rgb += saturate(_TintShadow * s.Albedo *  (1 - shadow));           
+            c.rgb += rim;           
             c.rgb = saturate (c.rgb);
 
             c.rgb += s.Emission;
@@ -100,13 +118,14 @@
             return c;
         }
 
-        void surf(Input IN, inout SurfaceOutput o)
+        void surf(Input IN, inout CustomSurfaceOutput o)
         {
             fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
             
             half rim = 1.0 - saturate(dot(normalize(IN.viewDir), o.Normal));
             
-            o.Albedo = c.rgb + _RimColor.rgb * pow (rim, _RimPower);
+            o.Albedo = c.rgb;
+            o.RimLight = pow (rim, _RimPower);
             o.Emission = _ColorE.rgb * _IntensityEmiss; 
             o.Specular = tex2D (_SpecularTex, IN.uv_MainTex);
 //            o.Occlusion = m.g;
