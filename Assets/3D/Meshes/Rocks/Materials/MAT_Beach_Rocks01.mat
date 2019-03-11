@@ -63,6 +63,14 @@ Material:
         m_Texture: {fileID: 2800000, guid: fbfdfe187dbe0b6409c65e7b1bed3725, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SpecTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecularTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
     - _Cutoff: 0.5
@@ -74,20 +82,23 @@ Material:
     - _Hardness: 0
     - _IntensityEmiss: 1
     - _MaxShadow: 0.32
-    - _MaxSpec: 0.9
+    - _MaxSpec: 0.86
     - _Metal: 0
     - _Metallic: 0
     - _MinShadow: 0.2
-    - _MinSpec: 0.8
+    - _MinSpec: 0.38
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _RampPower: -0.42
+    - _RimPower: 7
     - _Rough: 0.355
     - _ShadowHardness: 0.2
     - _ShadowStrength: 0.9
     - _SmoothnessTextureChannel: 0
     - _SpecStrength: 0.5
+    - _SpecStretchH: 0
+    - _SpecStretchV: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
@@ -96,5 +107,6 @@ Material:
     - _Color: {r: 0.9622642, g: 0.9622642, b: 0.9622642, a: 1}
     - _ColorE: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
+    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _TintShadow: {r: 0, g: 0.34901962, b: 0.52156866, a: 1}
     - _TintSpec: {r: 0, g: 0.34901962, b: 0.52156866, a: 1}
