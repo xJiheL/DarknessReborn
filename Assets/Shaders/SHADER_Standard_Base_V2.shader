@@ -12,10 +12,17 @@
         
         [Header(Lighting)]        
         [Header(Specular)]
-        _TintSpec ("Tint Spec", Color) = (0,0,0,1)
+//        _SpecTex ("Spec Mask", 2D) = "white" {}
+        [NoScaleOffset]_SpecularTex ("Spec", 2D) = "white" {}
         _SpecStrength ("Spec Strength", range (0,1)) = 1
         _MinSpec ("Min", float) = 0
         _MaxSpec ("Max", float) = 0
+//        _SpecStretchH ("_SpecStretchH", float) = 0
+//        _SpecStretchV ("_SpecStretchV", float) = 0
+
+        [Header(Rim Light)]
+        _RimColor ("Rim Color", Color) = (1,1,1,0.0)
+		_RimPower ("Rim Power", float) = 1
         
         [Header(Shadow)]
         _TintShadow ("Tint Shadow", Color) = (0,0,0,1)
@@ -39,12 +46,18 @@
         
         half _IntensityEmiss;
         fixed4 _ColorE;
-        
-        fixed4 _TintSpec;
+
+//        sampler2D _SpecTex;
+        sampler2D _SpecularTex;
         half _MinSpec;
         half _MaxSpec;
         half _SpecStrength;        
+//        half _SpecStretchH;        
+//        half _SpecStretchV;       
          
+        fixed4 _RimColor;
+        half _RimPower;
+        
         fixed4 _TintShadow;
         half _MinShadow;
         half _MaxShadow;
@@ -53,39 +66,68 @@
         struct Input
         {
             float2 uv_MainTex;
+            float3 viewDir;
+        };
+        
+        struct CustomSurfaceOutput
+        {
+            half3 Albedo;
+            half Alpha;
+            half3 Normal;
+            half3 Emission;
+            half Specular;
+            half RimLight;
         };
         
         //half3 viewDir
-        half4 LightingCartoon (SurfaceOutput s, half3 lightDir, half atten)
+        half4 LightingCartoon (CustomSurfaceOutput s, half3 lightDir, half3 viewDir, half atten)
         {
             s.Normal = normalize (s.Normal);
             
             half nDotl = dot(s.Normal, lightDir);
             
+            // Shadow
             half shadow = smoothstep (_MinShadow, _MaxShadow, nDotl);            
             shadow = lerp (1, shadow, _ShadowStrength);
-            
-            half spec = smoothstep (_MinSpec, _MaxSpec, nDotl) * 2;
+
+            // Spec
+            half3 h = normalize (lightDir + viewDir);
+            half diff = max (0, dot(s.Normal, lightDir));
+            float nh = max (0, dot(s.Normal, h));
+            half spec = pow (nh, 48);
+            spec = smoothstep (_MinSpec, _MaxSpec, spec) * 2;
             spec = lerp (0, spec, _SpecStrength);
-        
+            spec *= s.Specular;
+            
+            
+            // Rim light
+            half3 rim = _RimColor.rgb * s.RimLight * _LightColor0;
+            rim *= nh;
+            
             half4 c;
             
             c.rgb = saturate (s.Albedo  * _LightColor0.rgb * ( (shadow * .5 + spec) * 2));
-            c.rgb += saturate(_TintShadow * s.Albedo *  (1 - shadow));
-            c.rgb += saturate(_TintSpec * s.Albedo *  spec);
-            
+            c.rgb += saturate(_TintShadow * s.Albedo *  (1 - shadow));           
+            c.rgb += rim;           
             c.rgb = saturate (c.rgb);
+
+            c.rgb += s.Emission;
             
             c.a = s.Alpha;
             
             return c;
         }
 
-        void surf(Input IN, inout SurfaceOutput o)
+        void surf(Input IN, inout CustomSurfaceOutput o)
         {
             fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
+            
+            half rim = 1.0 - saturate(dot(normalize(IN.viewDir), o.Normal));
+            
             o.Albedo = c.rgb;
+            o.RimLight = pow (rim, _RimPower);
             o.Emission = _ColorE.rgb * _IntensityEmiss; 
+            o.Specular = tex2D (_SpecularTex, IN.uv_MainTex);
 //            o.Occlusion = m.g;
         }
         ENDCG

@@ -82,7 +82,7 @@ public class CameraController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(playerController.transform.position + playerController.Direction * pivotOffsetDistance, 0.25f);
+      /*  Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(playerController.transform.position + playerController.Direction * pivotOffsetDistance, 0.25f);*/
     }
 }
