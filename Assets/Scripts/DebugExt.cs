@@ -4,13 +4,6 @@ public static class DebugExt
 {
 	public static void DrawMarker(
 		Vector3 position,
-		float size)
-	{
-		DrawMarker(position, size, Color.white);
-	}
-
-	public static void DrawMarker(
-		Vector3 position,
 		float size,
 		Color color,
 		float duration = 0f,
@@ -33,36 +26,6 @@ public static class DebugExt
 
 		#endif // if UNITY_EDITOR
 	}
-
-	public static void DrawCircle2D(
-		Vector3 position,
-		float size)
-	{
-		DrawCircle2D(position, size, Color.white);
-	}
-
-	public static void DrawCircle2D(
-		Vector3 position,
-		float radius,
-		Color color,
-		float duration = 0f,
-		bool depthTest = true)
-	{
-		#if UNITY_EDITOR
-
-		const int iteration = 16;
-
-		Vector3 previousPoint = position + Vector3.up * radius;
-
-		for (int i = 0; i < iteration; i++)
-		{
-			Vector3 currentPoint = position + Quaternion.Euler(0, 0, (i + 1) * (360f / iteration)) * Vector3.up * radius;
-			Debug.DrawLine(previousPoint, currentPoint, color, duration, depthTest);
-			previousPoint = currentPoint;
-		}
-		
-		#endif // if UNITY_EDITOR
-	}
 	
 	public static void DrawBox2D(
 		Vector3 position,
@@ -83,6 +46,53 @@ public static class DebugExt
 		Debug.DrawLine(topRightCorner, topLeftCorner, color, duration, depthTest);
 		Debug.DrawLine(topLeftCorner, bottomLeftCorner, color, duration, depthTest);
 
+		#endif // if UNITY_EDITOR
+	}
+
+	public static void DrawCircle2D(
+		Vector3 position,
+		float radius,
+		Color color,
+		float duration = 0f,
+		bool depthTest = true)
+	{
+		DrawCircleInternal(position, radius, color, Quaternion.identity, duration, depthTest);
+	}
+	
+	public static void DrawWireSphere(
+		Vector3 position,
+		float radius,
+		Color color,
+		Quaternion rotation,
+		float duration = 0f,
+		bool depthTest = true)
+	{
+		DrawCircleInternal(position, radius, color, rotation, duration, depthTest);
+		DrawCircleInternal(position, radius, color, rotation * Quaternion.Euler(90f, 0f, 0f), duration, depthTest);
+		DrawCircleInternal(position, radius, color, rotation * Quaternion.Euler(0f, 90f, 0f), duration, depthTest);
+	}
+	
+	public static void DrawCircleInternal(
+		Vector3 position,
+		float radius,
+		Color color,
+		Quaternion rotation,
+		float duration,
+		bool depthTest)
+	{
+		#if UNITY_EDITOR
+
+		const int iteration = 32;
+
+		Vector3 previousPoint = position + rotation * Vector3.up * radius;
+
+		for (int i = 0; i < iteration; i++)
+		{
+			Vector3 currentPoint = position + rotation * Quaternion.Euler(0, 0, (i + 1) * (360f / iteration)) * Vector3.up * radius;
+			Debug.DrawLine(previousPoint, currentPoint, color, duration, depthTest);
+			previousPoint = currentPoint;
+		}
+		
 		#endif // if UNITY_EDITOR
 	}
 }
