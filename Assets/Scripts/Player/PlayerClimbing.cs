@@ -9,6 +9,7 @@ public class PlayerClimbing : MonoBehaviour
     public float radius = 0.5f;
 
     
+    private Vector2 _inputDirection;
 
     private void OnEnable()
     {
@@ -21,47 +22,32 @@ public class PlayerClimbing : MonoBehaviour
     
     private void MovePlayer(Vector2 inputMove)
     {
+        _inputDirection = inputMove;
+    }
+    
+    private void Update()
+    {
         Vector3 closestPoint = Collider.ClosestPoint(transform.position);
         
-        Vector3 normalMove = transform.position - closestPoint;
+        DebugExt.DrawWireSphere(closestPoint, 0.1f, Color.red, Quaternion.identity);
+        
+        Vector3 normalMove = (transform.position - closestPoint).normalized;
+        
+        Debug.DrawRay(closestPoint, normalMove, Color.blue);
+        DebugExt.DrawWireSphere(closestPoint + normalMove * radius, radius, Color.red, Quaternion.identity);
         
         Quaternion rotation = Quaternion.FromToRotation(transform.up, normalMove);
 
-        Vector3 moveDirectionProject = rotation * transform.rotation * new Vector3(inputMove.x, 0f, inputMove.y);
+        Vector3 moveDirectionProject = rotation * transform.rotation * new Vector3(_inputDirection.x, 0f, _inputDirection.y);
         
         Debug.DrawRay(closestPoint, moveDirectionProject, Color.green);
 
-        Vector3 newPos = closestPoint + normalMove.normalized * radius + moveDirectionProject * speed * Time.deltaTime;
+        Vector3 newPos = closestPoint + normalMove * radius + moveDirectionProject * speed * Time.deltaTime;
         Vector3 newClos = Collider.ClosestPoint(newPos);
         Vector3 newNormal = newPos - newClos;
         
         transform.position = newClos + newNormal.normalized * radius;
         transform.forward = -newNormal;
         //  transform.position = closestPoint + moveDirectionProject * speed * Time.deltaTime;
-    }
-
-    public void OnDrawGizmos()
-    {
-        Vector3 closestPoint = Collider.ClosestPoint(transform.position);
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(closestPoint, 0.1f);
-        
-        Vector3 normalMove = transform.position - closestPoint;
-        
-        Gizmos.DrawRay(closestPoint, normalMove);
-        Gizmos.DrawWireSphere(closestPoint + normalMove.normalized * radius, radius);
-        
-        
-        Gizmos.color = Color.blue;
-        Gizmos.DrawRay(transform.position, transform.forward);
-
-
-        Quaternion rotation = Quaternion.FromToRotation(transform.up, normalMove);
-
-        Vector3 moveDirectionProject = rotation * transform.forward;
-        
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawRay(closestPoint, moveDirectionProject.normalized);
     }
 }

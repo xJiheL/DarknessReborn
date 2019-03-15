@@ -6,6 +6,8 @@ public class GizmosPosition : MonoBehaviour
     List<Vector3> allPositions = new List<Vector3>();
     Vector3 previousSavePosition;
 
+    [SerializeField] public int posNumber = 300;
+
     private void OnDrawGizmos ()
     {
         for (int i = 0; i < allPositions.Count; i++)
@@ -34,7 +36,7 @@ public class GizmosPosition : MonoBehaviour
             previousSavePosition = transform.position;
             allPositions.Add(transform.position);
             
-            while (allPositions.Count > 300)
+            while (allPositions.Count > posNumber)
             {
                 allPositions.RemoveAt(0);
             }
