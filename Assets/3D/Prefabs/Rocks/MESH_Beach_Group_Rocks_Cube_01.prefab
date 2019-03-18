@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5193540766948219093}
   - component: {fileID: 5193540766944794869}
   - component: {fileID: 5193540766945794613}
+  - component: {fileID: 5858693534600306469}
   m_Layer: 0
   m_Name: MESH_Beach_Group_Rocks_Cube_01
   m_TagString: Untagged
@@ -77,3 +78,17 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &5858693534600306469
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5193540766948050165}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300000, guid: 1f0532600b2fee246bbb2c6fd4dcfc36, type: 3}
