@@ -91,6 +91,7 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _RampPower: 0.19
+    - _RimHardness: 1
     - _RimPower: 7
     - _Rough: 0.406
     - _ShadowHardness: 0.2

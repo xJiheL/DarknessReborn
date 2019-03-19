@@ -13,7 +13,10 @@
         [Header(Lighting)]        
         [Header(Specular)]
 //        _SpecTex ("Spec Mask", 2D) = "white" {}
-        [NoScaleOffset]_SpecularTex ("Spec", 2D) = "white" {}
+        _ColorS ("Spec Color", Color) = (1,1,1,0)
+        [NoScaleOffset]_SmoothTex ("Smoothness", 2D) = "white" {}
+        _Specular ("Specular", range (0,1)) = 1
+        _Smoothness ("Smoothness", range (0,1)) = 1
         _SpecStrength ("Spec Strength", range (0,1)) = 1
         _MinSpec ("Min", float) = 0
         _MaxSpec ("Max", float) = 0
@@ -51,7 +54,10 @@
         fixed4 _ColorE;
 
 //        sampler2D _SpecTex;
-        sampler2D _SpecularTex;
+        fixed4 _ColorS;
+        sampler2D _SmoothTex;
+        half _Specular;
+        half _Smoothness;
         half _MinSpec;
         half _MaxSpec;
         half _SpecStrength;        
@@ -81,6 +87,7 @@
             half Alpha;
             half3 Normal;
             half3 Emission;
+            half Smoothness;
             half Specular;
             half RimLight;
         };
@@ -90,35 +97,41 @@
         {
             s.Normal = normalize (s.Normal);
             
-            half nDotl = dot(s.Normal, lightDir);
+            
             
             // Shadow
-            half shadow = smoothstep (_MinShadow, _MaxShadow, nDotl);            
-            shadow = lerp (1, shadow, _ShadowStrength);
+//            half shadow = smoothstep (_MinShadow, _MaxShadow, nDotl);            
+//            shadow = lerp (1, shadow, _ShadowStrength);
 
             // Spec
-            half3 h = normalize (lightDir + viewDir);
-            half diff = max (0, dot(s.Normal, lightDir));
-            float nh = max (0, dot(s.Normal, h));
-            half spec = pow (nh, 48);
-            spec = smoothstep (_MinSpec, _MaxSpec, spec) * 2;
-            spec = lerp (0, spec, _SpecStrength);
-            spec *= s.Specular;            
+            half3 halfVector = normalize (lightDir + viewDir); 
+            half nDotl = max (0,dot(s.Normal, lightDir));
+            float nDotH = max (0, dot(s.Normal, halfVector));
+            
+//            half3 spec = saturate (_ColorS.rgb * _LightColor0.rgb * clamp (pow (nDotH, s.Specular * s.Specular * 5000),0.01,1) * s.Specular) ;
+            half3 spec = pow (nDotH, s.Specular * 128) * s.Smoothness * _ColorS.rgb;
+            float3 lightinModel = (nDotl * s.Albedo + spec) * _LightColor0.rgb;;
+//            half spec = _ColorS.rgb * _LightColor0.rgb * hDotn;
+            //half spec = nh;
+//            spec = smoothstep (_MinSpec, _MaxSpec, spec) * 2;
+//            spec = lerp (0, spec, _SpecStrength);        
             
             // Rim light
-            nh = saturate (nh - _RangeTransition);
-            half3 rimLight = _RimLightColor.rgb * s.RimLight * _LightColor0;
-            rimLight *= nh;
-            half3 rimShadow = _RimShadowColor.rgb * s.RimLight * _LightColor0;
-            rimShadow *= (1 - nh);
+//            nDotH = saturate (nDotH - _RangeTransition);
+//            half3 rimLight = _RimLightColor.rgb * s.RimLight * _LightColor0;
+//            rimLight *= nDotH;
+//            half3 rimShadow = _RimShadowColor.rgb * s.RimLight * _LightColor0;
+//            rimShadow *= (1 - nDotH);
             
             half4 c;
             
-            c.rgb = saturate (s.Albedo  * _LightColor0.rgb * ( (shadow * .5 + spec) * 2));
-            c.rgb += saturate(_TintShadow * s.Albedo *  (1 - shadow));           
-            c.rgb += rimLight;           
-            c.rgb += rimShadow;           
-            c.rgb = saturate (c.rgb);
+//            c.rgb = saturate (s.Albedo * _LightColor0.rgb * ((shadow * .5) * 2)) + spec;
+//            c.rgb += saturate(_TintShadow * s.Albedo *  (1 - shadow));           
+//            c.rgb += rimLight;           
+//            c.rgb += rimShadow;           
+//            c.rgb = saturate (c.rgb);
+            //c.rgb = (s.Albedo * _LightColor0.rgb * diff + spec) * (atten *2);
+            c.rgb = lightinModel * (atten * 2);
 
             c.rgb += s.Emission;
             
@@ -136,7 +149,9 @@
             o.Albedo = c.rgb;
             o.RimLight = saturate (pow (rim, _RimPower) * _RimHardness);
             o.Emission = _ColorE.rgb * _IntensityEmiss; 
-            o.Specular = tex2D (_SpecularTex, IN.uv_MainTex);
+//            o.Smoothness = tex2D (_SmoothTex, IN.uv_MainTex) * _Smoothness;
+            o.Specular = _Specular;
+            o.Smoothness = _Smoothness;
 //            o.Occlusion = m.g;
         }
         ENDCG
