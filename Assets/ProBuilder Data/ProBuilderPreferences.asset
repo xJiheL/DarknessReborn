@@ -21,20 +21,23 @@ MonoBehaviour:
   - pbDefaultSelectionMode
   - pbHandleAlignment
   - pbEdgeSubdivisions
+  - pbExtrudeMethod
   m_Float_keys:
   - pbEditorScroll.x
   - pbEditorScroll.y
   - pbBevelAmount
+  - pbExtrudeDistance
   m_String_keys:
   - pbCurrentMaterialPalette
   m_Color_keys: []
   m_Material_keys: []
   m_Bool_values: 0101
-  m_Int_values: 0100000001000000020000000000000003000000
+  m_Int_values: 010000000100000000000000000000000300000001000000
   m_Float_values:
   - 0
   - 0
   - 0.5
+  - 1
   m_String_values:
   - Assets/ProBuilder Data/Default Material Palette.asset
   m_Color_values: []
