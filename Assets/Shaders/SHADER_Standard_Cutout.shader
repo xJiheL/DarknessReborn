@@ -109,6 +109,7 @@
             c.rgb = lerp (c.rgb, _TintSpec.rgb * _LightColor0.rgb, spec * _TintSpec.a);
             c.rgb += rimLight;           
             c.rgb += rimShadow;
+            c.rgb += s.Emission;
               
             c.a = s.Alpha;
             
