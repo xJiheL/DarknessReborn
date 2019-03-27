@@ -30,6 +30,8 @@ TagManager:
   - FreeClimb
   - ClimbDirection
   - Zipline
+  - HeavyObject
+  - LightweightObject
   layers:
   - Default
   - TransparentFX

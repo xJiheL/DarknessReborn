@@ -3,8 +3,20 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    enum State
+    {
+        Grounded,
+        Falling
+    }
+    
     [SerializeField]
     private float moveSpeed = 5f;
+
+    public float MoveSpeed
+    {
+        get { return moveSpeed; }
+        set { moveSpeed = value; }
+    }
 
     [SerializeField]
     private float moveStep;
@@ -27,6 +39,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool debugMode;
     [SerializeField] private Vector2 debugInput;
 
+    private State currentState = State.Falling;
+    
+    private float verticalVelocity;
+
+    [SerializeField] private float maxVerticalVelocity = 10f;
+
+    [SerializeField] private float gravity = 9.81f;
+    
     private void OnValidate()
     {
         if (moveStep < 0.01f)
@@ -71,16 +91,36 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        // TODO temp
-        Vector3 inputDirection = !debugMode ? 
-            new Vector3(_inputDirection.x,0f,_inputDirection.y) : 
-            new Vector3(debugInput.x, 0f, debugInput.y);
+        switch (currentState)
+        {
+            case State.Grounded:
+                UpdateGrounded();
+                break;
+            
+            case State.Falling:
+                UpdateFalling();
+                break;
+            
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+
         
+    }
+
+    private void UpdateGrounded()
+    {
+// TODO temp
+        Vector3 inputDirection = !debugMode
+            ? new Vector3(_inputDirection.x, 0f, _inputDirection.y)
+            : new Vector3(debugInput.x, 0f, debugInput.y);
+
         if (inputDirection.sqrMagnitude > 1f)
         {
             inputDirection = inputDirection.normalized;
         }
-        
+
         if (!debugMode)
         {
             _direction = Quaternion.Euler(new Vector3(0f, Camera.main.transform.eulerAngles.y, 0f)) * inputDirection;
@@ -89,7 +129,7 @@ public class PlayerController : MonoBehaviour
         {
             _direction = inputDirection;
         }
-        
+
         Debug.DrawRay(transform.position, _direction * 2f, Color.green);
 
         Vector3 newPosition = transform.position;
@@ -99,22 +139,62 @@ public class PlayerController : MonoBehaviour
         while (distanceToTravel > 0)
         {
             float currentMoveStep = moveStep;
-            
+
             if (distanceToTravel < moveStep)
             {
                 currentMoveStep = distanceToTravel;
             }
-            
+
             newPosition += UpdateController(newPosition, currentMoveStep);
             distanceToTravel -= currentMoveStep;
         }
-        
+
         transform.position = newPosition;
-        
+
         if (_direction.sqrMagnitude > 0.2f)
         {
             transform.forward = -_direction; // TODO ultra temp wtf
         }
+    }
+
+    private void UpdateFalling()
+    {
+        Vector3 basePos = transform.position;
+
+        // TODO d'la bite
+       /* Vector3 inputDirection = !debugMode
+            ? new Vector3(_inputDirection.x, 0f, _inputDirection.y)
+            : new Vector3(debugInput.x, 0f, debugInput.y);
+
+        if (inputDirection.sqrMagnitude > 1f)
+        {
+            inputDirection = inputDirection.normalized;
+        }
+
+        basePos += inputDirection * moveSpeed * Time.deltaTime;*/ // TODO handle that better
+        
+        
+        verticalVelocity = Mathf.Clamp(verticalVelocity + gravity * Time.deltaTime, 0, maxVerticalVelocity);
+
+        if (Physics.SphereCast(
+            basePos,
+            radius,
+            -Vector3.up,
+            out var hit,
+            verticalVelocity,
+            1 << LayerMask.NameToLayer("Ground"),
+            QueryTriggerInteraction.Ignore))
+        {
+            verticalVelocity = hit.distance;
+
+            GoToState(State.Grounded);
+
+            DebugExt.DrawMarker(hit.point, 1f, Color.red, 10f);
+        }
+
+        Vector3 newPos = basePos - Vector3.up * verticalVelocity;
+
+        transform.position = newPos;
     }
 
     private Vector3 UpdateController(Vector3 startPosition, float moveDistance)
@@ -163,7 +243,7 @@ public class PlayerController : MonoBehaviour
 
             if (closestCollider == null)
             {
-                throw new Exception("NO COLLIDER FOR GROUND");
+                GoToState(State.Falling);
             }
 
             groundNormal = (capsuleBottom - closestPoint).normalized;
@@ -187,5 +267,12 @@ public class PlayerController : MonoBehaviour
         return moveDirectionProject * moveDistance;
 
 
+    }
+
+    private void GoToState(State newState)
+    {
+        verticalVelocity = 0f;
+        
+        currentState = newState;
     }
 }
