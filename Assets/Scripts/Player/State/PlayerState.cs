@@ -1,0 +1,22 @@
+﻿using System;
+using UnityEngine;
+
+public abstract class PlayerState
+{
+    public Action<PlayerController.State> OnRequestState;
+    public Action<Vector3> OnSetPosition;
+    
+    private Transform _t;
+
+    public Transform T => _t;
+
+    public PlayerState(Transform t)
+    {
+        _t = t;
+    }
+
+    public abstract void Enter();
+    public abstract void Exit();
+    
+    public abstract void Update(PlayerController.Parameters p, PlayerController.CurrentTransform t);
+}
