@@ -1,0 +1,4 @@
+﻿
+This shader is write by amplify shader editor1.5.4.
+If you have it,you can editor this shader by amplify shader editor directly.
+If you have any problem,please mail zhangsdqq1234@foxmail.com

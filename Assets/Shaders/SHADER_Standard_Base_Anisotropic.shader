@@ -100,8 +100,7 @@
             fixed4 Direction;
             half Shift;
         };
-        
-        //half3 viewDir
+
         half4 LightingCartoon (CustomSurfaceOutput s, half3 lightDir, half3 viewDir, half atten)
         {
             s.Normal = normalize (s.Normal);           
