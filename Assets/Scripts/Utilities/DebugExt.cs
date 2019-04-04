@@ -75,7 +75,6 @@ public static class DebugExt
 		Vector3 point1,
 		Vector3 point2,
 		float radius,
-		float height,
 		Color color,
 		Quaternion rotation,
 		float duration = 0f,

@@ -230,4 +230,14 @@ public class PlayerController : MonoBehaviour
     {
         _transform.position = position;
     }
+
+    public static Vector3 GetCapsuleBottom(Vector3 position, float radius)
+    {
+        return position + Vector3.up * radius;
+    }
+    
+    public static Vector3 GetCapsuleTop(Vector3 position, float radius, float height)
+    {
+        return position + Vector3.up * (height - radius);
+    }
 }

@@ -6,6 +6,9 @@ public class PlayerStateFalling : PlayerState
 {
     private float verticalVelocity;
     
+    private Vector3 currentDirection;
+    private Vector3 currentDirectionVelocity;
+    
     public PlayerStateFalling(Transform t) : base(t)
     {
     }
@@ -13,6 +16,9 @@ public class PlayerStateFalling : PlayerState
     public override void Enter()
     {
         verticalVelocity = 0f;
+        
+        currentDirection = Vector3.zero;
+        currentDirectionVelocity = Vector3.zero;
     }
 
     public override void Exit()
@@ -22,7 +28,6 @@ public class PlayerStateFalling : PlayerState
 
     public override void Update(PlayerController.Parameters p, PlayerController.CurrentTransform t)
     {
-        
         verticalVelocity += p.Gravity * Time.deltaTime;
 
         if (verticalVelocity < p.MinVerticalVelocity)
@@ -30,19 +35,33 @@ public class PlayerStateFalling : PlayerState
             verticalVelocity = p.MinVerticalVelocity;
         }
 
-        float movement = verticalVelocity * Time.deltaTime;
+        currentDirection = Vector3.SmoothDamp(currentDirection, t.Direction, ref currentDirectionVelocity, 0.3f);
 
-        Vector3 origin = T.position + Vector3.up * p.Radius;
+        Debug.DrawRay(t.Position, currentDirection * 2f, Color.magenta);
+
+        Vector3 castDirection = Vector3.up * verticalVelocity * Time.deltaTime + 
+                                currentDirection * p.MoveSpeed * Time.deltaTime ;
         
-        DebugExt.DrawWireSphere(origin, p.Radius, Color.red, Quaternion.identity);
-        DebugExt.DrawWireSphere(origin - Vector3.up * Mathf.Abs(movement), p.Radius, Color.blue, Quaternion.identity);
+        Vector3 bottom = PlayerController.GetCapsuleBottom(T.position, p.Radius);
+        Vector3 top = PlayerController.GetCapsuleTop(T.position, p.Radius, p.Height);
         
-        if (Physics.SphereCast(
-            origin,
+        DebugExt.DrawWireCapsule(
+            bottom, 
+            top, 
+            p.Radius, Color.red, Quaternion.identity);
+        
+        DebugExt.DrawWireCapsule(
+            bottom + castDirection, 
+            top + castDirection,
+            p.Radius, Color.blue, Quaternion.identity);
+        
+        if (Physics.CapsuleCast(
+            bottom,
+            top,
             p.Radius,
-            -Vector3.up,
+            castDirection,
             out RaycastHit hit,
-            Mathf.Abs(movement),
+            castDirection.magnitude, // todo avoid that
             1 << LayerMask.NameToLayer("Ground"),
             QueryTriggerInteraction.Ignore))
         {
@@ -55,7 +74,7 @@ public class PlayerStateFalling : PlayerState
             //GoToState(State.Grounded);
         }
 
-        Vector3 newPos = T.position + Vector3.up * movement;
+        Vector3 newPos = T.position + castDirection;
         
         OnSetPosition.Invoke(newPos);
     }
