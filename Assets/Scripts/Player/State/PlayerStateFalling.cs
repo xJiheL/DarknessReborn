@@ -4,21 +4,19 @@ using UnityEngine;
 [Serializable]
 public class PlayerStateFalling : PlayerState
 {
-    private float verticalVelocity;
-    
-    private Vector3 currentDirection;
-    private Vector3 currentDirectionVelocity;
+    private float _verticalVelocity;
+    private Vector3 _velocity;
+    private Vector3 _smoothRef;
     
     public PlayerStateFalling(Transform t) : base(t)
     {
     }
 
-    public override void Enter()
+    public override void Enter(PlayerController.Parameters p, PlayerController.CurrentTransform t)
     {
-        verticalVelocity = 0f;
-        
-        currentDirection = Vector3.zero;
-        currentDirectionVelocity = Vector3.zero;
+        _verticalVelocity = 0f;
+        _velocity = t.Velocity;
+        _smoothRef = Vector3.zero;
     }
 
     public override void Exit()
@@ -28,32 +26,31 @@ public class PlayerStateFalling : PlayerState
 
     public override void Update(PlayerController.Parameters p, PlayerController.CurrentTransform t)
     {
-        verticalVelocity += p.Gravity * Time.deltaTime;
+        _verticalVelocity += p.Gravity * Time.deltaTime;
 
-        if (verticalVelocity < p.MinVerticalVelocity)
+        if (_verticalVelocity < p.MinVerticalVelocity)
         {
-            verticalVelocity = p.MinVerticalVelocity;
+            _verticalVelocity = p.MinVerticalVelocity;
         }
 
-        currentDirection = Vector3.SmoothDamp(currentDirection, t.Direction, ref currentDirectionVelocity, 0.3f);
+        _velocity = Vector3.SmoothDamp(_velocity, t.Direction * p.MoveSpeed, ref _smoothRef, 0.3f);
 
-        Debug.DrawRay(t.Position, currentDirection * 2f, Color.magenta);
+        Debug.DrawRay(t.Position, _velocity, Color.magenta);
 
-        Vector3 castDirection = Vector3.up * verticalVelocity * Time.deltaTime + 
-                                currentDirection * p.MoveSpeed * Time.deltaTime ;
+        Vector3 castDirection = (Vector3.up * _verticalVelocity + _velocity) * Time.deltaTime;
         
-        Vector3 bottom = PlayerController.GetCapsuleBottom(T.position, p.Radius);
-        Vector3 top = PlayerController.GetCapsuleTop(T.position, p.Radius, p.Height);
+        Vector3 bottom = p.GetCapsuleBottom(T.position);
+        Vector3 top = p.GetCapsuleTop(T.position);
         
         DebugExt.DrawWireCapsule(
             bottom, 
             top, 
-            p.Radius, Color.red, Quaternion.identity);
+            p.Radius, Color.blue, Quaternion.identity);
         
         DebugExt.DrawWireCapsule(
             bottom + castDirection, 
             top + castDirection,
-            p.Radius, Color.blue, Quaternion.identity);
+            p.Radius, Color.red, Quaternion.identity);
         
         if (Physics.CapsuleCast(
             bottom,
@@ -61,21 +58,27 @@ public class PlayerStateFalling : PlayerState
             p.Radius,
             castDirection,
             out RaycastHit hit,
-            castDirection.magnitude, // todo avoid that
-            1 << LayerMask.NameToLayer("Ground"),
+            castDirection.magnitude,
+            PlayerController.GetGroundMask(),
             QueryTriggerInteraction.Ignore))
         {
             DebugExt.DrawMarker(hit.point, 1f, Color.red);
-            
-            OnSetPosition.Invoke(new Vector3(t.Position.x, 100f, t.Position.z));
-            Enter();
-            return;
-            
-            //GoToState(State.Grounded);
-        }
+            Debug.DrawRay(hit.point, hit.normal, Color.red);
 
-        Vector3 newPos = T.position + castDirection;
+            OnSetPosition.Invoke(T.position + castDirection.normalized * hit.distance);
+            
+            float angle = Vector3.Angle(Vector3.up, hit.normal);
+            PlayerController.State state = p.GetStateWithAngle(angle);
+
+            if (state != PlayerController.State.Falling)
+            {
+                OnRequestState.Invoke(state);
+                return;
+            }
+            
+            Debug.LogError("it's possible?");
+        }
         
-        OnSetPosition.Invoke(newPos);
+        OnSetPosition.Invoke(T.position + castDirection);
     }
 }

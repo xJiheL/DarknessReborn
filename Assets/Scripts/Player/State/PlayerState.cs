@@ -15,7 +15,7 @@ public abstract class PlayerState
         _t = t;
     }
 
-    public abstract void Enter();
+    public abstract void Enter(PlayerController.Parameters p, PlayerController.CurrentTransform t);
     public abstract void Exit();
     
     public abstract void Update(PlayerController.Parameters p, PlayerController.CurrentTransform t);

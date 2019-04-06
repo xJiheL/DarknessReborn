@@ -40,17 +40,62 @@ public class PlayerController : MonoBehaviour
         [SerializeField]
         private float minVerticalVelocity = -30f;
 
+        [SerializeField]
+        private float groundLimit = 45f;
+
+        [SerializeField]
+        private float climbLimit = 150f;
+        
         public void OnValidate()
         {
+            if (moveSpeed < 0f)
+            {
+                moveSpeed = 0f;
+            }
+            
+            if (radius < 0f)
+            {
+                radius = 0f;
+            }
+
+            if (height < radius * 2f)
+            {
+                height = radius * 2f;
+            }
+            
             if (moveStep < 0.01f)
             {
                 moveStep = 0.01f;
             }
 
-            // le mouvement doit jamais être supérieur au radius pour éviter des problème de pénétration
             if (moveStep > radius)
             {
                 moveStep = radius;
+            }
+            
+            if (groundCheckDistance < 0f)
+            {
+                groundCheckDistance = 0f;
+            }
+
+            if (groundLimit < 0f)
+            {
+                groundLimit = 0f;
+            }
+            
+            if (climbLimit < 0f)
+            {
+                climbLimit = 0f;
+            }
+            
+            if (climbLimit > 180f)
+            {
+                climbLimit = 180f;
+            }
+            
+            if (groundLimit > climbLimit)
+            {
+                groundLimit = climbLimit;
             }
         }
 
@@ -68,24 +113,55 @@ public class PlayerController : MonoBehaviour
 
         public Vector2 DebugInput => debugInput;
 
+        public float Gravity => gravity;
+
         public float MinVerticalVelocity => minVerticalVelocity;
 
-        public float Gravity => gravity;
+        public float GroundLimit => groundLimit;
+
+        public float ClimbLimit => climbLimit;
+
+        public Vector3 GetCapsuleBottom(Vector3 position)
+        {
+            return position + Vector3.up * radius;
+        }
+    
+        public Vector3 GetCapsuleTop(Vector3 position)
+        {
+            return position + Vector3.up * (height - radius);
+        }
+
+        public PlayerController.State GetStateWithAngle(float angle)
+        {
+            if (angle <= groundLimit)
+            {
+                return State.Grounded;
+            }
+            
+            if (angle <= climbLimit)
+            {
+                return State.Climbing;
+            }
+
+            return State.Falling;
+        }
     }
 
     [Serializable]
     public struct CurrentTransform
     {
         private Vector3 _direction;
+        private Vector3 _velocity;
         private Vector3 _position;
         private Quaternion _rotation;
         private Vector3 _up;
         private Vector3 _forward;
         private Vector3 _right;
 
-        public CurrentTransform(Vector3 direction, Vector3 position, Quaternion rotation, Vector3 up, Vector3 forward, Vector3 right)
+        public CurrentTransform(Vector3 direction, Vector3 velocity, Vector3 position, Quaternion rotation, Vector3 up, Vector3 forward, Vector3 right)
         {
             _direction = direction;
+            _velocity = velocity;
             _position = position;
             _rotation = rotation;
             _up = up;
@@ -94,6 +170,8 @@ public class PlayerController : MonoBehaviour
         }
 
         public Vector3 Direction => _direction;
+
+        public Vector3 Velocity => _velocity;
 
         public Vector3 Position => _position;
 
@@ -120,6 +198,9 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 _inputMove;
     
+    private Vector3 _previousPosition;
+    private Vector3 _velocity;
+    
     public Vector3 Direction => _direction;
 
     
@@ -135,6 +216,8 @@ public class PlayerController : MonoBehaviour
         _stateGrounded = new PlayerStateGrounded(transform);
         _stateFalling = new PlayerStateFalling(transform);
         _stateClimbing = new PlayerStateClimbing(transform);
+
+        _previousPosition = transform.position;
         
         GoToState(State.Falling);
     }
@@ -182,17 +265,18 @@ public class PlayerController : MonoBehaviour
             _direction = inputMoveNormalized;
         }
 
-        CurrentTransform currentTransform = new CurrentTransform(
-            _direction, 
-            _transform.position, 
-            _transform.rotation,
-            _transform.up,
-            _transform.forward,
-            _transform.right);
+        CurrentTransform currentTransform = GetCurrentTransform();
         
-        Debug.DrawRay(currentTransform.Position, _direction * 2f, Color.green);
+        Debug.DrawRay(currentTransform.Position, _direction, Color.green);
         
         _currentState.Update(_parameters, currentTransform);
+        
+        DebugExt.DrawWireCapsule(
+            _parameters.GetCapsuleBottom(_transform.position), 
+            _parameters.GetCapsuleTop(_transform.position),
+            _parameters.Radius, Color.cyan, Quaternion.identity);
+        
+        Debug.DrawRay(transform.position, _velocity, Color.cyan);
     }
 
     private void GoToState(State newState)
@@ -220,7 +304,7 @@ public class PlayerController : MonoBehaviour
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         }
         
-        _currentState.Enter();
+        _currentState.Enter(_parameters, GetCurrentTransform());
         
         _currentState.OnSetPosition += OnSetPosition;
         _currentState.OnRequestState += GoToState;
@@ -229,15 +313,26 @@ public class PlayerController : MonoBehaviour
     private void OnSetPosition(Vector3 position)
     {
         _transform.position = position;
+
+        Vector3 lastMovement = position - _previousPosition;
+        _velocity = lastMovement / Time.deltaTime;
+        _previousPosition = position;
     }
 
-    public static Vector3 GetCapsuleBottom(Vector3 position, float radius)
+    public static int GetGroundMask()
     {
-        return position + Vector3.up * radius;
+        return 1 << LayerMask.NameToLayer("Ground");
     }
-    
-    public static Vector3 GetCapsuleTop(Vector3 position, float radius, float height)
+
+    private CurrentTransform GetCurrentTransform()
     {
-        return position + Vector3.up * (height - radius);
+        return new CurrentTransform(
+            _direction, 
+            _velocity,
+            _transform.position, 
+            _transform.rotation,
+            _transform.up,
+            _transform.forward,
+            _transform.right);
     }
 }

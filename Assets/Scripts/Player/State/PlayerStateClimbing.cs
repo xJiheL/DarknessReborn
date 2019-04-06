@@ -16,7 +16,7 @@ public class PlayerStateClimbing : PlayerState
     public Collider _startCollider;
 
 
-    public override void Enter()
+    public override void Enter(PlayerController.Parameters p, PlayerController.CurrentTransform t)
     {
         
     }
@@ -54,7 +54,7 @@ public class PlayerStateClimbing : PlayerState
             middleMovementVector, 
             radiusOverlap, 
             overlapSphere, 
-            1 << LayerMask.NameToLayer("Ground"),
+            PlayerController.GetGroundMask(),
             QueryTriggerInteraction.Ignore);
 
         DebugExt.DrawWireSphere(middleMovementVector, radiusOverlap, Color.cyan, Quaternion.identity);

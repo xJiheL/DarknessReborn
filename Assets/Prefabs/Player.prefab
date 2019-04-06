@@ -127,15 +127,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dd13e714c4a47742a9c800c92530ef5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  moveStep: 0.5
-  radius: 0.2
-  groundCheckDistance: 0.43
-  closestCollider: {fileID: 0}
-  debugMode: 0
-  debugInput: {x: 0, y: 0}
-  maxVerticalVelocity: 10
-  gravity: 0.5
+  _parameters:
+    moveSpeed: 5
+    radius: 0.25
+    height: 1.7
+    moveStep: 0.2
+    groundCheckDistance: 0.25
+    debugMode: 0
+    debugInput: {x: 1, y: 0}
+    gravity: -9.81
+    minVerticalVelocity: -30
+    groundLimit: 75
+    climbLimit: 150
 --- !u!114 &867613377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,6 +234,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1648593829835447965}
     m_Modifications:
+    - target: {fileID: 100000, guid: 0650bdf6536d14c48aa5efba663aca1a, type: 3}
+      propertyPath: m_Name
+      value: MESH_Character_Test
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0650bdf6536d14c48aa5efba663aca1a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -274,10 +281,6 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 0650bdf6536d14c48aa5efba663aca1a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 0650bdf6536d14c48aa5efba663aca1a, type: 3}
-      propertyPath: m_Name
-      value: MESH_Character_Test
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0650bdf6536d14c48aa5efba663aca1a, type: 3}

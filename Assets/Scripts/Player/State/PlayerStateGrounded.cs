@@ -5,16 +5,15 @@ using UnityEngine;
 public class PlayerStateGrounded : PlayerState
 {
     private Collider[] overlapCapsule;
-    public Collider closestCollider;
     
     public PlayerStateGrounded(Transform t) : base(t)
     {
         overlapCapsule = new Collider[16];
     }
 
-    public override void Enter()
+    public override void Enter(PlayerController.Parameters p, PlayerController.CurrentTransform t)
     {
-        
+        // snap to the ground
     }
 
     public override void Exit()
@@ -24,101 +23,144 @@ public class PlayerStateGrounded : PlayerState
 
     public override void Update(PlayerController.Parameters p, PlayerController.CurrentTransform t)
     {
+        Vector3 nextPosition = t.Position;
 
-        Vector3 newPosition = t.Position;
+        float moveDistance = p.MoveSpeed * t.Direction.magnitude * Time.deltaTime;
 
-        float distanceToTravel = p.MoveSpeed * Time.deltaTime;
-
-        while (distanceToTravel > 0)
+        while (moveDistance > 0)
         {
             float currentMoveStep = p.MoveStep;
 
-            if (distanceToTravel < p.MoveStep)
+            if (moveDistance < p.MoveStep)
             {
-                currentMoveStep = distanceToTravel;
+                currentMoveStep = moveDistance;
             }
 
-            newPosition += UpdateController(p, t, newPosition, currentMoveStep);
-            distanceToTravel -= currentMoveStep;
+            {
+                /* ---------------- Get ground normal ---------------- */
+
+                if(!GetGroundNormal(p.GetCapsuleBottom(nextPosition),
+                    p.Radius,
+                    p.GroundCheckDistance,
+                    out Vector3 groundPoint,
+                    out Vector3 groundNormal))
+                {
+                    OnRequestState.Invoke(PlayerController.State.Falling);
+                    return;
+                }
+
+                /* ---------------- Check state ---------------- */
+                
+                float angle = Vector3.Angle(Vector3.up, groundNormal);
+                PlayerController.State state = p.GetStateWithAngle(angle);
+                
+                if (state != PlayerController.State.Grounded)
+                {
+                    OnRequestState.Invoke(state);
+                    return;
+                }
+                
+                DebugExt.DrawMarker(groundPoint, 1f, Color.red);
+                Debug.DrawRay(groundPoint, groundNormal * 2f, Color.red);
+                
+                /* ---------------- Clamp to ground ---------------- */
+
+                nextPosition = groundPoint + groundNormal * p.Radius - Vector3.up * p.Radius; // TODO ATTENTION A PAS LE POUSSER DANS UN AUTRE COLL 
+                    
+                /* ---------------- Move on the ground ---------------- */
+        
+                Quaternion rotation = Quaternion.FromToRotation(Vector3.up, groundNormal);
+                Vector3 moveDirectionProject = rotation * t.Direction.normalized;
+        
+                Debug.DrawRay(nextPosition, moveDirectionProject, Color.yellow);
+        
+                // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! je dois gérer la pénétration!
+        
+                nextPosition += moveDirectionProject * currentMoveStep;
+            }
+            
+            moveDistance -= currentMoveStep;
+        }
+        
+        /* ---------------- Final clamp to ground ---------------- */
+
+        {
+            if (!GetGroundNormal(p.GetCapsuleBottom(nextPosition),
+                p.Radius,
+                p.GroundCheckDistance,
+                out Vector3 groundPoint,
+                out Vector3 groundNormal))
+            {
+                OnSetPosition.Invoke(nextPosition);
+                
+                OnRequestState.Invoke(PlayerController.State.Falling);
+                return;
+            }
+            
+            // TODO check climbing etc?
+            
+            nextPosition = groundPoint + groundNormal * p.Radius - Vector3.up * p.Radius;
         }
 
-       /* transform.position = newPosition;
-
-        if (_direction.sqrMagnitude > 0.2f)
+        OnSetPosition.Invoke(nextPosition);
+        
+        /*if (_direction.sqrMagnitude > 0.2f)
         {
             transform.forward = -_direction; // TODO ultra temp wtf
         }*/
     }
-    
-    private Vector3 UpdateController(PlayerController.Parameters p, PlayerController.CurrentTransform t, Vector3 startPosition, float moveDistance)
+
+    private bool GetGroundNormal(Vector3 bottom, float radius, float groundCheckDistance, out Vector3 groundPoint, out Vector3 groundNormal)
     {
-        /* ---------------- */
+        groundNormal = -Vector3.up;
+        Vector3 groundCheckVector = -Vector3.up * groundCheckDistance;
 
-        Vector3 groundNormal = Vector3.up;
+        DebugExt.DrawWireCapsule(
+            bottom + groundCheckVector,
+            bottom,
+            radius, Color.red, Quaternion.identity);
 
-        /* ---------------- Ground Test ---------------- */
-
+        if (ClosestPoint(
+            bottom,
+            bottom + groundCheckVector,
+            radius,
+            overlapCapsule,
+            out groundPoint))
         {
-            Vector3 capsuleBottom = startPosition + Vector3.up * p.Radius;
-            Vector3 vector3 = capsuleBottom - Vector3.up * p.GroundCheckDistance;
-            
-            DebugExt.DrawWireSphere(capsuleBottom, p.Radius, Color.white, t.Rotation);
-            DebugExt.DrawWireSphere(vector3, p.Radius, Color.blue, t.Rotation);
-
-            int colliderTouched = Physics.OverlapCapsuleNonAlloc(
-                capsuleBottom,
-                vector3,
-                p.Radius,
-                overlapCapsule,
-                1 << LayerMask.NameToLayer("Ground"),
-                QueryTriggerInteraction.Ignore);
-
-            float minDistance = float.MaxValue;
-            closestCollider = null; // TODO : handle when there are no colliders
-            Vector3 closestPoint = Vector3.zero; // same
-
-            for (int i = 0; i < colliderTouched; i++)
-            {
-                Vector3
-                    newClosestPoint =
-                        overlapCapsule[i]
-                            .ClosestPointExt(
-                                capsuleBottom); // TODO check si le collider est bien compatible (donc tout sauf les mesh collider pas convex : https://docs.unity3d.com/ScriptReference/Physics.ClosestPoint.html)
-
-                float distance = Vector3.Distance(newClosestPoint, capsuleBottom); // TODO use sqrMagnitude instead
-                if (distance < minDistance)
-                {
-                    minDistance = distance;
-                    closestCollider = overlapCapsule[i];
-                    closestPoint = newClosestPoint;
-                }
-            }
-
-            if (closestCollider == null)
-            {
-               /* GoToState(State.Falling);*/
-            }
-
-            groundNormal = (capsuleBottom - closestPoint).normalized;
-            // TODO marche pas du coup !!!!!
-          /*  transform.position = closestPoint + groundNormal * radius - Vector3.up * radius; // ATTENTION A PAS LE POUSSER DANS UN AUTRE COLL */
-
-            DebugExt.DrawMarker(closestPoint, 1f, Color.red);
-
-            Debug.DrawRay(closestPoint, groundNormal * 2f, Color.magenta);
+            groundNormal = (bottom - groundPoint).normalized;
+            return true;
         }
 
-        /* ---------------- */
+        return false;
+    }
 
-        Quaternion rotation = Quaternion.FromToRotation(Vector3.up, groundNormal);
-        Vector3 moveDirectionProject = rotation * t.Direction;
+    private static bool ClosestPoint(Vector3 fromPoint, Vector3 otherPoint, float radius, Collider[] results, out Vector3 closestPoint)
+    {
+        int resultsCount = Physics.OverlapCapsuleNonAlloc(
+            fromPoint,
+            otherPoint,
+            radius,
+            results,
+            PlayerController.GetGroundMask(),
+            QueryTriggerInteraction.Ignore);
+        
+        float minDistance = float.MaxValue;
+        Collider closestCollider = null;
+        closestPoint = Vector3.zero;
+        
+        for (int i = 0; i < resultsCount; i++)
+        {
+            Vector3 newClosestPoint = results[i].ClosestPointExt(fromPoint);
 
-        Debug.DrawRay(t.Position, moveDirectionProject * 2f, Color.yellow);
+            float distance = (newClosestPoint - fromPoint).sqrMagnitude;
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                closestCollider = results[i];
+                closestPoint = newClosestPoint;
+            }
+        }
 
-        // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! je dois gérer la pénétration!
-
-        return moveDirectionProject * moveDistance;
-
-
+        return closestCollider != null;
     }
 }
