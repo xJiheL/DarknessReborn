@@ -4,11 +4,11 @@ using UnityEngine;
 [Serializable]
 public class PlayerStateGrounded : PlayerState
 {
-    private Collider[] overlapCapsule;
+    private Collider[] _overlapCapsule;
     
     public PlayerStateGrounded(Transform t) : base(t)
     {
-        overlapCapsule = new Collider[16];
+        _overlapCapsule = new Collider[16];
     }
 
     public override void Enter(PlayerController.Parameters p, PlayerController.CurrentTransform t)
@@ -43,7 +43,8 @@ public class PlayerStateGrounded : PlayerState
                     p.Radius,
                     p.GroundCheckDistance,
                     out Vector3 groundPoint,
-                    out Vector3 groundNormal))
+                    out Vector3 groundNormal,
+                    out Collider standingCollider))
                 {
                     OnRequestState.Invoke(PlayerController.State.Falling);
                     return;
@@ -89,9 +90,11 @@ public class PlayerStateGrounded : PlayerState
                 p.Radius,
                 p.GroundCheckDistance,
                 out Vector3 groundPoint,
-                out Vector3 groundNormal))
+                out Vector3 groundNormal,
+                out Collider standingCollider))
             {
                 OnSetPosition.Invoke(nextPosition);
+                OnSetStandingCollider.Invoke(standingCollider);
                 
                 OnRequestState.Invoke(PlayerController.State.Falling);
                 return;
@@ -100,9 +103,12 @@ public class PlayerStateGrounded : PlayerState
             // TODO check climbing etc?
             
             nextPosition = groundPoint + groundNormal * p.Radius - Vector3.up * p.Radius;
+            
+            OnSetPosition.Invoke(nextPosition);
+            OnSetStandingCollider.Invoke(standingCollider);
         }
 
-        OnSetPosition.Invoke(nextPosition);
+        
         
         /*if (_direction.sqrMagnitude > 0.2f)
         {
@@ -110,7 +116,7 @@ public class PlayerStateGrounded : PlayerState
         }*/
     }
 
-    private bool GetGroundNormal(Vector3 bottom, float radius, float groundCheckDistance, out Vector3 groundPoint, out Vector3 groundNormal)
+    private bool GetGroundNormal(Vector3 bottom, float radius, float groundCheckDistance, out Vector3 groundPoint, out Vector3 groundNormal, out Collider standingCollider)
     {
         groundNormal = -Vector3.up;
         Vector3 groundCheckVector = -Vector3.up * groundCheckDistance;
@@ -120,12 +126,13 @@ public class PlayerStateGrounded : PlayerState
             bottom,
             radius, Color.red, Quaternion.identity);
 
-        if (ClosestPoint(
+        if (ClosestPointFromCapsule(
             bottom,
             bottom + groundCheckVector,
             radius,
-            overlapCapsule,
-            out groundPoint))
+            _overlapCapsule,
+            out groundPoint,
+            out standingCollider))
         {
             groundNormal = (bottom - groundPoint).normalized;
             return true;
@@ -134,7 +141,13 @@ public class PlayerStateGrounded : PlayerState
         return false;
     }
 
-    private static bool ClosestPoint(Vector3 fromPoint, Vector3 otherPoint, float radius, Collider[] results, out Vector3 closestPoint)
+    public static bool ClosestPointFromCapsule(
+        Vector3 fromPoint, 
+        Vector3 otherPoint, 
+        float radius, 
+        Collider[] results, 
+        out Vector3 closestPoint, 
+        out Collider closestCollider)
     {
         int resultsCount = Physics.OverlapCapsuleNonAlloc(
             fromPoint,
@@ -144,10 +157,41 @@ public class PlayerStateGrounded : PlayerState
             PlayerController.GetGroundMask(),
             QueryTriggerInteraction.Ignore);
         
-        float minDistance = float.MaxValue;
-        Collider closestCollider = null;
-        closestPoint = Vector3.zero;
+        NewMethod(fromPoint, results, out closestPoint, out closestCollider, resultsCount);
+
+        return closestCollider != null;
+    }
+    
+    public static bool ClosestPointFromSphere(
+        Vector3 fromPoint, 
+        float radius, 
+        Collider[] results, 
+        out Vector3 closestPoint, 
+        out Collider closestCollider)
+    {
+        int resultsCount = Physics.OverlapSphereNonAlloc(
+            fromPoint,
+            radius,
+            results,
+            PlayerController.GetGroundMask(),
+            QueryTriggerInteraction.Ignore);
         
+        NewMethod(fromPoint, results, out closestPoint, out closestCollider, resultsCount);
+
+        return closestCollider != null;
+    }
+
+    private static void NewMethod(
+        Vector3 fromPoint, 
+        Collider[] results, 
+        out Vector3 closestPoint,
+        out Collider closestCollider, 
+        int resultsCount)
+    {
+        float minDistance = float.MaxValue;
+        closestPoint = Vector3.zero;
+        closestCollider = null;
+
         for (int i = 0; i < resultsCount; i++)
         {
             Vector3 newClosestPoint = results[i].ClosestPointExt(fromPoint);
@@ -156,11 +200,9 @@ public class PlayerStateGrounded : PlayerState
             if (distance < minDistance)
             {
                 minDistance = distance;
-                closestCollider = results[i];
                 closestPoint = newClosestPoint;
+                closestCollider = results[i];
             }
         }
-
-        return closestCollider != null;
     }
 }

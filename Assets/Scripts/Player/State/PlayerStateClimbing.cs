@@ -4,21 +4,20 @@ using UnityEngine;
 [Serializable]
 public class PlayerStateClimbing : PlayerState
 {
-    private Collider[] overlapSphere;
-    
-   
+    private Collider[] _overlapSphere;
+    private Collider _climbingCollider;
     
     public PlayerStateClimbing(Transform t) : base(t)
     {
-        overlapSphere = new Collider[16];
+        _overlapSphere = new Collider[16];
     }
     
-    public Collider _startCollider;
-
-
     public override void Enter(PlayerController.Parameters p, PlayerController.CurrentTransform t)
     {
+        Debug.Assert(t.StandingCollider != null);
+        _climbingCollider = t.StandingCollider;
         
+        // TODO coller au cliff et orienter vers le cliff
     }
 
     public override void Exit()
@@ -28,63 +27,59 @@ public class PlayerStateClimbing : PlayerState
 
     public override void Update(PlayerController.Parameters p, PlayerController.CurrentTransform t)
     {
-        Vector3 closestPoint = _startCollider.ClosestPointExt(t.Position);
+        Vector3 bottom = p.GetCapsuleBottom(t.Position);
         
-        DebugExt.DrawWireSphere(closestPoint, 0.1f, Color.red, Quaternion.identity);
+        /* ---------------- Get cliff point and normal ---------------- */
         
-        Vector3 normalMove = (t.Position - closestPoint).normalized;
+        Vector3 cliffClosestPoint = _climbingCollider.ClosestPointExt(bottom);
+        DebugExt.DrawWireSphere(cliffClosestPoint, 0.1f, Color.red, Quaternion.identity);
         
-        Debug.DrawRay(closestPoint, normalMove, Color.blue);
-        DebugExt.DrawWireSphere(closestPoint + normalMove * p.Radius, p.Radius, Color.red, Quaternion.identity);
+        Vector3 cliffNormal = (bottom - cliffClosestPoint).normalized;
+        Debug.DrawRay(cliffClosestPoint, cliffNormal, Color.red);
         
-        Quaternion rotation = Quaternion.FromToRotation(t.Up, normalMove);
+        DebugExt.DrawWireSphere(cliffClosestPoint + cliffNormal * p.Radius, p.Radius, Color.red, Quaternion.identity);
 
-        Vector3 moveDirectionProject = rotation * t.Rotation * new Vector3(t.Direction.x, 0f, t.Direction.y);
+        /* ---------------- Get direction on cliff ---------------- */
         
-        Debug.DrawRay(closestPoint, moveDirectionProject, Color.green);
+        Quaternion cliffRotation = Quaternion.FromToRotation(t.Up, cliffNormal);
+        Vector3 directionOnCliff = cliffRotation * t.Rotation * new Vector3(t.InputMove.x, 0, t.InputMove.y);
+        Debug.DrawRay(cliffClosestPoint, directionOnCliff, Color.green);
 
-        Vector3 newPos = closestPoint + normalMove * p.Radius + moveDirectionProject * p.MoveSpeed * Time.deltaTime;
-
-
-        Vector3 movementVector = newPos - t.Position;
-        Vector3 middleMovementVector = t.Position + movementVector / 2;
-        float radiusOverlap = p.Radius + movementVector.magnitude / 2f;// can be optimised 
+        /* ---------------- Get new closest collider with movement ---------------- */
         
-        int colliderTouched = Physics.OverlapSphereNonAlloc(
-            middleMovementVector, 
-            radiusOverlap, 
-            overlapSphere, 
-            PlayerController.GetGroundMask(),
-            QueryTriggerInteraction.Ignore);
+        Vector3 nextPosition = cliffClosestPoint + 
+                         cliffNormal * p.Radius + 
+                         directionOnCliff * p.MoveSpeed * Time.deltaTime; // TODO climb speed
 
+        Vector3 movementVector = nextPosition - bottom;
+        Vector3 middleMovementVector = bottom + movementVector / 2;
+        float radiusOverlap = p.Radius + movementVector.magnitude / 2f; // TODO can be optimised?
+        
         DebugExt.DrawWireSphere(middleMovementVector, radiusOverlap, Color.cyan, Quaternion.identity);
-        
-        float minDistance = float.MaxValue;
-        Collider newCollider = null; // TODO : handle when there are no colliders
-        
-        // TODO faire une méthode utilitaire pour ça
-        for (int i = 0; i < colliderTouched; i++)
-        {
-            Vector3 newClosestPoint = overlapSphere[i].ClosestPointExt(newPos); // TODO check si le collider est bien compatible (donc tout sauf les mesh collider pas convex : https://docs.unity3d.com/ScriptReference/Physics.ClosestPoint.html)
 
-            float distance = Vector3.Distance(newClosestPoint, newPos); // TODO use sqrMagnitude instead
-            if (distance < minDistance)
+        if (PlayerStateGrounded.ClosestPointFromSphere(
+            middleMovementVector,
+            radiusOverlap,
+            _overlapSphere,
+            out Vector3 closestPoint,
+            out Collider closestCollider))
+        {
+            if (closestCollider != null)
             {
-                minDistance = distance;
-                newCollider = overlapSphere[i];
+                _climbingCollider = closestCollider;
             }
         }
         
-        if (newCollider != null)
-        {
-            _startCollider = newCollider;
-        }
+        /* ---------------- Clamp to that collider ---------------- */
 
-        Vector3 newClos = _startCollider.ClosestPointExt(newPos); // déjà fait au dessus
-        Vector3 newNormal = newPos - newClos;
+        Vector3 newCliffClosestPoint = _climbingCollider.ClosestPointExt(nextPosition);
+        Vector3 newCliffNormal = (nextPosition - newCliffClosestPoint).normalized;
+
+        Vector3 forward = -newCliffNormal;
+        Quaternion rotation = Quaternion.LookRotation(forward);
+        Vector3 up = rotation * Vector3.up;
         
-        /*transform.position = newClos + newNormal.normalized * p.Radius;
-        transform.forward = -newNormal;*/
-        //  transform.position = closestPoint + moveDirectionProject * speed * Time.deltaTime;
+        OnSetPosition.Invoke(newCliffClosestPoint + newCliffNormal * p.Radius - up * p.Radius);
+        OnSetRotation.Invoke(rotation);
     }
 }

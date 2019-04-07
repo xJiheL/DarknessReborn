@@ -5,6 +5,8 @@ public abstract class PlayerState
 {
     public Action<PlayerController.State> OnRequestState;
     public Action<Vector3> OnSetPosition;
+    public Action<Quaternion> OnSetRotation;
+    public Action<Collider> OnSetStandingCollider;
     
     private Transform _t;
 

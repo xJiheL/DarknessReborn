@@ -151,25 +151,31 @@ public class PlayerController : MonoBehaviour
     public struct CurrentTransform
     {
         private Vector3 _direction;
+        private Vector2 _inputMove;
         private Vector3 _velocity;
         private Vector3 _position;
         private Quaternion _rotation;
         private Vector3 _up;
         private Vector3 _forward;
         private Vector3 _right;
+        private Collider _standingCollider;
 
-        public CurrentTransform(Vector3 direction, Vector3 velocity, Vector3 position, Quaternion rotation, Vector3 up, Vector3 forward, Vector3 right)
+        public CurrentTransform(Vector3 direction, Vector2 inputMove, Vector3 velocity, Vector3 position, Quaternion rotation, Vector3 up, Vector3 forward, Vector3 right, Collider standingCollider)
         {
             _direction = direction;
+            _inputMove = inputMove;
             _velocity = velocity;
             _position = position;
             _rotation = rotation;
             _up = up;
             _forward = forward;
             _right = right;
+            _standingCollider = standingCollider;
         }
 
         public Vector3 Direction => _direction;
+
+        public Vector2 InputMove => _inputMove;
 
         public Vector3 Velocity => _velocity;
 
@@ -182,6 +188,8 @@ public class PlayerController : MonoBehaviour
         public Vector3 Forward => _forward;
 
         public Vector3 Right => _right;
+
+        public Collider StandingCollider => _standingCollider;
     }
 
     [SerializeField]
@@ -200,6 +208,8 @@ public class PlayerController : MonoBehaviour
     
     private Vector3 _previousPosition;
     private Vector3 _velocity;
+
+    private Collider _standingCollider;
     
     public Vector3 Direction => _direction;
 
@@ -284,6 +294,8 @@ public class PlayerController : MonoBehaviour
         if (_currentState != null)
         {
             _currentState.OnSetPosition -= OnSetPosition;
+            _currentState.OnSetRotation -= OnSetRotation;
+            _currentState.OnSetStandingCollider -= OnSetStandingCollider;
             _currentState.OnRequestState -= GoToState;
             
             _currentState.Exit();
@@ -307,6 +319,8 @@ public class PlayerController : MonoBehaviour
         _currentState.Enter(_parameters, GetCurrentTransform());
         
         _currentState.OnSetPosition += OnSetPosition;
+        _currentState.OnSetRotation += OnSetRotation;
+        _currentState.OnSetStandingCollider += OnSetStandingCollider;
         _currentState.OnRequestState += GoToState;
     }
 
@@ -318,6 +332,16 @@ public class PlayerController : MonoBehaviour
         _velocity = lastMovement / Time.deltaTime;
         _previousPosition = position;
     }
+    
+    private void OnSetRotation(Quaternion rotation)
+    {
+        _transform.rotation = rotation;
+    }
+    
+    private void OnSetStandingCollider(Collider standingCollider)
+    {
+        _standingCollider = standingCollider;
+    }
 
     public static int GetGroundMask()
     {
@@ -328,11 +352,13 @@ public class PlayerController : MonoBehaviour
     {
         return new CurrentTransform(
             _direction, 
+            _inputMove,
             _velocity,
             _transform.position, 
             _transform.rotation,
             _transform.up,
             _transform.forward,
-            _transform.right);
+            _transform.right,
+            _standingCollider);
     }
 }
