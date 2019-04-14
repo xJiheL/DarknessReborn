@@ -36,7 +36,7 @@
         LOD 200
 
         CGPROGRAM
-        #pragma surface surf Cartoon fullforwardshadows 
+        #pragma surface surf Standard fullforwardshadows 
         #pragma target 3.0
         #include "Lighting.cginc"
            
@@ -101,13 +101,13 @@
             
             half4 c;
 
-            c.rgb = saturate (s.Albedo * _LightColor0.rgb);
-            c.rgb = lerp (c.rgb, _TintShadow.rgb * _LightColor0.rgb, shadow * _TintShadow.a);
-            c.rgb = lerp (c.rgb, _TintSpec.rgb * _LightColor0.rgb, spec * _TintSpec.a);
-            c.rgb += rimLight;           
-            c.rgb += rimShadow;
+            c.rgb = saturate (s.Albedo );
+//            c.rgb = lerp (c.rgb, _TintShadow.rgb * _LightColor0.rgb, shadow * _TintShadow.a);
+//            c.rgb = lerp (c.rgb, _TintSpec.rgb * _LightColor0.rgb, spec * _TintSpec.a);
+//            c.rgb += rimLight;           
+//            c.rgb += rimShadow;
 //            c.rgb *= atten;
-            c.rgb += s.Emission;
+            //c.rgb += s.Emission;
               
             c.a = s.Alpha;
             
