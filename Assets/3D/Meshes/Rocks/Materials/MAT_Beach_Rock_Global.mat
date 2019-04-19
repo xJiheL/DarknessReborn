@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MAT_Beach_Rock_Global
-  m_Shader: {fileID: 4800000, guid: f50a512d9c8909c4e971a972f999540e, type: 3}
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -59,44 +59,76 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecularCurveMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecularTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _BlackRange: 1
+    - _BlackStrenth: 0
+    - _BrightEffect: 1
     - _BumpScale: 1
     - _Cutoff: 0.5
+    - _DarkEffect: 0.303
     - _DetailNormalMapScale: 1
+    - _DistortionStrength: -0.719
+    - _DistortionThickness: 4.86
     - _DstBlend: 0
     - _GlossMapScale: 1
-    - _Glossiness: 0.5
+    - _Glossiness: 0.15
     - _GlossyReflections: 1
+    - _HeightFogEnd: 0
+    - _HeightFogStart: 0
     - _IntensityEmiss: 1
+    - _MaskStrength: 0
     - _MaxShadow: 0.25
-    - _MaxSpec: 0.65
+    - _MaxSpec: 1.32
     - _Metallic: 0
     - _MinShadow: 0.05
-    - _MinSpec: 0.1
+    - _MinSpec: 0.86
     - _Mode: 0
     - _OcclusionStrength: 1
+    - _OutLineWidth: 0.071
     - _Parallax: 0.02
-    - _RangeTransition: 0.355
-    - _RimHardness: 0.97
-    - _RimPower: 4.22
+    - _RangeTransition: 0.414
+    - _RimHardness: 0.67
+    - _RimPower: 3.35
+    - _ShadowRange: 0.94
     - _ShadowStrength: 1
-    - _Smoothness: 0.448
+    - _Smoothness: 0.023
     - _SmoothnessTextureChannel: 0
     - _SpecStrength: 0.238
+    - _SpecularHardness: 0
     - _SpecularHighlights: 1
+    - _SpecularRange: 115
+    - _SpecularStrength: 0.073
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
+    - __dirty: 1
     m_Colors:
-    - _Color: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
+    - _BaseColor: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 0}
+    - _Color: {r: 0.38679248, g: 0.38679248, b: 0.38679248, a: 1}
     - _ColorE: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _HeightFogColor: {r: 0, g: 0, b: 0, a: 0}
+    - _OutLineColor: {r: 0, g: 0, b: 0, a: 0}
     - _RimColor: {r: 0.08067818, g: 0.2846631, b: 0.3490566, a: 0}
-    - _RimLightColor: {r: 0, g: 1, b: 0.12270355, a: 0}
-    - _RimShadowColor: {r: 0.023529414, g: 0.03529412, b: 0.43529415, a: 0}
-    - _TintShadow: {r: 0.054901965, g: 0, b: 0.48235297, a: 1}
+    - _RimLightColor: {r: 0.9056604, g: 0.44350165, b: 0.07262369, a: 1}
+    - _RimShadowColor: {r: 0.022516914, g: 0.037052516, b: 0.4339623, a: 0}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _SpecularColor: {r: 0, g: 0, b: 0, a: 0}
+    - _TintShadow: {r: 0.05476295, g: 0, b: 0.4811321, a: 0.5882353}
     - _TintSpec: {r: 1, g: 1, b: 1, a: 0.16862746}
