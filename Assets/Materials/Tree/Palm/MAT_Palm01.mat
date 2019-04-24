@@ -8,14 +8,13 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MAT_Palm01
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: fa525835d7f382f4b979da624bf118c5, type: 3}
   m_ShaderKeywords: _ALPHATEST_ON _METALLICGLOSSMAP
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2450
-  stringTagMap:
-    RenderType: TransparentCutout
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -75,7 +74,7 @@ Material:
     - _AniShift02: -0.47
     - _BumpScale: 1
     - _Cutoff: 0.5
-    - _Cutout: 0.542
+    - _Cutout: 0.593
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 0.517
@@ -100,7 +99,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.9433962, g: 0.9433962, b: 0.9433962, a: 1}
     - _ColorE: {r: 0, g: 0, b: 0, a: 0}
     - _ColorSpec01: {r: 1, g: 1, b: 1, a: 1}
     - _ColorSpec02: {r: 1, g: 1, b: 1, a: 1}
