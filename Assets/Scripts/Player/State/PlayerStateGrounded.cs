@@ -6,7 +6,7 @@ public class PlayerStateGrounded : PlayerState
 {
     private Collider[] _overlapCapsule;
     
-    public PlayerStateGrounded(Transform t) : base(t)
+    public PlayerStateGrounded()
     {
         _overlapCapsule = new Collider[16];
     }
@@ -39,7 +39,7 @@ public class PlayerStateGrounded : PlayerState
             {
                 /* ---------------- Get ground normal ---------------- */
 
-                if(!GetGroundNormal(p.GetCapsuleBottom(nextPosition),
+                if(!GetGroundNormal(p.GetCapsuleBottom(nextPosition, Vector3.up),
                     p.Radius,
                     p.GroundCheckDistance,
                     out Vector3 groundPoint,
@@ -47,6 +47,7 @@ public class PlayerStateGrounded : PlayerState
                     out Collider standingCollider))
                 {
                     OnRequestState.Invoke(PlayerController.State.Falling);
+                    UnityEditor.EditorApplication.isPaused = true;
                     return;
                 }
 
@@ -86,7 +87,7 @@ public class PlayerStateGrounded : PlayerState
         /* ---------------- Final clamp to ground ---------------- */
 
         {
-            if (!GetGroundNormal(p.GetCapsuleBottom(nextPosition),
+            if (!GetGroundNormal(p.GetCapsuleBottom(nextPosition, Vector3.up),
                 p.Radius,
                 p.GroundCheckDistance,
                 out Vector3 groundPoint,

@@ -7,10 +7,6 @@ public class PlayerStateFalling : PlayerState
     private float _verticalVelocity;
     private Vector3 _velocity;
     private Vector3 _smoothRef;
-    
-    public PlayerStateFalling(Transform t) : base(t)
-    {
-    }
 
     public override void Enter(PlayerController.Parameters p, PlayerController.CurrentTransform t)
     {
@@ -33,14 +29,14 @@ public class PlayerStateFalling : PlayerState
             _verticalVelocity = p.MinVerticalVelocity;
         }
 
-        _velocity = Vector3.SmoothDamp(_velocity, t.Direction * p.MoveSpeed, ref _smoothRef, 0.3f);
+        _velocity = Vector3.SmoothDamp(_velocity, /*t.Direction * p.MoveSpeed*/ Vector3.zero, ref _smoothRef, 0.3f); // TODO no move in the air? add airSpeed
 
         Debug.DrawRay(t.Position, _velocity, Color.magenta);
 
         Vector3 castDirection = (Vector3.up * _verticalVelocity + _velocity) * Time.deltaTime;
         
-        Vector3 bottom = p.GetCapsuleBottom(T.position);
-        Vector3 top = p.GetCapsuleTop(T.position);
+        Vector3 bottom = p.GetCapsuleBottom(t.Position, t.Up);
+        Vector3 top = p.GetCapsuleTop(t.Position, t.Up);
         
         DebugExt.DrawWireCapsule(
             bottom, 
@@ -65,7 +61,7 @@ public class PlayerStateFalling : PlayerState
             DebugExt.DrawMarker(hit.point, 1f, Color.red);
             Debug.DrawRay(hit.point, hit.normal, Color.red);
 
-            OnSetPosition.Invoke(T.position + castDirection.normalized * hit.distance);
+            OnSetPosition.Invoke(t.Position + castDirection.normalized * hit.distance);
             
             float angle = Vector3.Angle(Vector3.up, hit.normal);
             PlayerController.State state = p.GetStateWithAngle(angle);
@@ -79,6 +75,6 @@ public class PlayerStateFalling : PlayerState
             Debug.LogError("it's possible?");
         }
         
-        OnSetPosition.Invoke(T.position + castDirection);
+        OnSetPosition.Invoke(t.Position + castDirection);
     }
 }

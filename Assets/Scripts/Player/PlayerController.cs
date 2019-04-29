@@ -121,17 +121,17 @@ public class PlayerController : MonoBehaviour
 
         public float ClimbLimit => climbLimit;
 
-        public Vector3 GetCapsuleBottom(Vector3 position)
+        public Vector3 GetCapsuleBottom(Vector3 position, Vector3 up)
         {
-            return position + Vector3.up * radius;
+            return position + up * radius;
         }
     
-        public Vector3 GetCapsuleTop(Vector3 position)
+        public Vector3 GetCapsuleTop(Vector3 position, Vector3 up)
         {
-            return position + Vector3.up * (height - radius);
+            return position + up * (height - radius);
         }
 
-        public PlayerController.State GetStateWithAngle(float angle)
+        public State GetStateWithAngle(float angle)
         {
             if (angle <= groundLimit)
             {
@@ -223,9 +223,9 @@ public class PlayerController : MonoBehaviour
     {
         _transform = transform;
         
-        _stateGrounded = new PlayerStateGrounded(transform);
-        _stateFalling = new PlayerStateFalling(transform);
-        _stateClimbing = new PlayerStateClimbing(transform);
+        _stateGrounded = new PlayerStateGrounded();
+        _stateFalling = new PlayerStateFalling();
+        _stateClimbing = new PlayerStateClimbing();
 
         _previousPosition = transform.position;
         
@@ -282,8 +282,8 @@ public class PlayerController : MonoBehaviour
         _currentState.Update(_parameters, currentTransform);
         
         DebugExt.DrawWireCapsule(
-            _parameters.GetCapsuleBottom(_transform.position), 
-            _parameters.GetCapsuleTop(_transform.position),
+            _parameters.GetCapsuleBottom(_transform.position, currentTransform.Up), 
+            _parameters.GetCapsuleTop(_transform.position, currentTransform.Up),
             _parameters.Radius, Color.cyan, Quaternion.identity);
         
         Debug.DrawRay(transform.position, _velocity, Color.cyan);
@@ -299,6 +299,7 @@ public class PlayerController : MonoBehaviour
             _currentState.OnRequestState -= GoToState;
             
             _currentState.Exit();
+            Debug.Log("State Exit " + _currentState);
         }
 
         switch (newState)
@@ -315,7 +316,8 @@ public class PlayerController : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         }
-        
+
+        Debug.Log("State Enter " + _currentState);
         _currentState.Enter(_parameters, GetCurrentTransform());
         
         _currentState.OnSetPosition += OnSetPosition;

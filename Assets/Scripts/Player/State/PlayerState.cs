@@ -8,15 +8,6 @@ public abstract class PlayerState
     public Action<Quaternion> OnSetRotation;
     public Action<Collider> OnSetStandingCollider;
     
-    private Transform _t;
-
-    public Transform T => _t;
-
-    public PlayerState(Transform t)
-    {
-        _t = t;
-    }
-
     public abstract void Enter(PlayerController.Parameters p, PlayerController.CurrentTransform t);
     public abstract void Exit();
     

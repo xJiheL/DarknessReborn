@@ -7,7 +7,7 @@ public class PlayerStateClimbing : PlayerState
     private Collider[] _overlapSphere;
     private Collider _climbingCollider;
     
-    public PlayerStateClimbing(Transform t) : base(t)
+    public PlayerStateClimbing()
     {
         _overlapSphere = new Collider[16];
     }
@@ -27,7 +27,7 @@ public class PlayerStateClimbing : PlayerState
 
     public override void Update(PlayerController.Parameters p, PlayerController.CurrentTransform t)
     {
-        Vector3 bottom = p.GetCapsuleBottom(t.Position);
+        Vector3 bottom = p.GetCapsuleBottom(t.Position, t.Up);
         
         /* ---------------- Get cliff point and normal ---------------- */
         
@@ -81,5 +81,15 @@ public class PlayerStateClimbing : PlayerState
         
         OnSetPosition.Invoke(newCliffClosestPoint + newCliffNormal * p.Radius - up * p.Radius);
         OnSetRotation.Invoke(rotation);
+        
+        /* ---------------- Change state ---------------- */ 
+        
+        float angle = Vector3.Angle(Vector3.up, newCliffNormal);
+        PlayerController.State state = p.GetStateWithAngle(angle);
+
+        if (state != PlayerController.State.Climbing)
+        {
+            OnRequestState.Invoke(state);
+        }
     }
 }
