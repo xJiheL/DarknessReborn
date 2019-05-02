@@ -9,7 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: MAT_Beach_Rock_Global
   m_Shader: {fileID: 4800000, guid: bee44b4a58655ee4cbff107302a3e131, type: 3}
-  m_ShaderKeywords: DR_GRADIENT_ON DR_SPECULAR_ON _CELPRIMARYMODE_STEPS _UNITYSHADOWMODE_MULTIPLY
+  m_ShaderKeywords: DR_GRADIENT_ON DR_RIM_ON DR_SPECULAR_ON _CELPRIMARYMODE_STEPS
+    _UNITYSHADOWMODE_MULTIPLY
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -129,7 +130,7 @@ Material:
     - _OutlineWidth: 1.98
     - _Parallax: 0.02
     - _RangeTransition: 0.256
-    - _RimEnabled: 0
+    - _RimEnabled: 1
     - _RimHardness: 8
     - _RimPower: 6
     - _SelfShadingSize: 0.5
@@ -157,16 +158,16 @@ Material:
     - __dirty: 1
     m_Colors:
     - _BaseColor: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 0}
-    - _Color: {r: 0.5188679, g: 0.34352818, b: 0.19824672, a: 1}
+    - _Color: {r: 0.5176471, g: 0.31900877, b: 0.19999997, a: 1}
     - _ColorDim: {r: 0.51886785, g: 0.34352815, b: 0.19824669, a: 1}
     - _ColorDimCurve: {r: 0.51886785, g: 0.34352815, b: 0.19824669, a: 1}
     - _ColorDimExtra: {r: 0.51886785, g: 0.34352815, b: 0.19824669, a: 1}
-    - _ColorDimSteps: {r: 0.51886785, g: 0.34352815, b: 0.19824669, a: 1}
+    - _ColorDimSteps: {r: 0.5176471, g: 0.29269084, b: 0.19999997, a: 1}
     - _ColorE: {r: 0, g: 0, b: 0, a: 0}
-    - _ColorGradient: {r: 0.5943396, g: 0.31719312, b: 0.14297791, a: 1}
+    - _ColorGradient: {r: 0.59607846, g: 0.24810854, b: 0.14117648, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FlatRimColor: {r: 0.2924528, g: 0.16902691, b: 0.064836234, a: 1}
-    - _FlatSpecularColor: {r: 0.3207547, g: 0.13120712, b: 0.04387683, a: 1}
+    - _FlatRimColor: {r: 0.29411766, g: 0.10416047, b: 0.066666655, a: 1}
+    - _FlatSpecularColor: {r: 0.32156864, g: 0.11242676, b: 0.043137252, a: 1}
     - _HeightFogColor: {r: 0, g: 0, b: 0, a: 0}
     - _OutLineColor: {r: 0, g: 0, b: 0, a: 0}
     - _OutlineColor: {r: 0.1509434, g: 0.111106716, b: 0.07760769, a: 1}
