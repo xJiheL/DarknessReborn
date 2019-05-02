@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7124079359137984198}
   - component: {fileID: 2271739258275599600}
   - component: {fileID: 5528836749231941641}
+  - component: {fileID: 3467563813722369495}
   m_Layer: 0
   m_Name: MESH_Cliff_1x8x1_Bloc_01
   m_TagString: Untagged
@@ -77,3 +78,17 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &3467563813722369495
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6090706962159918293}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 7037868106543446754, guid: 0739cf1f803e3d947a01205c74f64b2d, type: 3}
