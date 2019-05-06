@@ -14,6 +14,8 @@ public class PlayerStateGrounded : PlayerState
     public override void Enter(PlayerController.Parameters p, PlayerController.CurrentTransform t)
     {
         // snap to the ground
+        
+        OnSetRotation(Quaternion.identity);
     }
 
     public override void Exit()
@@ -47,7 +49,6 @@ public class PlayerStateGrounded : PlayerState
                     out Collider standingCollider))
                 {
                     OnRequestState.Invoke(PlayerController.State.Falling);
-                    UnityEditor.EditorApplication.isPaused = true;
                     return;
                 }
 

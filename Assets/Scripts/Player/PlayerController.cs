@@ -293,13 +293,13 @@ public class PlayerController : MonoBehaviour
     {
         if (_currentState != null)
         {
+            _currentState.Exit();
+            Debug.Log("State Exit " + _currentState);
+            
             _currentState.OnSetPosition -= OnSetPosition;
             _currentState.OnSetRotation -= OnSetRotation;
             _currentState.OnSetStandingCollider -= OnSetStandingCollider;
             _currentState.OnRequestState -= GoToState;
-            
-            _currentState.Exit();
-            Debug.Log("State Exit " + _currentState);
         }
 
         switch (newState)
@@ -317,13 +317,13 @@ public class PlayerController : MonoBehaviour
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         }
 
-        Debug.Log("State Enter " + _currentState);
-        _currentState.Enter(_parameters, GetCurrentTransform());
-        
         _currentState.OnSetPosition += OnSetPosition;
         _currentState.OnSetRotation += OnSetRotation;
         _currentState.OnSetStandingCollider += OnSetStandingCollider;
         _currentState.OnRequestState += GoToState;
+        
+        Debug.Log("State Enter " + _currentState);
+        _currentState.Enter(_parameters, GetCurrentTransform());
     }
 
     private void OnSetPosition(Vector3 position)
@@ -354,7 +354,7 @@ public class PlayerController : MonoBehaviour
     {
         return new CurrentTransform(
             _direction, 
-            _inputMove,
+            _parameters.DebugMode ? _parameters.DebugInput : _inputMove,
             _velocity,
             _transform.position, 
             _transform.rotation,
