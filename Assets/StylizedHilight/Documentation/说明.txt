@@ -1,5 +1,0 @@
-﻿此shader使用amplify shader editor1.5.4制作，
-如果您已经有了apmlify shader editor,可以直接使用编辑器查看。
-如有疑问
-请发邮件到 zhangsdqq1234@foxmail.com 联系我。
-感谢您的支持。
