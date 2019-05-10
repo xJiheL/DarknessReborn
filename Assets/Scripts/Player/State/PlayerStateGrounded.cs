@@ -13,12 +13,10 @@ public class PlayerStateGrounded : PlayerState
 
     public override void Enter(PlayerController.Parameters p, PlayerController.CurrentTransform t)
     {
-        // snap to the ground
         
-        OnSetRotation(Quaternion.identity);
     }
 
-    public override void Exit()
+    public override void Exit(PlayerController.Parameters p, PlayerController.CurrentTransform t)
     {
         
     }
@@ -27,7 +25,7 @@ public class PlayerStateGrounded : PlayerState
     {
         Vector3 nextPosition = t.Position;
 
-        float moveDistance = p.MoveSpeed * t.Direction.magnitude * Time.deltaTime;
+        float moveDistance = p.MoveSpeed * t.Direction.magnitude * t.DeltaTime;
 
         while (moveDistance > 0)
         {
@@ -126,7 +124,7 @@ public class PlayerStateGrounded : PlayerState
         DebugExt.DrawWireCapsule(
             bottom + groundCheckVector,
             bottom,
-            radius, Color.red, Quaternion.identity);
+            radius, Color.red);
 
         if (ClosestPointFromCapsule(
             bottom,

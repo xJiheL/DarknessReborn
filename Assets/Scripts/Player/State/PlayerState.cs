@@ -9,7 +9,7 @@ public abstract class PlayerState
     public Action<Collider> OnSetStandingCollider;
     
     public abstract void Enter(PlayerController.Parameters p, PlayerController.CurrentTransform t);
-    public abstract void Exit();
+    public abstract void Exit(PlayerController.Parameters p, PlayerController.CurrentTransform t);
     
     public abstract void Update(PlayerController.Parameters p, PlayerController.CurrentTransform t);
 }

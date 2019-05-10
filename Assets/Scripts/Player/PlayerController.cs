@@ -159,8 +159,9 @@ public class PlayerController : MonoBehaviour
         private Vector3 _forward;
         private Vector3 _right;
         private Collider _standingCollider;
+        private float _deltaTime;
 
-        public CurrentTransform(Vector3 direction, Vector2 inputMove, Vector3 velocity, Vector3 position, Quaternion rotation, Vector3 up, Vector3 forward, Vector3 right, Collider standingCollider)
+        public CurrentTransform(Vector3 direction, Vector2 inputMove, Vector3 velocity, Vector3 position, Quaternion rotation, Vector3 up, Vector3 forward, Vector3 right, Collider standingCollider, float deltaTime)
         {
             _direction = direction;
             _inputMove = inputMove;
@@ -171,6 +172,7 @@ public class PlayerController : MonoBehaviour
             _forward = forward;
             _right = right;
             _standingCollider = standingCollider;
+            _deltaTime = deltaTime;
         }
 
         public Vector3 Direction => _direction;
@@ -190,6 +192,8 @@ public class PlayerController : MonoBehaviour
         public Vector3 Right => _right;
 
         public Collider StandingCollider => _standingCollider;
+
+        public float DeltaTime => _deltaTime;
     }
 
     [SerializeField]
@@ -284,7 +288,7 @@ public class PlayerController : MonoBehaviour
         DebugExt.DrawWireCapsule(
             _parameters.GetCapsuleBottom(_transform.position, currentTransform.Up), 
             _parameters.GetCapsuleTop(_transform.position, currentTransform.Up),
-            _parameters.Radius, Color.cyan, Quaternion.identity);
+            _parameters.Radius, Color.cyan);
         
         Debug.DrawRay(transform.position, _velocity, Color.cyan);
     }
@@ -293,7 +297,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_currentState != null)
         {
-            _currentState.Exit();
+            _currentState.Exit(_parameters, GetCurrentTransform());
             Debug.Log("State Exit " + _currentState);
             
             _currentState.OnSetPosition -= OnSetPosition;
@@ -361,6 +365,7 @@ public class PlayerController : MonoBehaviour
             _transform.up,
             _transform.forward,
             _transform.right,
-            _standingCollider);
+            _standingCollider,
+            Time.deltaTime);
     }
 }

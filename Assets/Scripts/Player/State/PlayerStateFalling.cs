@@ -15,14 +15,14 @@ public class PlayerStateFalling : PlayerState
         _smoothRef = Vector3.zero;
     }
 
-    public override void Exit()
+    public override void Exit(PlayerController.Parameters p, PlayerController.CurrentTransform t)
     {
         
     }
 
     public override void Update(PlayerController.Parameters p, PlayerController.CurrentTransform t)
     {
-        _verticalVelocity += p.Gravity * Time.deltaTime;
+        _verticalVelocity += p.Gravity * t.DeltaTime;
 
         if (_verticalVelocity < p.MinVerticalVelocity)
         {
@@ -33,7 +33,7 @@ public class PlayerStateFalling : PlayerState
 
         Debug.DrawRay(t.Position, _velocity, Color.magenta);
 
-        Vector3 castDirection = (Vector3.up * _verticalVelocity + _velocity) * Time.deltaTime;
+        Vector3 castDirection = (Vector3.up * _verticalVelocity + _velocity) * t.DeltaTime;
         
         Vector3 bottom = p.GetCapsuleBottom(t.Position, t.Up);
         Vector3 top = p.GetCapsuleTop(t.Position, t.Up);
@@ -41,12 +41,12 @@ public class PlayerStateFalling : PlayerState
         DebugExt.DrawWireCapsule(
             bottom, 
             top, 
-            p.Radius, Color.blue, Quaternion.identity);
+            p.Radius, Color.blue);
         
         DebugExt.DrawWireCapsule(
             bottom + castDirection, 
             top + castDirection,
-            p.Radius, Color.red, Quaternion.identity);
+            p.Radius, Color.red);
         
         if (Physics.CapsuleCast(
             bottom,

@@ -1535,8 +1535,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 0.5
   h: 2.8
-  rotation: {x: 0, y: 0, z: 32.44}
-  test: {x: -8.1, y: 9.8, z: 8.9}
+  rotation: {x: 0, y: 22.82, z: 53.1}
 --- !u!4 &1275931066
 Transform:
   m_ObjectHideFlags: 0
@@ -3020,21 +3019,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 1326793175859095462, guid: 304d92d2b0f72a642a6a3c3c26cd7d27,
-        type: 3}
-      propertyPath: _parameters.debugMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1326793175859095462, guid: 304d92d2b0f72a642a6a3c3c26cd7d27,
-        type: 3}
-      propertyPath: _parameters.debugInput.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1326793175859095462, guid: 304d92d2b0f72a642a6a3c3c26cd7d27,
-        type: 3}
-      propertyPath: _parameters.debugInput.y
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1648593829835447965, guid: 304d92d2b0f72a642a6a3c3c26cd7d27,
         type: 3}

@@ -20,9 +20,12 @@ public class PlayerStateClimbing : PlayerState
         // TODO coller au cliff et orienter vers le cliff
     }
 
-    public override void Exit()
+    public override void Exit(PlayerController.Parameters p, PlayerController.CurrentTransform t)
     {
-        
+        Vector3 bottom = p.GetCapsuleBottom(t.Position, t.Up);
+
+        OnSetPosition(bottom - Vector3.up * p.Radius);
+        OnSetRotation(Quaternion.identity);
     }
 
     public override void Update(PlayerController.Parameters p, PlayerController.CurrentTransform t)
@@ -49,7 +52,7 @@ public class PlayerStateClimbing : PlayerState
         
         Vector3 nextPosition = cliffClosestPoint + 
                          cliffNormal * p.Radius + 
-                         directionOnCliff * p.MoveSpeed * Time.deltaTime; // TODO climb speed
+                         p.MoveSpeed * t.DeltaTime * directionOnCliff; // TODO climb speed
 
         Vector3 movementVector = nextPosition - bottom;
         Vector3 middleMovementVector = bottom + movementVector / 2;

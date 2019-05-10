@@ -76,7 +76,6 @@ public static class DebugExt
 		Vector3 point2,
 		float radius,
 		Color color,
-		Quaternion rotation2,
 		float duration = 0f,
 		bool depthTest = true)
 	{
@@ -84,8 +83,8 @@ public static class DebugExt
 		
 		Quaternion rotation = Quaternion.FromToRotation(Vector3.up, up);
 		
-		Vector3 right = rotation * Quaternion.Euler(0f, 0f, -90f) * up;
-		Vector3 forward = rotation * Quaternion.Euler(90f, 0f, 0f) * up;
+		Vector3 right = rotation * Quaternion.Euler(0f, 0f, -90f) * Vector3.up;
+		Vector3 forward = rotation * Quaternion.Euler(90f, 0f, 0f) * Vector3.up;
 		
 		Debug.DrawLine(point1 + right * radius, point2 + right * radius, color, duration, depthTest);
 		Debug.DrawLine(point1 - right * radius, point2 - right * radius, color, duration, depthTest);
