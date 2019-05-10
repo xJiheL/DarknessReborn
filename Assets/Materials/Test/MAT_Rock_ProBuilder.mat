@@ -100,7 +100,7 @@ Material:
     - _SpecularEnabled: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _TextureImpact: 0.407
+    - _TextureImpact: 0.639
     - _UVSec: 0
     - _UnityShadowMode: 1
     - _UnityShadowPower: 1
