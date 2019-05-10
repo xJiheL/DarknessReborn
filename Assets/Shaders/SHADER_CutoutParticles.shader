@@ -4,7 +4,9 @@
     {
         _Color ("Color", Color) = (1,1,1,1)
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
+        _EmissPower ("Emiss",float) = 1
         _Cutout ("Cutout",range (0,1)) = 0.5
+        _Power ("Power",float) = 0.5
     }
     SubShader
     {
@@ -15,9 +17,10 @@
         Blend SrcAlpha OneMinusSrcAlpha
 
         CGPROGRAM
-        #pragma surface surf Unlit fullforwardshadows 
+        #pragma surface surf Unlit fullforwardshadows alpha:fade
         #pragma target 3.0
         #include "UnityPBSLighting.cginc"
+        #include "UnityCG.cginc"
 
         sampler2D _MainTex;
 
@@ -29,6 +32,8 @@
 
         fixed4 _Color;
         half _Cutout;
+        half _EmissPower;
+        half _Power;
         
         half4 LightingUnlit (SurfaceOutputStandard s, UnityGI gi)
         {
@@ -52,12 +57,14 @@
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
             fixed4 c = tex2D (_MainTex, IN.uv_MainTex);
-            o.Albedo = _Color * IN.color.rgb;
+            fixed4 cMov = tex2D (_MainTex, float2 (IN.uv_MainTex.x + _Time.x * -5, IN.uv_MainTex.y)*.6);
+            o.Albedo = _Color * IN.color.rgb; // * IN.color.rgb
+            o.Emission = c.r * pow (cMov.g,_Power) * _Color * _EmissPower * IN.color.rgb * ((1 - IN.uv_MainTex.x)/0.17);
             
-            half gradient1 = (1 - IN.uv_MainTex.x) * IN.color.a;
-            half gradient2 = IN.uv_MainTex.x * IN.color.a;
-            half gradient = lerp (gradient1, gradient1, IN.color.r);
-            clip (c.r * gradient - _Cutout);
+//            o.Alpha = c.b;
+            o.Alpha = c.r * _Color.a;
+            
+            clip (saturate (c.r *  pow (cMov.g,1) + ((1 - IN.uv_MainTex.x)/2)) - IN.color.a - _Cutout);
         }
         ENDCG
     }
