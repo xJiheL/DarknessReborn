@@ -9,9 +9,9 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: MAT_Plant_Bush
   m_Shader: {fileID: 4800000, guid: bee44b4a58655ee4cbff107302a3e131, type: 3}
-  m_ShaderKeywords: DR_RIM_ON DR_SPECULAR_ON _CELPRIMARYMODE_STEPS _UNITYSHADOWMODE_MULTIPLY
+  m_ShaderKeywords: DR_RIM_ON _CELPRIMARYMODE_STEPS _UNITYSHADOWMODE_MULTIPLY
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -71,11 +71,11 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _FlatRimEdgeSmoothness: 0.54
-    - _FlatRimLightAlign: 0.191
-    - _FlatRimSize: 0.267
-    - _FlatSpecularEdgeSmoothness: 0.35
-    - _FlatSpecularSize: 0.79
+    - _FlatRimEdgeSmoothness: 0.252
+    - _FlatRimLightAlign: 0.156
+    - _FlatRimSize: 0.552
+    - _FlatSpecularEdgeSmoothness: 0.38
+    - _FlatSpecularSize: 0.855
     - _Flatness: 1
     - _FlatnessExtra: 1
     - _GlossMapScale: 1
@@ -97,7 +97,7 @@ Material:
     - _ShadowEdgeSize: 0.05
     - _ShadowEdgeSizeExtra: 0.05
     - _SmoothnessTextureChannel: 0
-    - _SpecularEnabled: 1
+    - _SpecularEnabled: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _TextureImpact: 0.407
@@ -108,13 +108,13 @@ Material:
     - _VertexColorsEnabled: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.4056604, g: 0.39462966, b: 0.12437701, a: 1}
+    - _Color: {r: 0.21548276, g: 0.4245283, b: 0.17021182, a: 1}
     - _ColorDim: {r: 0.5188678, g: 0.34352812, b: 0.19824666, a: 1}
     - _ColorDimCurve: {r: 0.5188678, g: 0.34352812, b: 0.19824666, a: 1}
     - _ColorDimExtra: {r: 0.5188678, g: 0.34352812, b: 0.19824666, a: 1}
-    - _ColorDimSteps: {r: 0.5, g: 0.4954468, b: 0.1721698, a: 1}
+    - _ColorDimSteps: {r: 0.3547894, g: 0.5566038, b: 0.31243324, a: 1}
     - _ColorGradient: {r: 0.254717, g: 0.15792412, b: 0.12855999, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FlatRimColor: {r: 0.1981132, g: 0.1981132, b: 0.03457636, a: 1}
+    - _FlatRimColor: {r: 0.16813399, g: 0.3584906, b: 0.113296546, a: 1}
     - _FlatSpecularColor: {r: 0.31859034, g: 0.3301887, b: 0.05762727, a: 1}
     - _UnityShadowColor: {r: 0.30188674, g: 0.17425466, b: 0.06692771, a: 1}
