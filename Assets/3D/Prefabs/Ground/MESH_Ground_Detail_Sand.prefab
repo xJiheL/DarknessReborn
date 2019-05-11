@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2304384573490632898}
   - component: {fileID: 5532206929419920443}
   - component: {fileID: 509566119750655728}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: MESH_Ground_Detail_Sand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
