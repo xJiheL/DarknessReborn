@@ -74,7 +74,7 @@ Material:
     - _FlatRimEdgeSmoothness: 0.54
     - _FlatRimLightAlign: 0.191
     - _FlatRimSize: 0.267
-    - _FlatSpecularEdgeSmoothness: 0.35
+    - _FlatSpecularEdgeSmoothness: 0.225
     - _FlatSpecularSize: 0.762
     - _Flatness: 1
     - _FlatnessExtra: 1
