@@ -14,7 +14,7 @@
         [Header(Specular)]
         _TintSpec ("Spec Color", Color) = (1,1,1,0)
         [NoScaleOffset]_SmoothTex ("Smoothness", 2D) = "white" {}
-        _Smoothness ("Smoothness Intensity", range (0,1)) = 1
+        _Smoothness ("Smoothness Intensity", range (0.00001,1)) = 1
         _MinSpec ("Min", float) = 0
         _MaxSpec ("Max", float) = 0
         
@@ -77,28 +77,27 @@
             half Smoothness;
             half RimLight;
         };
-        
-        //half3 viewDir
+
         half4 LightingCartoon (CustomSurfaceOutput s, half3 lightDir, half3 viewDir, half atten)
         {
             s.Normal = normalize (s.Normal);           
             
             half3 halfVector = normalize (lightDir + viewDir); 
-            half nDotl = max (0,dot(s.Normal, lightDir));
-            half nDotH = max (0, dot(s.Normal, halfVector));
+            half nDotl = max (dot(s.Normal, lightDir), 0);
+            half nDoth = max (dot(s.Normal, halfVector), 0);
             
             // Shadow
             half shadow = saturate (1 - smoothstep (_MinShadow, _MaxShadow, nDotl));            
 
             // Spec            
-            half spec =  (1 - smoothstep (_MinSpec, _MaxSpec, 1 - nDotl)) * s.Smoothness;
+            half spec =  smoothstep (_MinSpec, _MaxSpec, pow (nDoth, s.Smoothness * s.Smoothness)) * (1- shadow);
             
             // Rim
-            nDotH = saturate (nDotH - _RangeTransition);
+            nDoth = saturate (nDoth - _RangeTransition);
             half3 rimLight = _RimLightColor.rgb * s.RimLight * _LightColor0;
-            rimLight *= nDotH;
+            rimLight *= nDoth;
             half3 rimShadow = _RimShadowColor.rgb * s.RimLight * _LightColor0;
-            rimShadow *= (1 - nDotH);
+            rimShadow *= (1 - nDoth);
             
             half4 c;
 
@@ -107,6 +106,8 @@
             c.rgb = lerp (c.rgb, _TintSpec.rgb * _LightColor0.rgb, spec * _TintSpec.a);
             c.rgb += rimLight;           
             c.rgb += rimShadow;
+//            c.rgb *= atten;
+            c.rgb += s.Emission;
               
             c.a = s.Alpha;
             
@@ -122,7 +123,7 @@
             o.Albedo = c.rgb;
             o.RimLight = saturate (pow (rim, _RimPower) * _RimHardness);
             o.Emission = _ColorE.rgb * _IntensityEmiss; 
-            o.Smoothness = tex2D (_SmoothTex, IN.uv_MainTex) * _Smoothness;
+            o.Smoothness = tex2D (_SmoothTex, IN.uv_MainTex) * _Smoothness * 32;
         }
         ENDCG
     }

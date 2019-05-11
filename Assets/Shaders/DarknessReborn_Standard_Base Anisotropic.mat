@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DarknessReborn_Standard_Base Anisotropic
+  m_Shader: {fileID: 4800000, guid: f03572b3c1e156544994d0b5d54c4cb2, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AnisoTex:
+        m_Texture: {fileID: 2800000, guid: 4f325a36b94854c45a286063d9560808, type: 3}
+        m_Scale: {x: 50, y: 50}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShiftMap:
+        m_Texture: {fileID: 2800000, guid: 4f325a36b94854c45a286063d9560808, type: 3}
+        m_Scale: {x: 10.26, y: 0}
+        m_Offset: {x: 0, y: 0}
+    - _SmoothTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Ani01: 66
+    - _Ani02: 256
+    - _AniShift01: -0.27
+    - _AniShift02: -0.29
+    - _IntensityEmiss: 1
+    - _MaxShadow: 0.08
+    - _MaxSpec: 0.05
+    - _MinShadow: 0.01
+    - _MinSpec: 0.03
+    - _RangeTransition: 1
+    - _RimHardness: 1
+    - _RimPower: 1
+    - _Smoothness: 1
+    m_Colors:
+    - _Color: {r: 0, g: 0.84161234, b: 1, a: 1}
+    - _ColorE: {r: 0, g: 0, b: 0, a: 0}
+    - _ColorSpec01: {r: 0.6792453, g: 0.6792453, b: 0.6792453, a: 1}
+    - _ColorSpec02: {r: 0.8207547, g: 0.8207547, b: 0.8207547, a: 1}
+    - _RimLightColor: {r: 1, g: 1, b: 1, a: 0}
+    - _RimShadowColor: {r: 0, g: 0, b: 0, a: 0}
+    - _TintShadow: {r: 0, g: 0, b: 0, a: 1}
+    - _TintSpec: {r: 1, g: 1, b: 1, a: 1}
