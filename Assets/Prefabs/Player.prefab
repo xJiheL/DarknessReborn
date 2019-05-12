@@ -133,7 +133,7 @@ MonoBehaviour:
     radius: 0.25
     height: 1.7
     moveStep: 0.2
-    groundCheckDistance: 0.25
+    groundCheckDistance: 0.3
     debugMode: 0
     debugInput: {x: 0, y: 1}
     gravity: -9.81

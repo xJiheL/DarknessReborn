@@ -122,8 +122,8 @@ public class PlayerStateGrounded : PlayerState
         Vector3 groundCheckVector = -Vector3.up * groundCheckDistance;
 
         DebugExt.DrawWireCapsule(
-            bottom + groundCheckVector,
             bottom,
+            bottom + groundCheckVector,
             radius, Color.red);
 
         if (ClosestPointFromCapsule(

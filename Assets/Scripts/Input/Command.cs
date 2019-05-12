@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using FranSTools.Essential;
 
 public class Command : MonoBehaviourSingleton<Command>
 {
@@ -15,7 +16,7 @@ public class Command : MonoBehaviourSingleton<Command>
 	string currentJoystickNames = "";
 	InputDatabase currentDatabase;
 
-	public override void Awake()
+	protected override void Awake()
 	{
 		base.Awake();
 		if(Input.GetJoystickNames().Length > 0)
