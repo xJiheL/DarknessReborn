@@ -95,7 +95,7 @@ GameObject:
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
-  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -128,15 +128,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dd13e714c4a47742a9c800c92530ef5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  moveStep: 0.5
-  radius: 0.2
-  groundCheckDistance: 0.43
-  closestCollider: {fileID: 0}
-  debugMode: 0
-  debugInput: {x: 0, y: 0}
-  maxVerticalVelocity: 10
-  gravity: 1
+  _parameters:
+    moveSpeed: 5
+    radius: 0.25
+    height: 1.7
+    moveStep: 0.2
+    groundCheckDistance: 0.3
+    debugMode: 0
+    debugInput: {x: 0, y: 1}
+    gravity: -9.81
+    minVerticalVelocity: -30
+    groundLimit: 75
+    climbLimit: 150
 --- !u!114 &867613377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,8 +178,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.05
-  m_Height: 1.31
+  m_Radius: 0.25
+  m_Height: 1.7
   m_Direction: 1
   m_Center: {x: 0, y: 0.84, z: 0}
 --- !u!54 &849307495310712475
@@ -191,7 +194,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
@@ -255,10 +258,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: MESH_Character_Test
       objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 0650bdf6536d14c48aa5efba663aca1a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0650bdf6536d14c48aa5efba663aca1a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -273,19 +272,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0650bdf6536d14c48aa5efba663aca1a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.000000021855694
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 0650bdf6536d14c48aa5efba663aca1a, type: 3}
-      propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0650bdf6536d14c48aa5efba663aca1a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 0650bdf6536d14c48aa5efba663aca1a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0650bdf6536d14c48aa5efba663aca1a, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0650bdf6536d14c48aa5efba663aca1a, type: 3}
       propertyPath: m_RootOrder
@@ -297,7 +296,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0650bdf6536d14c48aa5efba663aca1a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0650bdf6536d14c48aa5efba663aca1a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z

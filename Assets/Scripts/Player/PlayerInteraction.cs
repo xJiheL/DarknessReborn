@@ -86,16 +86,16 @@ public class PlayerInteraction : MonoBehaviour
     {
         _targetObject = target;
 
-        var playerController = GetComponent<PlayerController>();
+        /*var playerController = GetComponent<PlayerController>();
         _originalSpeed = playerController.MoveSpeed;
         playerController.MoveSpeed = 1f;
         _oldPosPlayer = _player.position;
-        _co = StartCoroutine(MoveHeavyObject());
+        _co = StartCoroutine(MoveHeavyObject());*/
     }
 
     private void FreeObject()
     {
-        _grabbed = false;
+        /*_grabbed = false;
 
         if (_lightWeight)
         {
@@ -112,7 +112,7 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         _targetObject.parent = null;
-        _targetObject = null;
+        _targetObject = null;*/
     }
 
     private IEnumerator MoveHeavyObject()
