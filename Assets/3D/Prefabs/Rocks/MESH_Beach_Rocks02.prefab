@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3224246358251207581}
   - component: {fileID: 1430451003465895681}
   - component: {fileID: 62135311807584297}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: MESH_Beach_Rocks02
   m_TagString: Untagged
   m_Icon: {fileID: 0}

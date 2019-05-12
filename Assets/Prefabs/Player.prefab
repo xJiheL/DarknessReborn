@@ -140,6 +140,9 @@ MonoBehaviour:
     minVerticalVelocity: -30
     groundLimit: 75
     climbLimit: 150
+  _debug:
+    showGroundNormal: 0
+    groundNormalColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &867613377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,7 +184,7 @@ CapsuleCollider:
   m_Radius: 0.25
   m_Height: 1.7
   m_Direction: 1
-  m_Center: {x: 0, y: 0.84, z: 0}
+  m_Center: {x: 0, y: 0.85, z: 0}
 --- !u!54 &849307495310712475
 Rigidbody:
   m_ObjectHideFlags: 0
