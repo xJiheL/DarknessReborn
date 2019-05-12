@@ -56,6 +56,13 @@ half _GradientSize;
 half _GradientAngle;
 #endif  // DR_GRADIENT_ON
 
+#ifdef VERTEX_WIND_ON
+half _AmountWind;
+sampler2D _MaskWind;
+half _SpeedWind;
+half4 _DirectionWind;
+#endif  // VERTEX_WIND_ON
+
 half _TextureImpact;
 sampler2D _MainTex;
 
@@ -127,6 +134,20 @@ inline half4 LightingDustyroomStylized(SurfaceOutputStandard s, half3 lightDir, 
 void vertObject(inout appdata_full v, out InputObject o) {
     UNITY_INITIALIZE_OUTPUT(InputObject, o);
     o.lightDir = WorldSpaceLightDir(v.vertex);
+    
+    #ifdef VERTEX_WIND_ON
+        float3 _Blend = abs (mul(unity_ObjectToWorld, float4 (v.normal, 0.0)).xyz);
+		float4 _VertexGlobal = mul(unity_ObjectToWorld,v.vertex);
+
+		fixed4 Mx = tex2Dlod (_MaskWind, float4(_VertexGlobal.yz/12 + _Time.x * _SpeedWind,0.0,0.0));
+		fixed4 My = tex2Dlod (_MaskWind, float4(_VertexGlobal.zx/12 + _Time.x * _SpeedWind,0.0,0.0));
+		fixed4 Mz = tex2Dlod (_MaskWind, float4(_VertexGlobal.xy/12 + _Time.x * _SpeedWind,0.0,0.0));
+
+		float mask = Mx * _Blend.x + My * _Blend.y + Mz * _Blend.z;
+
+		_VertexGlobal.xyz += (cos (_Time.y) * cos(_Time.z) * _DirectionWind.xyz + _DirectionWind.xyz) * _AmountWind * v.color.r * mask;
+		v.vertex = mul(unity_WorldToObject,_VertexGlobal);
+    #endif  // VERTEX_WIND_ON
 }
 
 inline half4 SurfaceCore(half3 worldNormal, half3 worldPos, half3 lightDir, half3 viewDir) {

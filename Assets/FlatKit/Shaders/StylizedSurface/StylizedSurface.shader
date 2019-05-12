@@ -68,7 +68,6 @@
         _Glossiness ("Smoothness", Range(0,1)) = 0.5
         _Metallic ("Metallic", Range(0,1)) = 0.0
     }
-    
     SubShader
     {
         Tags { "RenderType"="Opaque" }
@@ -77,7 +76,7 @@
         CGPROGRAM
         // Doc: https://docs.unity3d.com/Manual/SL-SurfaceShaders.html
         #include "DustyroomStylizedLighting.cginc"
-        #pragma surface surfObject DustyroomStylized vertex:vertObject fullforwardshadows
+        #pragma surface surfObject DustyroomStylized addshadow
         #pragma target 3.0
         #pragma require interpolators15
         #define Input InputObject
@@ -92,6 +91,6 @@
 
         ENDCG
     }
-    FallBack "Diffuse"
-    CustomEditor "StylizedSurfaceEditor"
+    FallBack "VertexLit"
+//    CustomEditor "StylizedSurfaceEditor"
 }
