@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2271739258275599600}
   - component: {fileID: 5528836749231941641}
   - component: {fileID: 3467563813722369495}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: MESH_Cliff_1x8x1_Bloc_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,6 +89,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 7037868106543446754, guid: 0739cf1f803e3d947a01205c74f64b2d, type: 3}
