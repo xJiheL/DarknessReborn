@@ -11,12 +11,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Mat_Palm_
-    second: {fileID: 2100000, guid: 80010fc8bc15d01499eeac0bb112a07f, type: 2}
+    second: {fileID: 2100000, guid: 321d23ed5355aad478c50a822e4d7e9c, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Mat_Palm_Leaf
-    second: {fileID: 2100000, guid: 90214d824cd42f94f9595be716301b79, type: 2}
+    second: {fileID: 2100000, guid: 1b4efa7f3670fc34287ee2ee5288f7b8, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -128,7 +128,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

@@ -67,27 +67,16 @@
         
         _Glossiness ("Smoothness", Range(0,1)) = 0.5
         _Metallic ("Metallic", Range(0,1)) = 0.0
-        
-        [Space(10)]
-        [Toggle(VERTEX_WIND_ON)] _VertexWind("Enable Wind", Int) = 0
-        _MaskWind("[VERTEX_WIND_ON]Mask Wind", 2D) = "white"
-        _SpeedWind("[VERTEX_WIND_ON]Wind Speed", float) = 0
-        _AmountWind("[VERTEX_WIND_ON]Wind Amount", float) = 0
-        _DirectionWind("[VERTEX_WIND_ON]Wind Direction & Intensity", vector) = (0,0,0,0)
     }
-    
     SubShader
     {
-//    #ifdef VERTEX_WIND_ON
-//
-//    #endif  // VERTEX_WIND_ON
         Tags { "RenderType"="Opaque" }
         LOD 200
 
         CGPROGRAM
         // Doc: https://docs.unity3d.com/Manual/SL-SurfaceShaders.html
         #include "DustyroomStylizedLighting.cginc"
-        #pragma surface surfObject DustyroomStylized vertex:vertObject addshadow
+        #pragma surface surfObject DustyroomStylized addshadow
         #pragma target 3.0
         #pragma require interpolators15
         #define Input InputObject
@@ -98,12 +87,10 @@
         #pragma shader_feature DR_SPECULAR_ON
         #pragma shader_feature DR_RIM_ON
         #pragma shader_feature DR_VERTEX_COLORS_ON
-        #pragma shader_feature VERTEX_WIND_ON
         #pragma multi_compile _UNITYSHADOWMODE_NONE _UNITYSHADOWMODE_MULTIPLY _UNITYSHADOWMODE_COLOR
 
         ENDCG
     }
     FallBack "VertexLit"
-
-    CustomEditor "StylizedSurfaceEditor"
+//    CustomEditor "StylizedSurfaceEditor"
 }
