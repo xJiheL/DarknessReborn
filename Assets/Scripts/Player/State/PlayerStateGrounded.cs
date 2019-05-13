@@ -115,13 +115,10 @@ public class PlayerStateGrounded : PlayerState
                 {
                     Debug.DrawRay(hit.point, moveDirectionProject, d.MoveDirectionColor);
                 }
-        
-                break;
+
                 
-                // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! je dois gérer la pénétration!
-
-
-
+                
+                
                 Vector3 point1 = p.GetCapsuleBottom(nextPosition, Vector3.up);
                 Vector3 point2 = p.GetCapsuleTop(nextPosition, Vector3.up);
                 
@@ -147,59 +144,48 @@ public class PlayerStateGrounded : PlayerState
                     currentMoveStep,
                     PlayerController.GetGroundMask(),
                     QueryTriggerInteraction.Ignore);
-
+                
                 if (hitNumber == 0)
                 {
                     nextPosition += moveDirectionProject * currentMoveStep;
-                    Debug.Log("énorme");
                 }
                 else
                 {
+                    //nextPosition += moveDirectionProject * (hit.distance - Physics.defaultContactOffset);
                     
                     for (int i = 0; i < hitNumber; i++)
                     {
                         DebugExt.DrawWireSphere(hits[i].point, 0.1f, Color.magenta, Quaternion.identity);
                         DebugExt.DrawMarker(hits[i].point, 1f, Color.magenta);
-                        Debug.Log(hits[i].collider+" | "+hits[i].point);
                     }
-
-                    
-                    Debug.LogError(hitNumber);
                 }
+                
+                
+                // TODO la question est : on clamp au sol ici, ou au début de la prochaine loop? je dirais ici, on considère que cette itération est "valide" donc pas besoin de clamper au milieu là, enfin si mais on le fait sur une variable temp
+                
+                /* ---------------- Final clamp to ground ---------------- */
+                
+                if (!GroundCheckWithCastNewSusu(p, d, nextPosition, out RaycastHit hitFinal)) // TODO relou les vieux hit, faire des braces
+                {
+                    OnSetPosition.Invoke(nextPosition);
+                    OnSetStandingCollider.Invoke(null);
+                    
+                    // TODO set next pos ?! ben oui non? sinon c'est con !
+                    
+                    OnRequestState(State.Falling);
+                    return;
+                }
+                
+                // TODO check climbing etc?
+            
+                nextPosition = hitFinal.point + hitFinal.normal * p.Radius - Vector3.up * (p.Radius - Physics.defaultContactOffset);
+            
+                OnSetPosition.Invoke(nextPosition);
+                OnSetStandingCollider.Invoke(hitFinal.collider);
             }
             
             moveDistance -= currentMoveStep;
         }
-        
-        return;
-        
-        /* ---------------- Final clamp to ground ---------------- */
-        
-        {
-            if (!GetGroundNormal(
-                d,
-                p.GetCapsuleBottom(nextPosition, Vector3.up),
-                p.Radius,
-                p.GroundCheckDistance,
-                out Vector3 groundPoint,
-                out Vector3 groundNormal,
-                out Collider standingCollider))
-            {
-                OnSetPosition.Invoke(nextPosition);
-                OnSetStandingCollider.Invoke(standingCollider);
-                
-                OnRequestState.Invoke(State.Falling);
-                return;
-            }
-            
-            // TODO check climbing etc?
-            
-            nextPosition = groundPoint + groundNormal * p.Radius - Vector3.up * p.Radius;
-            
-            OnSetPosition.Invoke(nextPosition);
-            OnSetStandingCollider.Invoke(standingCollider);
-        }
-
         
         
         /*if (_direction.sqrMagnitude > 0.2f)

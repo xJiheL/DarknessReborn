@@ -141,8 +141,12 @@ MonoBehaviour:
     groundLimit: 75
     climbLimit: 150
   _debug:
-    showGroundNormal: 0
+    showMoveDirection: 1
+    moveDirectionColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    showGroundNormal: 1
     groundNormalColor: {r: 1, g: 0, b: 0, a: 1}
+    showGroundCheck: 0
+    groundCheckColor: {r: 1, g: 0, b: 1, a: 1}
 --- !u!114 &867613377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,10 +261,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1648593829835447965}
     m_Modifications:
-    - target: {fileID: 100000, guid: 0650bdf6536d14c48aa5efba663aca1a, type: 3}
-      propertyPath: m_Name
-      value: MESH_Character_Test
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0650bdf6536d14c48aa5efba663aca1a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -304,6 +304,10 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 0650bdf6536d14c48aa5efba663aca1a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 0650bdf6536d14c48aa5efba663aca1a, type: 3}
+      propertyPath: m_Name
+      value: MESH_Character_Test
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0650bdf6536d14c48aa5efba663aca1a, type: 3}
