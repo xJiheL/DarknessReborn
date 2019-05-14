@@ -156,6 +156,7 @@ public class PlayerStateGrounded : PlayerState
                     for (int i = 0; i < hitNumber; i++)
                     {
                         DebugExt.DrawWireSphere(hits[i].point, 0.1f, Color.magenta, Quaternion.identity);
+                        Debug.DrawRay(hits[i].point, hits[i].normal, Color.magenta);
                         DebugExt.DrawMarker(hits[i].point, 1f, Color.magenta);
                     }
                 }
