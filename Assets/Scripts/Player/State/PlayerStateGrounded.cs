@@ -5,12 +5,12 @@ using UnityEngine;
 public class PlayerStateGrounded : PlayerState
 {
     private Collider[] _overlapCapsule;
-    private RaycastHit[] hits;
+    private RaycastHit[] _hits;
     
     public PlayerStateGrounded()
     {
         _overlapCapsule = new Collider[16];
-        hits = new RaycastHit[16];
+        _hits = new RaycastHit[16];
     }
 
     public override void Enter(
@@ -18,7 +18,7 @@ public class PlayerStateGrounded : PlayerState
         CurrentTransform t,
         ControllerDebug d)
     {
-        if (GroundCheckWithCastNewSusu(p, d, t.Position, out RaycastHit hit))
+        if (GroundCheck(p, d, t.Position, out RaycastHit hit))
         {
             OnSetPosition(hit.point + hit.normal * p.Radius - Vector3.up * (p.Radius - Physics.defaultContactOffset));
         }
@@ -45,16 +45,8 @@ public class PlayerStateGrounded : PlayerState
 
         /* Checks if player is inside a wall */
         
-        int resultsCount = Physics.OverlapCapsuleNonAlloc(
-            p.GetCapsuleBottom(nextPosition, Vector3.up),
-            p.GetCapsuleTop(nextPosition, Vector3.up),
-            p.Radius,
-            _overlapCapsule,
-            PlayerController.GetGroundMask(),
-            QueryTriggerInteraction.Ignore);
-        
-        Debug.Assert(resultsCount == 0, "Player is inside a wall!");
-        
+        CheckPlayerPosition(p, nextPosition);
+
         /* TODO */
         
         // TODO later: mettre à jour la position si le collider où on est a bougé
@@ -73,7 +65,7 @@ public class PlayerStateGrounded : PlayerState
             {
                 /* ---------------- Get ground normal ---------------- */
 
-                if (!GroundCheckWithCastNewSusu(p, d, nextPosition, out RaycastHit hit))
+                if (!GroundCheck(p, d, nextPosition, out RaycastHit hit))
                 {
                     // TODO set next pos ?!
                     
@@ -82,14 +74,16 @@ public class PlayerStateGrounded : PlayerState
                 }
                 
                 /* ---------------- Check state ---------------- */
-                
-                float angle = Vector3.Angle(Vector3.up, hit.normal);
-                State state = p.GetStateWithAngle(angle);
-                
-                if (state != State.Grounded)
+
                 {
-                    OnRequestState.Invoke(state);
-                    return;
+                    float angle = Vector3.Angle(Vector3.up, hit.normal);
+                    State state = p.GetStateWithAngle(angle);
+
+                    if (state != State.Grounded)
+                    {
+                        OnRequestState.Invoke(state);
+                        return;
+                    }
                 }
 
                 if (d.ShowGroundNormal)
@@ -140,7 +134,7 @@ public class PlayerStateGrounded : PlayerState
                     point2,
                     p.Radius,
                     moveDirectionProject,
-                    hits,
+                    _hits,
                     currentMoveStep,
                     PlayerController.GetGroundMask(),
                     QueryTriggerInteraction.Ignore);
@@ -153,11 +147,37 @@ public class PlayerStateGrounded : PlayerState
                 {
                     //nextPosition += moveDirectionProject * (hit.distance - Physics.defaultContactOffset);
                     
+                    hit = SortHit(_hits, hitNumber);
+                    
                     for (int i = 0; i < hitNumber; i++)
                     {
-                        DebugExt.DrawWireSphere(hits[i].point, 0.1f, Color.magenta, Quaternion.identity);
-                        Debug.DrawRay(hits[i].point, hits[i].normal, Color.magenta);
-                        DebugExt.DrawMarker(hits[i].point, 1f, Color.magenta);
+                        DebugExt.DrawWireSphere(hit.point, 0.1f, Color.magenta, Quaternion.identity);
+                        Debug.DrawRay(hit.point, _hits[i].normal, Color.magenta);
+                        DebugExt.DrawMarker(hit.point, 1f, Color.magenta);
+                    }
+                    
+                    float angle = Vector3.Angle(Vector3.up, hit.normal);
+                    State state = p.GetStateWithAngle(angle);
+
+                    if (state == State.Grounded)
+                    {
+                        nextPosition = hit.point + hit.normal * p.Radius - Vector3.up * (p.Radius - Physics.defaultContactOffset); // TODO generique method?...
+                        CheckPlayerPosition(p, nextPosition);
+                        
+                        // TODO iterate with the left distance
+                        
+                        
+                        Debug.Log("resolve ground detection, left: "+(currentMoveStep - hit.distance));
+                    }
+                    else
+                    {
+                        /*if (!GroundCheckWithCastNewSusu(p, d, nextPosition, out RaycastHit hit))
+                        {
+                            // TODO set next pos ?!
+                    
+                            OnRequestState(State.Falling);
+                            return;
+                        }*/
                     }
                 }
                 
@@ -166,7 +186,7 @@ public class PlayerStateGrounded : PlayerState
                 
                 /* ---------------- Final clamp to ground ---------------- */
                 
-                if (!GroundCheckWithCastNewSusu(p, d, nextPosition, out RaycastHit hitFinal)) // TODO relou les vieux hit, faire des braces
+                if (!GroundCheck(p, d, nextPosition, out RaycastHit hitFinal)) // TODO relou les vieux hit, faire des braces
                 {
                     OnSetPosition.Invoke(nextPosition);
                     OnSetStandingCollider.Invoke(null);
@@ -195,7 +215,20 @@ public class PlayerStateGrounded : PlayerState
         }*/
     }
 
-    private bool GroundCheckWithCastNewSusu(
+    private void CheckPlayerPosition(Parameters p, Vector3 nextPosition)
+    {
+        int resultsCount = Physics.OverlapCapsuleNonAlloc(
+            p.GetCapsuleBottom(nextPosition, Vector3.up),
+            p.GetCapsuleTop(nextPosition, Vector3.up),
+            p.Radius,
+            _overlapCapsule,
+            PlayerController.GetGroundMask(),
+            QueryTriggerInteraction.Ignore);
+
+        Debug.Assert(resultsCount == 0, "Player is inside a wall!");
+    }
+
+    private bool GroundCheck(
         Parameters p,
         ControllerDebug d,
         Vector3 position,
@@ -229,7 +262,7 @@ public class PlayerStateGrounded : PlayerState
             origin,
             p.Radius,
             direction,
-            hits,
+            _hits,
             distance,
             PlayerController.GetGroundMask(),
             QueryTriggerInteraction.Ignore);
@@ -239,53 +272,32 @@ public class PlayerStateGrounded : PlayerState
             return false;
         }
 
+        hit = SortHit(_hits, hitNumber);
+
+        if (d.ShowGroundCheck)
+        {
+            DebugExt.DrawWireSphere(hit.point, 0.1f, d.GroundCheckColor, Quaternion.identity);
+            DebugExt.DrawMarker(hit.point, 1f, d.GroundCheckColor);
+        }
+        
+        return true;
+    }
+
+    private RaycastHit SortHit(RaycastHit[] hits, int hitNumber)
+    {
+        RaycastHit neareastHit = new RaycastHit();
         float nearestHitDistance = float.MaxValue;
 
         for (int i = 0; i < hitNumber; i++)
         {
-            if (d.ShowGroundCheck)
-            {
-                DebugExt.DrawWireSphere(hits[i].point, 0.1f, d.GroundCheckColor, Quaternion.identity);
-                DebugExt.DrawMarker(hits[i].point, 1f, d.GroundCheckColor);
-            }
-
             if (hits[i].distance < nearestHitDistance)
             {
                 nearestHitDistance = hits[i].distance;
-                hit = hits[i];
+                neareastHit = hits[i];
             }
         }
 
-        return true;
-    }
-
-    private bool GetGroundNormal(ControllerDebug d, Vector3 bottom, float radius, float groundCheckDistance, out Vector3 groundPoint, out Vector3 groundNormal, out Collider standingCollider)
-    {
-        groundNormal = -Vector3.up;
-        Vector3 groundCheckVector = -Vector3.up * groundCheckDistance;
-
-        if (d.ShowGroundNormal)
-        {
-            DebugExt.DrawWireCapsule(
-                bottom,
-                bottom + groundCheckVector,
-                radius,
-                Color.red);
-        }
-
-        if (ClosestPointFromCapsule(
-            bottom,
-            bottom + groundCheckVector,
-            radius,
-            _overlapCapsule,
-            out groundPoint,
-            out standingCollider))
-        {
-            groundNormal = (bottom - groundPoint).normalized;
-            return true;
-        }
-
-        return false;
+        return neareastHit;
     }
 
     public static bool ClosestPointFromCapsule(
