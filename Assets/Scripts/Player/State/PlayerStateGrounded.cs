@@ -166,18 +166,15 @@ public class PlayerStateGrounded : PlayerState
                         
                         // TODO iterate with the left distance
                         
-                        
                         Debug.Log("resolve ground detection, left: "+(currentMoveStep - hit.distance));
                     }
                     else
                     {
-                        /*if (!GroundCheckWithCastNewSusu(p, d, nextPosition, out RaycastHit hit))
-                        {
-                            // TODO set next pos ?!
-                    
-                            OnRequestState(State.Falling);
-                            return;
-                        }*/
+                        // faire un assert plus intelligent, qu'il annule le mouvement si on rentre dans un mur
+                        // et empêcher de "reculer"
+                        
+                        nextPosition += moveDirectionProject * (hit.distance - Physics.defaultContactOffset);
+                        CheckPlayerPosition(p, nextPosition);
                     }
                 }
                 
