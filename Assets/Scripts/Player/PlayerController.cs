@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private PlayerStateClimbing _stateClimbing;
 
     private Transform _transform;
+    private CapsuleCollider _collider;
     
     private Vector3 _direction;
 
@@ -42,6 +43,12 @@ public class PlayerController : MonoBehaviour
         _stateClimbing = new PlayerStateClimbing();
 
         _previousPosition = transform.position;
+
+        _collider = gameObject.AddComponent<CapsuleCollider>();
+        Check.IsTrue(_collider != null, "Cannot add the collider, maybe that it is already added?");
+        _collider.radius = _parameters.Radius;
+        _collider.height = _parameters.Height;
+        _collider.center = new Vector3(0f, _parameters.Height / 2f, 0f);
         
         GoToState(State.Grounded);
     }

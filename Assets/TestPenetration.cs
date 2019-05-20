@@ -1,97 +1,127 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TestPenetration : MonoBehaviour
 {
     private CapsuleCollider capsule;
+
+    private int iterationMax = 10;
+
+    public float radius = 0.7f;
+    public float height = 3f;
     
     void OnDrawGizmos()
     {
+        Collider[] results = new Collider[16];
         capsule = GetComponent<CapsuleCollider>();
 
-        Vector3 point1 = transform.position - transform.up * (capsule.height / 2f - capsule.radius); 
-        Vector3 point2 = transform.position + transform.up * (capsule.height / 2f - capsule.radius); 
+        Debug.Assert(capsule.center.Equals(Vector3.zero), "Incorrect capsule center");
+        Debug.Assert(capsule.radius.Equals(radius), "Incorrect capsule radius");
+        Debug.Assert(capsule.height.Equals(height), "Incorrect capsule height");
+        Debug.Assert(capsule.direction == 1, "Incorrect capsule direction"); // Y-Axis
         
-        Vector3 finalPoint1 = point1;
-        Vector3 finalPoint2 = point2;
-        
-        DebugExt.DrawWireCapsule(point1, point2, capsule.radius, Color.blue);
+        Vector3 bottom = transform.position - Vector3.up * (height / 2f - radius);  // TODO Get Capsule Bottom
+        Vector3 top = transform.position + Vector3.up * (height / 2f - radius);     // TODO Get Capsule Top
 
-        int iteration = 0;
+        Vector3 finalBottom = bottom;
+        Vector3 finalTop = top;
         
-        Collider[] colliders = Physics.OverlapCapsule(
-            finalPoint1, 
-            finalPoint2, 
-            capsule.radius, 
+        DebugExt.DrawWireCapsule(finalBottom, finalTop, capsule.radius, Color.blue);
+
+        int resultsNumber = Physics.OverlapCapsuleNonAlloc(
+            finalBottom, 
+            finalTop, 
+            radius, 
+            results, 
             PlayerController.GetGroundMask(),
             QueryTriggerInteraction.Ignore);
-
-        Vector3 moveVector3 = Vector3.zero;
         
-        while (colliders.Length > 0 && iteration < 10)
+        Vector3 translation = Vector3.zero;
+        int iteration = 0;
+        
+        while (resultsNumber > 0 && iteration < iterationMax)
         {
             if (Physics.ComputePenetration(
                 capsule,
-                capsule.transform.position + moveVector3,
+                capsule.transform.position + translation,
                 capsule.transform.rotation,
-                colliders[0],
-                colliders[0].transform.position,
-                colliders[0].transform.rotation,
+                results[0],
+                results[0].transform.position,
+                results[0].transform.rotation,
                 out var direction,
                 out var distance))
             {
                 distance += Physics.defaultContactOffset;
-                moveVector3 += direction * distance;
+                translation += direction * distance;
             }
             else
             {
                 // possible with floating value...
-                moveVector3 += Vector3.up * Physics.defaultContactOffset;
+                translation += Vector3.up * Physics.defaultContactOffset;
                 Debug.LogWarning("overlap but no penetration");
             }
             
-            finalPoint1 = point1 + moveVector3;
-            finalPoint2 = point2 + moveVector3;
+            DebugExt.DrawWireSphere(finalBottom, 0.05f, Color.red, Quaternion.identity);
+            DebugExt.DrawWireSphere(finalBottom + translation, 0.05f, Color.red, Quaternion.identity);
+            Debug.DrawLine(finalBottom, finalBottom + translation, Color.red);
             
-            colliders = Physics.OverlapCapsule(
-                finalPoint1, 
-                finalPoint2, 
+            finalBottom = bottom + translation;
+            finalTop = top + translation;
+            
+            resultsNumber = Physics.OverlapCapsuleNonAlloc(
+                finalBottom, 
+                finalTop, 
                 capsule.radius, 
+                results, 
                 PlayerController.GetGroundMask(),
                 QueryTriggerInteraction.Ignore);
 
             iteration++;
         }
         
-        DebugExt.DrawWireCapsule(finalPoint1, finalPoint2, capsule.radius, iteration == 10 ? Color.red : Color.green);
-        GizmosExt.DrawText("Iteration "+iteration, finalPoint2);
+        DebugExt.DrawWireCapsule(finalBottom, finalTop, capsule.radius, iteration == iterationMax ? Color.red : Color.green);
+        GizmosExt.DrawText("Iteration "+iteration, finalTop);
         
-        colliders = Physics.OverlapSphere(
-            finalPoint1,
-            capsule.radius, 
+        GroundCheck(finalBottom);
+    }
+
+    private void GroundCheck(Vector3 Bottom)
+    {
+        Collider[] results = new Collider[16];
+        
+        int resultsNumber = Physics.OverlapSphereNonAlloc(
+            Bottom,
+            capsule.radius,
+            results,
             PlayerController.GetGroundMask(),
             QueryTriggerInteraction.Ignore);
-        
-        DebugExt.DrawWireSphere(finalPoint1, capsule.radius, colliders.Length == 0 ? Color.yellow : Color.magenta, Quaternion.identity);
 
-        if (colliders.Length == 0)
+        DebugExt.DrawWireSphere(
+            Bottom, 
+            capsule.radius, 
+            resultsNumber == 0 ? Color.yellow : Color.magenta,
+            Quaternion.identity);
+
+        if (resultsNumber != 0)
         {
-            if (Physics.SphereCast(
-                finalPoint1,
-                capsule.radius - Physics.defaultContactOffset,
-                -Vector3.up,
-                out var hitInfo,
-                float.MaxValue,
-                PlayerController.GetGroundMask(),
-                QueryTriggerInteraction.Ignore))
-            {
-                DebugExt.DrawMarker(hitInfo.point, 1f, Color.yellow);
-                Debug.DrawRay(hitInfo.point, hitInfo.normal * 2f, Color.yellow);
-            }
-            else
-            {
-                Debug.LogError("No normal !");
-            }
+            // assert
+            return;
+        }
+
+        if (Physics.SphereCast(
+            Bottom,
+            capsule.radius - Physics.defaultContactOffset,
+            -Vector3.up,
+            out var hitInfo,
+            float.MaxValue,
+            PlayerController.GetGroundMask(),
+            QueryTriggerInteraction.Ignore))
+        {
+            DebugExt.DrawMarker(hitInfo.point, 1f, Color.yellow);
+            Debug.DrawRay(hitInfo.point, hitInfo.normal * 2f, Color.yellow);
+        }
+        else
+        {
+            Debug.LogError("No normal !");
         }
     }
 }
