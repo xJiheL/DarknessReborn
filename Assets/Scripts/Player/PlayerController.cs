@@ -46,10 +46,9 @@ public class PlayerController : MonoBehaviour
 
         _collider = gameObject.AddComponent<CapsuleCollider>();
         Check.IsTrue(_collider != null, "Cannot add the collider, maybe that it is already added?");
-        _collider.radius = _parameters.Radius;
-        _collider.height = _parameters.Height;
-        _collider.center = new Vector3(0f, _parameters.Height / 2f, 0f);
-        
+        _collider.hideFlags = HideFlags.NotEditable;
+        UpdateCollider();
+
         GoToState(State.Grounded);
     }
 
@@ -99,6 +98,10 @@ public class PlayerController : MonoBehaviour
         CurrentTransform currentTransform = GetCurrentTransform();
         
         Debug.DrawRay(currentTransform.Position, _direction, Color.green);
+        
+        #if UNITY_EDITOR
+        UpdateCollider();
+        #endif
         
         _currentState.Update(_parameters, currentTransform, _debug);
         
@@ -183,6 +186,14 @@ public class PlayerController : MonoBehaviour
             _transform.forward,
             _transform.right,
             _standingCollider,
-            Time.deltaTime);
+            Time.deltaTime,
+            _collider);
+    }
+    
+    private void UpdateCollider()
+    {
+        _collider.radius = _parameters.Radius;
+        _collider.height = _parameters.Height;
+        _collider.center = new Vector3(0f, _parameters.Height / 2f, 0f);
     }
 }

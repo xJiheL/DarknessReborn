@@ -14,8 +14,9 @@ public struct CurrentTransform
 	private Vector3 _right;
 	private Collider _standingCollider;
 	private float _deltaTime;
+	private CapsuleCollider _collider;
 
-	public CurrentTransform(Vector3 direction, Vector2 inputMove, Vector3 velocity, Vector3 position, Quaternion rotation, Vector3 up, Vector3 forward, Vector3 right, Collider standingCollider, float deltaTime)
+	public CurrentTransform(Vector3 direction, Vector2 inputMove, Vector3 velocity, Vector3 position, Quaternion rotation, Vector3 up, Vector3 forward, Vector3 right, Collider standingCollider, float deltaTime, CapsuleCollider collider)
 	{
 		_direction = direction;
 		_inputMove = inputMove;
@@ -27,6 +28,7 @@ public struct CurrentTransform
 		_right = right;
 		_standingCollider = standingCollider;
 		_deltaTime = deltaTime;
+		_collider = collider;
 	}
 
 	public Vector3 Direction => _direction;
@@ -48,4 +50,6 @@ public struct CurrentTransform
 	public Collider StandingCollider => _standingCollider;
 
 	public float DeltaTime => _deltaTime;
+
+	public CapsuleCollider Collider => _collider;
 }

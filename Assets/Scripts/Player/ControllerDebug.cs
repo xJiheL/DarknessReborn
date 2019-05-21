@@ -22,6 +22,12 @@ public class ControllerDebug
     [SerializeField]
     private Color groundCheckColor = Color.magenta;
 
+    [SerializeField]
+    private bool showComputePenetration = false;
+    
+    [SerializeField]
+    private Color computePenetrationColor = Color.blue;
+
     public bool ShowMoveDirection => showMoveDirection;
 
     public Color MoveDirectionColor => moveDirectionColor;
@@ -33,4 +39,8 @@ public class ControllerDebug
     public bool ShowGroundCheck => showGroundCheck;
 
     public Color GroundCheckColor => groundCheckColor;
+
+    public bool ShowComputePenetration => showComputePenetration;
+
+    public Color ComputePenetrationColor => computePenetrationColor;
 }
