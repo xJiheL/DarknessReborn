@@ -25,6 +25,10 @@ public class PlayerStateGrounded : PlayerState
         {
             OnRequestState(State.Falling);
         }
+        else
+        {
+            // TODO coller au sol
+        }
     }
 
     public override void Exit(
@@ -42,13 +46,8 @@ public class PlayerStateGrounded : PlayerState
     {   
         Vector3 nextPosition = t.Position;
         
-        /* Checks if player is inside a wall */
-        
-        CheckPlayerPosition(p, nextPosition);
-
-        /* TODO */
-        
         // TODO later: mettre à jour la position si le collider où on est a bougé
+        // et gérer la pénétration dès maitenant?
         
         float moveDistance = p.MoveSpeed * t.Direction.magnitude * t.DeltaTime;
 
@@ -109,71 +108,8 @@ public class PlayerStateGrounded : PlayerState
                     Debug.DrawRay(hit.point, moveDirectionProject, d.MoveDirectionColor);
                 }
 
-                
-                
-                
-                Vector3 point1 = p.GetCapsuleBottom(nextPosition, Vector3.up);
-                Vector3 point2 = p.GetCapsuleTop(nextPosition, Vector3.up);
-                
-                
-                DebugExt.DrawWireCapsule(
-                    point1,
-                    point2,
-                    p.Radius,
-                    Color.magenta);
-                
-                DebugExt.DrawWireCapsule(
-                    point1 + moveDirectionProject * currentMoveStep,
-                    point2 + moveDirectionProject * currentMoveStep,
-                    p.Radius,
-                    Color.magenta);
-                
-                int hitNumber = Physics.CapsuleCastNonAlloc(
-                    point1,
-                    point2,
-                    p.Radius,
-                    moveDirectionProject,
-                    _hitBuffer,
-                    currentMoveStep,
-                    PlayerController.GetGroundMask(),
-                    QueryTriggerInteraction.Ignore);
-                
-                if (hitNumber == 0)
-                {
-                    nextPosition += moveDirectionProject * currentMoveStep;
-                }
-                else
-                {
-                    //nextPosition += moveDirectionProject * (hit.distance - Physics.defaultContactOffset);
-                    
-                    hit = SortHit(_hitBuffer, hitNumber);
-                    
-                    for (int i = 0; i < hitNumber; i++)
-                    {
-                        DebugExt.DrawWireSphere(hit.point, 0.1f, Color.magenta, Quaternion.identity);
-                        Debug.DrawRay(hit.point, _hitBuffer[i].normal, Color.magenta);
-                        DebugExt.DrawMarker(hit.point, 1f, Color.magenta);
-                    }
-                    
-                    float angle = Vector3.Angle(Vector3.up, hit.normal);
-                    State state = p.GetStateWithAngle(angle);
-
-                    if (state == State.Grounded)
-                    {
-                        nextPosition = hit.point + hit.normal * p.Radius - Vector3.up * (p.Radius - Physics.defaultContactOffset); // TODO generique method?...
-                        CheckPlayerPosition(p, nextPosition);
-                        
-                        // TODO iterate with the left distance
-                        
-                        Debug.Log("resolve ground detection, left: "+(currentMoveStep - hit.distance));
-                    }
-                    else
-                    {
-                        nextPosition = ComputePenetration(p, t.Collider, d, nextPosition + moveDirectionProject * currentMoveStep);
-                        CheckPlayerPosition(p, nextPosition);
-                    }
-                }
-                
+                nextPosition = ComputePenetration(p, t.Collider, d, nextPosition + moveDirectionProject * currentMoveStep);
+                CheckPlayerPosition(p, nextPosition);
                 
                 // TODO la question est : on clamp au sol ici, ou au début de la prochaine loop? je dirais ici, on considère que cette itération est "valide" donc pas besoin de clamper au milieu là, enfin si mais on le fait sur une variable temp
                 
