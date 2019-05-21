@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.franstools.essential": "https://gitlab.com/TheFranS/FranSTools-Essential.git",
+    "com.franstools.essential": "https://gitlab.com/TheFranS/FranSTools-Essential.git#f732243db19464781b659f243b1f95f5fbb12680",
     "com.unity.package-manager-ui": "2.1.2",
     "com.unity.postprocessing": "2.1.6",
     "com.unity.probuilder": "4.0.5",
@@ -40,8 +40,8 @@
   },
   "lock": {
     "com.franstools.essential": {
-      "hash": "e58a4cf8dbe140f34e9ab1b539640552bfc60dda",
-      "revision": "HEAD"
+      "hash": "f732243db19464781b659f243b1f95f5fbb12680",
+      "revision": "f732243db19464781b659f243b1f95f5fbb12680"
     }
   }
 }
