@@ -3,201 +3,11 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public enum State
-    {
-        Grounded,
-        Falling,
-        Climbing
-    }
-
-    [Serializable]
-    public class Parameters
-    {
-        [SerializeField]
-        private float moveSpeed = 5f;
-        
-        [SerializeField]
-        private float radius;
-        
-        [SerializeField]
-        private float height;
-        
-        [SerializeField]
-        private float moveStep;
-        
-        [SerializeField]
-        private float groundCheckDistance = 1f;
-        
-        [SerializeField]
-        private bool debugMode;
-        
-        [SerializeField]
-        private Vector2 debugInput;
-
-        [SerializeField]
-        private float gravity = -9.81f;
-        
-        [SerializeField]
-        private float minVerticalVelocity = -30f;
-
-        [SerializeField]
-        private float groundLimit = 45f;
-
-        [SerializeField]
-        private float climbLimit = 150f;
-        
-        public void OnValidate()
-        {
-            if (moveSpeed < 0f)
-            {
-                moveSpeed = 0f;
-            }
-            
-            if (radius < 0f)
-            {
-                radius = 0f;
-            }
-
-            if (height < radius * 2f)
-            {
-                height = radius * 2f;
-            }
-            
-            if (moveStep < 0.01f)
-            {
-                moveStep = 0.01f;
-            }
-
-            if (moveStep > radius)
-            {
-                moveStep = radius;
-            }
-            
-            if (groundCheckDistance < 0f)
-            {
-                groundCheckDistance = 0f;
-            }
-
-            if (groundLimit < 0f)
-            {
-                groundLimit = 0f;
-            }
-            
-            if (climbLimit < 0f)
-            {
-                climbLimit = 0f;
-            }
-            
-            if (climbLimit > 180f)
-            {
-                climbLimit = 180f;
-            }
-            
-            if (groundLimit > climbLimit)
-            {
-                groundLimit = climbLimit;
-            }
-        }
-
-        public float MoveSpeed => moveSpeed;
-
-        public float Radius => radius;
-
-        public float Height => height;
-
-        public float MoveStep => moveStep;
-
-        public float GroundCheckDistance => groundCheckDistance;
-
-        public bool DebugMode => debugMode;
-
-        public Vector2 DebugInput => debugInput;
-
-        public float Gravity => gravity;
-
-        public float MinVerticalVelocity => minVerticalVelocity;
-
-        public float GroundLimit => groundLimit;
-
-        public float ClimbLimit => climbLimit;
-
-        public Vector3 GetCapsuleBottom(Vector3 position, Vector3 up)
-        {
-            return position + up * radius;
-        }
-    
-        public Vector3 GetCapsuleTop(Vector3 position, Vector3 up)
-        {
-            return position + up * (height - radius);
-        }
-
-        public State GetStateWithAngle(float angle)
-        {
-            if (angle <= groundLimit)
-            {
-                return State.Grounded;
-            }
-            
-            if (angle <= climbLimit)
-            {
-                return State.Climbing;
-            }
-
-            return State.Falling;
-        }
-    }
-
-    [Serializable]
-    public struct CurrentTransform
-    {
-        private Vector3 _direction;
-        private Vector2 _inputMove;
-        private Vector3 _velocity;
-        private Vector3 _position;
-        private Quaternion _rotation;
-        private Vector3 _up;
-        private Vector3 _forward;
-        private Vector3 _right;
-        private Collider _standingCollider;
-        private float _deltaTime;
-
-        public CurrentTransform(Vector3 direction, Vector2 inputMove, Vector3 velocity, Vector3 position, Quaternion rotation, Vector3 up, Vector3 forward, Vector3 right, Collider standingCollider, float deltaTime)
-        {
-            _direction = direction;
-            _inputMove = inputMove;
-            _velocity = velocity;
-            _position = position;
-            _rotation = rotation;
-            _up = up;
-            _forward = forward;
-            _right = right;
-            _standingCollider = standingCollider;
-            _deltaTime = deltaTime;
-        }
-
-        public Vector3 Direction => _direction;
-
-        public Vector2 InputMove => _inputMove;
-
-        public Vector3 Velocity => _velocity;
-
-        public Vector3 Position => _position;
-
-        public Quaternion Rotation => _rotation;
-
-        public Vector3 Up => _up;
-
-        public Vector3 Forward => _forward;
-
-        public Vector3 Right => _right;
-
-        public Collider StandingCollider => _standingCollider;
-
-        public float DeltaTime => _deltaTime;
-    }
-
     [SerializeField]
     private Parameters _parameters = null;
+    
+    [SerializeField]
+    private ControllerDebug _debug = null;
     
     private PlayerState _currentState;
     private PlayerStateGrounded _stateGrounded;
@@ -205,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private PlayerStateClimbing _stateClimbing;
 
     private Transform _transform;
+    private CapsuleCollider _collider;
     
     private Vector3 _direction;
 
@@ -232,8 +43,13 @@ public class PlayerController : MonoBehaviour
         _stateClimbing = new PlayerStateClimbing();
 
         _previousPosition = transform.position;
-        
-        GoToState(State.Falling);
+
+        _collider = gameObject.AddComponent<CapsuleCollider>();
+        Check.IsTrue(_collider != null, "Cannot add the collider, maybe that it is already added?");
+        _collider.hideFlags = HideFlags.NotEditable;
+        UpdateCollider();
+
+        GoToState(State.Grounded);
     }
 
     private void OnEnable()
@@ -283,7 +99,11 @@ public class PlayerController : MonoBehaviour
         
         Debug.DrawRay(currentTransform.Position, _direction, Color.green);
         
-        _currentState.Update(_parameters, currentTransform);
+        #if UNITY_EDITOR
+        UpdateCollider();
+        #endif
+        
+        _currentState.Update(_parameters, currentTransform, _debug);
         
         DebugExt.DrawWireCapsule(
             _parameters.GetCapsuleBottom(_transform.position, currentTransform.Up), 
@@ -297,7 +117,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_currentState != null)
         {
-            _currentState.Exit(_parameters, GetCurrentTransform());
+            _currentState.Exit(_parameters, GetCurrentTransform(), _debug);
             Debug.Log("State Exit " + _currentState);
             
             _currentState.OnSetPosition -= OnSetPosition;
@@ -327,7 +147,7 @@ public class PlayerController : MonoBehaviour
         _currentState.OnRequestState += GoToState;
         
         Debug.Log("State Enter " + _currentState);
-        _currentState.Enter(_parameters, GetCurrentTransform());
+        _currentState.Enter(_parameters, GetCurrentTransform(), _debug);
     }
 
     private void OnSetPosition(Vector3 position)
@@ -366,6 +186,14 @@ public class PlayerController : MonoBehaviour
             _transform.forward,
             _transform.right,
             _standingCollider,
-            Time.deltaTime);
+            Time.deltaTime,
+            _collider);
+    }
+    
+    private void UpdateCollider()
+    {
+        _collider.radius = _parameters.Radius;
+        _collider.height = _parameters.Height;
+        _collider.center = new Vector3(0f, _parameters.Height / 2f, 0f);
     }
 }

@@ -89,7 +89,6 @@ GameObject:
   - component: {fileID: 1326793175859095462}
   - component: {fileID: 867613377}
   - component: {fileID: 4928449098435522949}
-  - component: {fileID: 8807357554746609940}
   - component: {fileID: 849307495310712475}
   - component: {fileID: 2314583218610945706}
   m_Layer: 0
@@ -140,6 +139,17 @@ MonoBehaviour:
     minVerticalVelocity: -30
     groundLimit: 75
     climbLimit: 150
+  _debug:
+    showMoveDirection: 0
+    moveDirectionColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    showGroundNormal: 0
+    groundNormalColor: {r: 1, g: 0, b: 0, a: 1}
+    showGroundCheck: 0
+    groundCheckColor: {r: 1, g: 0, b: 1, a: 1}
+    showComputePenetration: 0
+    computePenetrationColor: {r: 0, g: 0, b: 1, a: 1}
+    showStepOver: 0
+    stepOverColor: {r: 0, g: 1, b: 0, a: 1}
 --- !u!114 &867613377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,20 +178,6 @@ MonoBehaviour:
   positionLightweightObject: {fileID: 8372639161474480411}
   _maxDistance: 0.75
   _debug: 1
---- !u!136 &8807357554746609940
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1648593829835447962}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.25
-  m_Height: 1.7
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.84, z: 0}
 --- !u!54 &849307495310712475
 Rigidbody:
   m_ObjectHideFlags: 0
