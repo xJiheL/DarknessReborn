@@ -70,7 +70,7 @@ public class PlayerStateFalling : PlayerState
             DebugExt.DrawMarker(hit.point, 1f, Color.red);
             Debug.DrawRay(hit.point, hit.normal, Color.red);
 
-            OnSetPosition.Invoke(t.Position + castDirection.normalized * hit.distance);
+            OnSetPosition.Invoke(t.Position + castDirection.normalized * (hit.distance - Physics.defaultContactOffset));
             
             State state = p.GetStateWithAngle(hit.normal);
 

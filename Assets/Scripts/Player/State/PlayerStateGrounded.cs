@@ -158,7 +158,7 @@ public class PlayerStateGrounded : PlayerState
                             d.StepOverColor);
                     }
 
-                    int resultNumber = Physics.SphereCastNonAlloc(
+                    int resultNumber = Physics.SphereCastNonAlloc( // TODO handle the empty hit ! (see ground check)
                         point1,
                         p.Radius,
                         moveDirectionProject,
@@ -181,7 +181,7 @@ public class PlayerStateGrounded : PlayerState
                                 d.StepOverColor);
                         }
 
-                        resultNumber = Physics.SphereCastNonAlloc(
+                        resultNumber = Physics.SphereCastNonAlloc( // TODO handle the empty hit ! (see ground check)
                             point2,
                             p.Radius,
                             -Vector3.up,
@@ -352,15 +352,14 @@ public class PlayerStateGrounded : PlayerState
                 p.Radius,
                 d.GroundCheckColor);
         }
-
-        int resultNumber = Physics.OverlapSphereNonAlloc(
-            origin,
-            p.Radius,
-            _colliderBuffer,
-            PlayerController.GetGroundMask(),
-            QueryTriggerInteraction.Ignore);
-
-        Debug.Assert(resultNumber == 0, "Ground check error: Player is inside a wall! Sphere cast will fail!");
+        
+        /*
+         * SphereCastNonAlloc = SphereCastAll
+         * En soit je pourrais utiliser SphereCast tout court, j'ai pas besoin de SphereCastAll !
+         * Sauf que SphereCast retourne faux si il y a quelque chose dans la sphère d'origine (et OverlapSphere
+         * ne me dira pas forcément si c'est le cas ou pas, va comprendre !)
+         * Du coup l'avantage de SphereCastAll, c'est que lui à le mérite de retourner un hit "vide" si c'est le cas.
+         */
         
         int hitNumber = Physics.SphereCastNonAlloc(
             origin,
@@ -378,6 +377,12 @@ public class PlayerStateGrounded : PlayerState
 
         hit = SortHit(_hitBuffer, hitNumber);
 
+        if (hit.point == Vector3.zero && hit.distance.Equals(0f))
+        {
+            Debug.LogError($"Ground check error: Player is inside {hit.collider.name}! Cannot get normal!");
+            return false;
+        }
+        
         if (d.ShowGroundCheck)
         {
             DebugExt.DrawWireSphere(hit.point, 0.05f, d.GroundCheckColor, Quaternion.identity);

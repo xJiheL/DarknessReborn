@@ -3156,21 +3156,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 1326793175859095462, guid: 304d92d2b0f72a642a6a3c3c26cd7d27,
-        type: 3}
-      propertyPath: _parameters.debugMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1326793175859095462, guid: 304d92d2b0f72a642a6a3c3c26cd7d27,
-        type: 3}
-      propertyPath: _parameters.debugInput.x
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1326793175859095462, guid: 304d92d2b0f72a642a6a3c3c26cd7d27,
-        type: 3}
-      propertyPath: _parameters.debugInput.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1648593829835447965, guid: 304d92d2b0f72a642a6a3c3c26cd7d27,
         type: 3}
       propertyPath: m_LocalPosition.x
