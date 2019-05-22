@@ -148,7 +148,7 @@ MonoBehaviour:
     groundCheckColor: {r: 1, g: 0, b: 1, a: 1}
     showComputePenetration: 0
     computePenetrationColor: {r: 0, g: 0, b: 1, a: 1}
-    showStepOver: 1
+    showStepOver: 0
     stepOverColor: {r: 0, g: 1, b: 0, a: 1}
 --- !u!114 &867613377
 MonoBehaviour:
