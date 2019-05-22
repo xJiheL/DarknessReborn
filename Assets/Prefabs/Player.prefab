@@ -140,12 +140,16 @@ MonoBehaviour:
     groundLimit: 75
     climbLimit: 150
   _debug:
-    showMoveDirection: 1
+    showMoveDirection: 0
     moveDirectionColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-    showGroundNormal: 1
+    showGroundNormal: 0
     groundNormalColor: {r: 1, g: 0, b: 0, a: 1}
     showGroundCheck: 0
     groundCheckColor: {r: 1, g: 0, b: 1, a: 1}
+    showComputePenetration: 0
+    computePenetrationColor: {r: 0, g: 0, b: 1, a: 1}
+    showStepOver: 1
+    stepOverColor: {r: 0, g: 1, b: 0, a: 1}
 --- !u!114 &867613377
 MonoBehaviour:
   m_ObjectHideFlags: 0

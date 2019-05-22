@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 [Serializable]
@@ -43,7 +45,12 @@ public class PlayerStateGrounded : PlayerState
         Parameters p,
         CurrentTransform t,
         ControllerDebug d)
-    {   
+    {
+        if (tempStepOver != null)
+        {
+            return;
+        }
+        
         Vector3 nextPosition = t.Position;
         
         // TODO later: mettre à jour la position si le collider où on est a bougé
@@ -74,8 +81,7 @@ public class PlayerStateGrounded : PlayerState
                 /* ---------------- Check state ---------------- */
 
                 {
-                    float angle = Vector3.Angle(Vector3.up, hit.normal);
-                    State state = p.GetStateWithAngle(angle);
+                    State state = p.GetStateWithAngle(hit.normal);
 
                     if (state != State.Grounded)
                     {
@@ -108,7 +114,9 @@ public class PlayerStateGrounded : PlayerState
                     Debug.DrawRay(hit.point, moveDirectionProject, d.MoveDirectionColor);
                 }
 
-                nextPosition = ComputePenetration(p, t.Collider, d, nextPosition + moveDirectionProject * currentMoveStep);
+                Vector3 newPosition = ComputePenetration(p, t.Collider, d, nextPosition + moveDirectionProject * currentMoveStep);
+                float movementCompleted = Vector3.Distance(newPosition, nextPosition) / currentMoveStep;
+                nextPosition = newPosition;
                 CheckPlayerPosition(p, nextPosition);
                 
                 // TODO la question est : on clamp au sol ici, ou au début de la prochaine loop? je dirais ici, on considère que cette itération est "valide" donc pas besoin de clamper au milieu là, enfin si mais on le fait sur une variable temp
@@ -132,6 +140,81 @@ public class PlayerStateGrounded : PlayerState
             
                 OnSetPosition.Invoke(nextPosition);
                 OnSetStandingCollider.Invoke(hitFinal.collider);
+                
+                /* ---------------- Check step over ---------------- */
+                
+                {
+                    float distance = 2f;
+                    
+                    Vector3 point1 = p.GetCapsuleTop(nextPosition, Vector3.up);
+                    Vector3 point2 = point1 + p.Radius * distance * moveDirectionProject;
+
+                    if (d.ShowStepOver)
+                    {
+                        DebugExt.DrawWireCapsule(
+                            point1,
+                            point2,
+                            p.Radius,
+                            d.StepOverColor);
+                    }
+
+                    int resultNumber = Physics.SphereCastNonAlloc(
+                        point1,
+                        p.Radius,
+                        moveDirectionProject,
+                        _hitBuffer,
+                        distance,
+                        PlayerController.GetGroundMask(),
+                        QueryTriggerInteraction.Ignore);
+
+                    if (resultNumber == 0)
+                    {
+                        distance = p.Height - p.Radius * 2f;
+                        Vector3 point3 = point2 - Vector3.up * distance;
+
+                        if (d.ShowStepOver)
+                        {
+                            DebugExt.DrawWireCapsule(
+                                point2,
+                                point3,
+                                p.Radius,
+                                d.StepOverColor);
+                        }
+
+                        resultNumber = Physics.SphereCastNonAlloc(
+                            point2,
+                            p.Radius,
+                            -Vector3.up,
+                            _hitBuffer,
+                            distance,
+                            PlayerController.GetGroundMask(),
+                            QueryTriggerInteraction.Ignore);
+
+                        if (resultNumber != 0)
+                        {
+                            RaycastHit stepOverHit = SortHit(_hitBuffer, resultNumber);
+
+                            if (d.ShowStepOver)
+                            {
+                                DebugExt.DrawMarker(stepOverHit.point, 0.05f, d.StepOverColor);
+                                Debug.DrawRay(stepOverHit.point, stepOverHit.normal * 2f, d.StepOverColor);
+                            }
+                            
+                            State state = p.GetStateWithAngle(hit.normal);
+
+                            if (state == State.Grounded && movementCompleted < 0.3f)
+                            {
+                                // TODO et si on peut se positionner là sans overlap un collider!
+                                tempStepOver = Command.Instance.StartCoroutine(TempStepOver(
+                                    nextPosition,
+                                    stepOverHit.point + stepOverHit.normal * p.Radius - Vector3.up * (p.Radius - Physics.defaultContactOffset))); // TODO TEMP
+                                //OnSetPosition(nextPosition);
+                                //OnRequestState(State.StepOver);
+                                return;
+                            }
+                        }
+                    }
+                }
             }
             
             moveDistance -= currentMoveStep;
@@ -142,6 +225,13 @@ public class PlayerStateGrounded : PlayerState
         {
             transform.forward = -_direction; // TODO ultra temp wtf
         }*/
+    }
+
+    private Coroutine tempStepOver;
+    IEnumerator TempStepOver(Vector3 startPos, Vector3 posEnd)
+    {
+        yield return DOTween.To(() => startPos, x => OnSetPosition(x), posEnd, 0.2f).WaitForCompletion();
+        tempStepOver = null;
     }
 
     private Vector3 ComputePenetration(

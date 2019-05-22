@@ -122,8 +122,10 @@ public class Parameters
         return position + up * (height - radius);
     }
 
-    public State GetStateWithAngle(float angle)
+    public State GetStateWithAngle(Vector3 normal)
     {
+        float angle = Vector3.Angle(normal, Vector3.up);
+        
         if (angle <= groundLimit)
         {
             return State.Grounded;

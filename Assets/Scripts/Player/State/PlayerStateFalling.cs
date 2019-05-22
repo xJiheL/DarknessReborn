@@ -72,8 +72,7 @@ public class PlayerStateFalling : PlayerState
 
             OnSetPosition.Invoke(t.Position + castDirection.normalized * hit.distance);
             
-            float angle = Vector3.Angle(Vector3.up, hit.normal);
-            State state = p.GetStateWithAngle(angle);
+            State state = p.GetStateWithAngle(hit.normal);
 
             if (state != State.Falling)
             {

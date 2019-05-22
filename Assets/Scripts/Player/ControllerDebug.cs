@@ -27,6 +27,12 @@ public class ControllerDebug
     
     [SerializeField]
     private Color computePenetrationColor = Color.blue;
+    
+    [SerializeField]
+    private bool showStepOver = false;
+    
+    [SerializeField]
+    private Color stepOverColor = Color.green;
 
     public bool ShowMoveDirection => showMoveDirection;
 
@@ -43,4 +49,8 @@ public class ControllerDebug
     public bool ShowComputePenetration => showComputePenetration;
 
     public Color ComputePenetrationColor => computePenetrationColor;
+
+    public bool ShowStepOver => showStepOver;
+
+    public Color StepOverColor => stepOverColor;
 }

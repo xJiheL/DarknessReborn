@@ -96,8 +96,7 @@ public class PlayerStateClimbing : PlayerState
         
         /* ---------------- Change state ---------------- */ 
         
-        float angle = Vector3.Angle(Vector3.up, newCliffNormal);
-        State state = p.GetStateWithAngle(angle);
+        State state = p.GetStateWithAngle(newCliffNormal);
 
         if (state != State.Climbing)
         {

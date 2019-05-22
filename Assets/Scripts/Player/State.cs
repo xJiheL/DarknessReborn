@@ -2,5 +2,6 @@
 {
     Grounded,
     Falling,
-    Climbing
+    Climbing,
+    StepOver // TODO la méthode GetStateWithAngle devrait pas à considérer cet enum
 }
