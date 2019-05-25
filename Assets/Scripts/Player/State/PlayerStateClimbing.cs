@@ -12,7 +12,10 @@ public class PlayerStateClimbing : PlayerState
         _overlapSphere = new Collider[16];
     }
     
-    public override void Enter(PlayerController.Parameters p, PlayerController.CurrentTransform t)
+    public override void Enter(
+        Parameters p,
+        CurrentTransform t,
+        ControllerDebug d)
     {
         Debug.Assert(t.StandingCollider != null);
         _climbingCollider = t.StandingCollider;
@@ -20,7 +23,10 @@ public class PlayerStateClimbing : PlayerState
         // TODO coller au cliff et orienter vers le cliff
     }
 
-    public override void Exit(PlayerController.Parameters p, PlayerController.CurrentTransform t)
+    public override void Exit(
+        Parameters p,
+        CurrentTransform t,
+        ControllerDebug d)
     {
         Vector3 bottom = p.GetCapsuleBottom(t.Position, t.Up);
 
@@ -28,7 +34,10 @@ public class PlayerStateClimbing : PlayerState
         OnSetRotation(Quaternion.identity);
     }
 
-    public override void Update(PlayerController.Parameters p, PlayerController.CurrentTransform t)
+    public override void Update(
+        Parameters p,
+        CurrentTransform t,
+        ControllerDebug d)
     {
         Vector3 bottom = p.GetCapsuleBottom(t.Position, t.Up);
         
@@ -87,10 +96,9 @@ public class PlayerStateClimbing : PlayerState
         
         /* ---------------- Change state ---------------- */ 
         
-        float angle = Vector3.Angle(Vector3.up, newCliffNormal);
-        PlayerController.State state = p.GetStateWithAngle(angle);
+        State state = p.GetStateWithAngle(newCliffNormal);
 
-        if (state != PlayerController.State.Climbing)
+        if (state != State.Climbing)
         {
             OnRequestState.Invoke(state);
         }

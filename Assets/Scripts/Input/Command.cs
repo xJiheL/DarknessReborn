@@ -16,9 +16,8 @@ public class Command : MonoBehaviourSingleton<Command>
 	string currentJoystickNames = "";
 	InputDatabase currentDatabase;
 
-	protected override void Awake()
+	protected override void SingletonAwake()
 	{
-		base.Awake();
 		if(Input.GetJoystickNames().Length > 0)
 			currentJoystickNames = Input.GetJoystickNames()[0];
 		LoadDatabase();
