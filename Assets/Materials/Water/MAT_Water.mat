@@ -13,7 +13,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2999
+  m_CustomRenderQueue: 3005
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -61,7 +61,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DistAmnt: 500
     - _DstBlend: 0
-    - _FoamIntensity: 2.47
+    - _FoamIntensity: 2.83
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
@@ -72,13 +72,13 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _Threshold: 6.21
+    - _Threshold: 1.23
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 0.2775454, g: 0.7016261, b: 0.764151, a: 1}
-    - _ColorFoam: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorWater1: {r: 0.7216981, g: 0.890144, b: 1, a: 1}
-    - _ColorWater2: {r: 0.50980395, g: 0.7411765, b: 0.8901961, a: 1}
+    - _ColorFoam: {r: 0.33397114, g: 0.58307546, b: 0.745283, a: 1}
+    - _ColorWater1: {r: 0.5411765, g: 0.73333335, b: 0.85098046, a: 1}
+    - _ColorWater2: {r: 0.54067284, g: 0.7325561, b: 0.8490566, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SpeedTex: {r: -1, g: 2, b: 0, a: 0}
+    - _SpeedTex: {r: 0, g: 0, b: 0, a: 0}
