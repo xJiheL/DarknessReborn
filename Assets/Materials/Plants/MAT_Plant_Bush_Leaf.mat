@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: MAT_Plant_Bush_Leaf
   m_Shader: {fileID: 4800000, guid: bee44b4a58655ee4cbff107302a3e131, type: 3}
-  m_ShaderKeywords: DR_RIM_ON _CELPRIMARYMODE_STEPS _UNITYSHADOWMODE_NONE
+  m_ShaderKeywords: DR_RIM_ON _CELPRIMARYMODE_STEPS _UNITYSHADOWMODE_MULTIPLY
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -102,19 +102,19 @@ Material:
     - _SrcBlend: 1
     - _TextureImpact: 0.407
     - _UVSec: 0
-    - _UnityShadowMode: 0
+    - _UnityShadowMode: 1
     - _UnityShadowPower: 1
     - _UnityShadowSharpness: 1
     - _VertexColorsEnabled: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.21548276, g: 0.4245283, b: 0.17021182, a: 1}
+    - _Color: {r: 0.16534832, g: 0.2924528, b: 0.13656995, a: 1}
     - _ColorDim: {r: 0.5188678, g: 0.34352812, b: 0.19824666, a: 1}
     - _ColorDimCurve: {r: 0.5188678, g: 0.34352812, b: 0.19824666, a: 1}
     - _ColorDimExtra: {r: 0.5188678, g: 0.34352812, b: 0.19824666, a: 1}
-    - _ColorDimSteps: {r: 0.3547894, g: 0.5566038, b: 0.31243324, a: 1}
+    - _ColorDimSteps: {r: 0.25195226, g: 0.46226418, b: 0.21150768, a: 1}
     - _ColorGradient: {r: 0.254717, g: 0.15792412, b: 0.12855999, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FlatRimColor: {r: 0.16813399, g: 0.3584906, b: 0.113296546, a: 1}
+    - _FlatRimColor: {r: 0.12999947, g: 0.254717, b: 0.03484337, a: 1}
     - _FlatSpecularColor: {r: 0.31859034, g: 0.3301887, b: 0.05762727, a: 1}
     - _UnityShadowColor: {r: 0.30188674, g: 0.17425466, b: 0.06692771, a: 1}
