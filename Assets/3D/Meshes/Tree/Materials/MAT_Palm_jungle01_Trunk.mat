@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: MAT_Palm_jungle01_Trunk
   m_Shader: {fileID: 4800000, guid: bee44b4a58655ee4cbff107302a3e131, type: 3}
-  m_ShaderKeywords: DR_RIM_ON _CELPRIMARYMODE_STEPS _UNITYSHADOWMODE_MULTIPLY
+  m_ShaderKeywords: DR_RIM_ON _CELPRIMARYMODE_CURVE _UNITYSHADOWMODE_MULTIPLY
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -24,7 +24,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CelCurveTexture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 943e23ace882da04d874d0de84e51835, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CelStepTexture:
@@ -67,7 +67,7 @@ Material:
     - _BumpScale: 1
     - _CelExtraEnabled: 0
     - _CelNumSteps: 7
-    - _CelPrimaryMode: 2
+    - _CelPrimaryMode: 3
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -108,11 +108,11 @@ Material:
     - _VertexColorsEnabled: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.4056604, g: 0.15556325, b: 0.028702382, a: 1}
+    - _Color: {r: 0.735849, g: 0.3945623, b: 0.21173012, a: 1}
     - _ColorDim: {r: 0.34905657, g: 0.22603628, b: 0.17617476, a: 1}
-    - _ColorDimCurve: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
+    - _ColorDimCurve: {r: 0.41509432, g: 0.19868845, b: 0.08027767, a: 1}
     - _ColorDimExtra: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
-    - _ColorDimSteps: {r: 0.4433962, g: 0.21510185, b: 0.0983001, a: 1}
+    - _ColorDimSteps: {r: 0.26415092, g: 0.13850366, b: 0.0735137, a: 1}
     - _ColorGradient: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _FlatRimColor: {r: 0.42452827, g: 0.15249422, b: 0.014017451, a: 1}

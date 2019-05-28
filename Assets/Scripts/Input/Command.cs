@@ -42,6 +42,10 @@ public class Command : MonoBehaviourSingleton<Command>
 			currentDatabase = Resources.Load("Input Database/XBOX 360") as InputDatabase;
 			joystickConnected = true;
 		}
+		else
+		{
+			Check.Crash($"Unknown device!\n{currentJoystickNames}");
+		}
 	}
 
 	#endregion
