@@ -8,19 +8,28 @@ public class PlayerStateFalling : PlayerState
     private Vector3 _velocity;
     private Vector3 _smoothRef;
 
-    public override void Enter(PlayerController.Parameters p, PlayerController.CurrentTransform t)
+    public override void Enter(
+        Parameters p,
+        CurrentTransform t,
+        ControllerDebug d)
     {
         _verticalVelocity = 0f;
         _velocity = t.Velocity;
         _smoothRef = Vector3.zero;
     }
 
-    public override void Exit(PlayerController.Parameters p, PlayerController.CurrentTransform t)
+    public override void Exit(
+        Parameters p,
+        CurrentTransform t,
+        ControllerDebug d)
     {
         
     }
 
-    public override void Update(PlayerController.Parameters p, PlayerController.CurrentTransform t)
+    public override void Update(
+        Parameters p,
+        CurrentTransform t,
+        ControllerDebug d)
     {
         _verticalVelocity += p.Gravity * t.DeltaTime;
 
@@ -61,12 +70,11 @@ public class PlayerStateFalling : PlayerState
             DebugExt.DrawMarker(hit.point, 1f, Color.red);
             Debug.DrawRay(hit.point, hit.normal, Color.red);
 
-            OnSetPosition.Invoke(t.Position + castDirection.normalized * hit.distance);
+            OnSetPosition.Invoke(t.Position + castDirection.normalized * (hit.distance - Physics.defaultContactOffset));
             
-            float angle = Vector3.Angle(Vector3.up, hit.normal);
-            PlayerController.State state = p.GetStateWithAngle(angle);
+            State state = p.GetStateWithAngle(hit.normal);
 
-            if (state != PlayerController.State.Falling)
+            if (state != State.Falling)
             {
                 OnRequestState.Invoke(state);
                 return;

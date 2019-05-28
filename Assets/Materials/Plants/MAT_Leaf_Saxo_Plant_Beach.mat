@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: MAT_Leaf_Saxo_Plant_Beach
   m_Shader: {fileID: 4800000, guid: bee44b4a58655ee4cbff107302a3e131, type: 3}
-  m_ShaderKeywords: DR_RIM_ON DR_VERTEX_COLORS_ON _CELPRIMARYMODE_STEPS _UNITYSHADOWMODE_MULTIPLY
+  m_ShaderKeywords: DR_RIM_ON DR_VERTEX_COLORS_ON _CELPRIMARYMODE_CURVE _UNITYSHADOWMODE_MULTIPLY
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -24,7 +24,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CelCurveTexture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 76e6c609f6dea41409433480a0deafd0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CelStepTexture:
@@ -67,13 +67,13 @@ Material:
     - _BumpScale: 1
     - _CelExtraEnabled: 0
     - _CelNumSteps: 7
-    - _CelPrimaryMode: 2
+    - _CelPrimaryMode: 3
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _FlatRimEdgeSmoothness: 0.45
-    - _FlatRimLightAlign: 0.4
-    - _FlatRimSize: 0.4
+    - _FlatRimEdgeSmoothness: 0.542
+    - _FlatRimLightAlign: 0.432
+    - _FlatRimSize: 0.34
     - _FlatSpecularEdgeSmoothness: 0
     - _FlatSpecularSize: 0.1
     - _Flatness: 1
@@ -110,11 +110,11 @@ Material:
     m_Colors:
     - _Color: {r: 0.6085746, g: 0.6698113, b: 0.3001513, a: 1}
     - _ColorDim: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorDimCurve: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
+    - _ColorDimCurve: {r: 0.35257116, g: 0.4056604, b: 0.09376113, a: 1}
     - _ColorDimExtra: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
-    - _ColorDimSteps: {r: 0.6132076, g: 0.30146423, b: 0.1475169, a: 1}
+    - _ColorDimSteps: {r: 0.41562864, g: 0.4811321, b: 0.16567284, a: 1}
     - _ColorGradient: {r: 0, g: 0.07727194, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FlatRimColor: {r: 0.6520694, g: 0.6981132, b: 0.1284265, a: 1}
+    - _FlatRimColor: {r: 0.4933721, g: 0.5849056, b: 0.19588822, a: 1}
     - _FlatSpecularColor: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
     - _UnityShadowColor: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}

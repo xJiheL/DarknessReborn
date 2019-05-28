@@ -3,11 +3,21 @@ guid: 069df2cd22f48be4c9103d7c64324f01
 ModelImporter:
   serializedVersion: 25
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MAT_Plant_Bush
+    second: {fileID: 2100000, guid: 3eb9e027268336642b951cdf0c0802ff, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MAT_Plant_Bush_Leaf
+    second: {fileID: 2100000, guid: e3bce66f608fe3347a74987b8ff619fd, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
-    materialSearch: 1
+    materialSearch: 0
     materialLocation: 1
   animations:
     legacyGenerateAnimations: 4

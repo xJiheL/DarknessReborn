@@ -92,5 +92,5 @@
         ENDCG
     }
     FallBack "VertexLit"
-//    CustomEditor "StylizedSurfaceEditor"
+    CustomEditor "StylizedSurfaceEditor"
 }

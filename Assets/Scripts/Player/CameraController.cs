@@ -16,6 +16,9 @@ public class CameraController : MonoBehaviour
     
     [SerializeField]
     private float pivotOffsetSmoothTime = 0.6f;
+
+    [SerializeField]
+    private float startAngleY = 45;
     
     private Vector2 _currentRotation;
 
@@ -23,7 +26,12 @@ public class CameraController : MonoBehaviour
     private Vector3 _pivotOffsetVelocity;
 
     private bool _updateCamera;
-    
+
+    private void Start()
+    {
+        _currentRotation.x = startAngleY;
+    }
+
     private void OnEnable()
     {
         Command.Instance.Add(EnumCommand.OrbitCamera, Rotate);

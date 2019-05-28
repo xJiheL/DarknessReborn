@@ -16,9 +16,8 @@ public class Command : MonoBehaviourSingleton<Command>
 	string currentJoystickNames = "";
 	InputDatabase currentDatabase;
 
-	protected override void Awake()
+	protected override void SingletonAwake()
 	{
-		base.Awake();
 		if(Input.GetJoystickNames().Length > 0)
 			currentJoystickNames = Input.GetJoystickNames()[0];
 		LoadDatabase();
@@ -42,6 +41,10 @@ public class Command : MonoBehaviourSingleton<Command>
 		{
 			currentDatabase = Resources.Load("Input Database/XBOX 360") as InputDatabase;
 			joystickConnected = true;
+		}
+		else
+		{
+			Check.Crash($"Unknown device!\n{currentJoystickNames}");
 		}
 	}
 
