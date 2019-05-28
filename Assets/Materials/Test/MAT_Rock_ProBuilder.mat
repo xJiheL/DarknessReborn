@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: MAT_Rock_ProBuilder
   m_Shader: {fileID: 4800000, guid: bee44b4a58655ee4cbff107302a3e131, type: 3}
-  m_ShaderKeywords: _CELPRIMARYMODE_STEPS _UNITYSHADOWMODE_MULTIPLY
+  m_ShaderKeywords: _CELPRIMARYMODE_CURVE _UNITYSHADOWMODE_MULTIPLY
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -24,7 +24,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CelCurveTexture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 64f5b7f472720e34cab5607028dd698a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CelStepTexture:
@@ -67,7 +67,7 @@ Material:
     - _BumpScale: 1
     - _CelExtraEnabled: 0
     - _CelNumSteps: 7
-    - _CelPrimaryMode: 2
+    - _CelPrimaryMode: 3
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -100,7 +100,7 @@ Material:
     - _SpecularEnabled: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _TextureImpact: 0.639
+    - _TextureImpact: 1
     - _UVSec: 0
     - _UnityShadowMode: 1
     - _UnityShadowPower: 1
@@ -108,11 +108,11 @@ Material:
     - _VertexColorsEnabled: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.14328942, g: 0.23148564, b: 0.26415092, a: 1}
+    - _Color: {r: 0.40156642, g: 0.5532218, b: 0.6037736, a: 1}
     - _ColorDim: {r: 0.5188678, g: 0.34352812, b: 0.19824666, a: 1}
-    - _ColorDimCurve: {r: 0.5188678, g: 0.34352812, b: 0.19824666, a: 1}
+    - _ColorDimCurve: {r: 0.14061944, g: 0.31817374, b: 0.3773585, a: 1}
     - _ColorDimExtra: {r: 0.5188678, g: 0.34352812, b: 0.19824666, a: 1}
-    - _ColorDimSteps: {r: 0.2784314, g: 0.38431376, b: 0.42352945, a: 1}
+    - _ColorDimSteps: {r: 0.01619794, g: 0.19946755, b: 0.26415092, a: 1}
     - _ColorGradient: {r: 0.254717, g: 0.15792412, b: 0.12855999, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FlatRimColor: {r: 0.28653434, g: 0.33689016, b: 0.4433962, a: 1}

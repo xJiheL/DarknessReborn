@@ -8,8 +8,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MAT_Plant_Bush
-  m_Shader: {fileID: 4800000, guid: bee44b4a58655ee4cbff107302a3e131, type: 3}
-  m_ShaderKeywords: _CELPRIMARYMODE_STEPS _UNITYSHADOWMODE_NONE
+  m_Shader: {fileID: 4800000, guid: b0ba0f80086966a48a25dd31886b3b3a, type: 3}
+  m_ShaderKeywords: DR_VERTEX_COLORS_ON _CELPRIMARYMODE_CURVE _UNITYSHADOWMODE_MULTIPLY
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -24,11 +24,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CelCurveTexture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 612d3d03576111d4fa5d1a6f4e8bf479, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CelStepTexture:
-        m_Texture: {fileID: 2800000, guid: 54fe10c48ccf89c4a9f0c87e17bd9671, type: 3}
+        m_Texture: {fileID: 2800000, guid: 22c19e4cdece54f4db4e1f0331fc22ea, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -48,8 +48,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 6893b5ffb422c6346be6abeee3b47cdf, type: 3}
         m_Scale: {x: 0.1, y: 0.1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskWind:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
@@ -64,28 +68,29 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _AmountWind: 0
     - _BumpScale: 1
     - _CelExtraEnabled: 0
     - _CelNumSteps: 7
-    - _CelPrimaryMode: 2
+    - _CelPrimaryMode: 3
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _FlatRimEdgeSmoothness: 0.252
-    - _FlatRimLightAlign: 0.156
-    - _FlatRimSize: 0.552
-    - _FlatSpecularEdgeSmoothness: 0.38
-    - _FlatSpecularSize: 0.855
+    - _FlatRimEdgeSmoothness: 0.625
+    - _FlatRimLightAlign: 0.201
+    - _FlatRimSize: 0.16
+    - _FlatSpecularEdgeSmoothness: 0.902
+    - _FlatSpecularSize: 0.731
     - _Flatness: 1
     - _FlatnessExtra: 1
     - _GlossMapScale: 1
-    - _Glossiness: 0.169
+    - _Glossiness: 0
     - _GlossyReflections: 1
     - _GradientAngle: 0
     - _GradientCenterX: 0
     - _GradientCenterY: 0
     - _GradientEnabled: 0
-    - _GradientSize: 5.89
+    - _GradientSize: 10
     - _LightContribution: 0
     - _Metallic: 0
     - _Mode: 0
@@ -99,22 +104,25 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularEnabled: 0
     - _SpecularHighlights: 1
+    - _SpeedWind: 0
     - _SrcBlend: 1
-    - _TextureImpact: 0.537
+    - _TextureImpact: 1
     - _UVSec: 0
-    - _UnityShadowMode: 0
+    - _UnityShadowMode: 1
     - _UnityShadowPower: 1
-    - _UnityShadowSharpness: 1
-    - _VertexColorsEnabled: 0
+    - _UnityShadowSharpness: 3.77
+    - _VertexColorsEnabled: 1
+    - _VertexWind: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.10283673, g: 0.2924528, b: 0.05931826, a: 1}
-    - _ColorDim: {r: 0.5188678, g: 0.34352812, b: 0.19824666, a: 1}
-    - _ColorDimCurve: {r: 0.5188678, g: 0.34352812, b: 0.19824666, a: 1}
-    - _ColorDimExtra: {r: 0.5188678, g: 0.34352812, b: 0.19824666, a: 1}
-    - _ColorDimSteps: {r: 0.082990386, g: 0.3018868, b: 0.041295845, a: 1}
-    - _ColorGradient: {r: 0.254717, g: 0.15792412, b: 0.12855999, a: 1}
+    - _Color: {r: 0.32549015, g: 0.4705882, b: 0.12549016, a: 1}
+    - _ColorDim: {r: 0.36078426, g: 0.61960775, b: 0.31372544, a: 1}
+    - _ColorDimCurve: {r: 0.32549012, g: 0.47058815, b: 0.12549013, a: 1}
+    - _ColorDimExtra: {r: 0.22516063, g: 0.39622635, b: 0.21119606, a: 1}
+    - _ColorDimSteps: {r: 0.23621565, g: 0.34905657, b: 0.08067814, a: 1}
+    - _ColorGradient: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
+    - _DirectionWind: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FlatRimColor: {r: 0.099645816, g: 0.1792453, b: 0.056648273, a: 1}
-    - _FlatSpecularColor: {r: 0.31859034, g: 0.3301887, b: 0.05762727, a: 1}
-    - _UnityShadowColor: {r: 0.30188674, g: 0.17425466, b: 0.06692771, a: 1}
+    - _FlatRimColor: {r: 0.43502736, g: 0.6886792, b: 0.14618193, a: 1}
+    - _FlatSpecularColor: {r: 0.22516066, g: 0.39622638, b: 0.2111961, a: 1}
+    - _UnityShadowColor: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
