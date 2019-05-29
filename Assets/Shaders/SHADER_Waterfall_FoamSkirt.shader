@@ -14,6 +14,8 @@
     {
         Tags { "RenderType"="Transparent" "Queue"="Transparent"}
         LOD 200
+    
+        Cull Off
 
         CGPROGRAM
         #pragma surface surf Standard fullforwardshadows
@@ -41,13 +43,18 @@
             half2 uvPanner = IN.uv_MainTex;
             uvPanner.x += _Time.x * _SpeedTex.x;
             uvPanner.y += _Time.x * _SpeedTex.y;
-            fixed4 c = tex2D (_MainTex, uvPanner) ;
+            fixed4 c = tex2D (_MainTex, uvPanner);      
             
-            o.Emission = _Color * _IntensityEmiss;
+            uvPanner.x += _Time.x * _SpeedTex.x/2;
+            uvPanner.y += _Time.x * _SpeedTex.y/2;
+            c += tex2D (_MainTex, uvPanner);  
+            c = saturate (c);        
             
             IN.color.r = pow (saturate (IN.color.r - _RangeVC), _HardnessVC);
             
-            clip (c.r * IN.color.r - _Cutout);
+            o.Emission = _Color * _IntensityEmiss;
+            //o.Emission = IN.color.r;
+            clip (saturate((c.r * IN.color.r) + IN.color.r) - _Cutout);
         }
         ENDCG
     }

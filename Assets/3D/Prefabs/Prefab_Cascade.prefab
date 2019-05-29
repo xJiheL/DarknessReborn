@@ -176,26 +176,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 22050690c57ca324392997860c1abe94,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 22050690c57ca324392997860c1abe94,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 22050690c57ca324392997860c1abe94,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -1504981713932161579, guid: 22050690c57ca324392997860c1abe94,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: 22050690c57ca324392997860c1abe94,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -216,11 +196,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7319238416931546529}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: 9c74b030d3cff974cb029417c0d72010,
-        type: 3}
-      propertyPath: m_Name
-      value: MESH_Cascade_SkirtDown
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 9c74b030d3cff974cb029417c0d72010,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -276,6 +251,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 9c74b030d3cff974cb029417c0d72010,
+        type: 3}
+      propertyPath: m_Name
+      value: MESH_Cascade_SkirtDown
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 9c74b030d3cff974cb029417c0d72010,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c74b030d3cff974cb029417c0d72010, type: 3}
 --- !u!4 &2120566167857894648 stripped
@@ -291,11 +276,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7319238416931546529}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: c101706ffe5455f4ea1735baa2fad808,
-        type: 3}
-      propertyPath: m_Name
-      value: MESH_Cascade_Ripples
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: c101706ffe5455f4ea1735baa2fad808,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -350,6 +330,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: c101706ffe5455f4ea1735baa2fad808,
+        type: 3}
+      propertyPath: m_Name
+      value: MESH_Cascade_Ripples
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c101706ffe5455f4ea1735baa2fad808, type: 3}
