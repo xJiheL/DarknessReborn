@@ -14,6 +14,8 @@
     {
         Tags { "RenderType"="Transparent" "Queue"="Transparent"}
         LOD 200
+    
+        Cull Off
 
         CGPROGRAM
         #pragma surface surf Standard fullforwardshadows
@@ -51,8 +53,8 @@
             IN.color.r = pow (saturate (IN.color.r - _RangeVC), _HardnessVC);
             
             o.Emission = _Color * _IntensityEmiss;
-//            o.Emission = IN.color.r;
-            clip (saturate(c.r + IN.color.r) - _Cutout);
+            //o.Emission = IN.color.r;
+            clip (saturate((c.r * IN.color.r) + IN.color.r) - _Cutout);
         }
         ENDCG
     }
