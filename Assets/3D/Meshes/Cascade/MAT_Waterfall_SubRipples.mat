@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MAT_Waterfall
-  m_Shader: {fileID: 4800000, guid: 0e0ba6980060e8d47b5f6eebd91afed1, type: 3}
-  m_ShaderKeywords: _NORMALMAP
+  m_Name: MAT_Waterfall_SubRipples
+  m_Shader: {fileID: 4800000, guid: b659d181153b5bb4cb28e3ce02450ca5, type: 3}
+  m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -20,8 +20,8 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: ed34f69573ec6ca4b92f30bb151bc8d1, type: 3}
-        m_Scale: {x: 1, y: 0.33}
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
         m_Texture: {fileID: 0}
@@ -39,25 +39,17 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Gradient:
+    - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: e003d59448f8c124391e2494930648f1, type: 3}
-        m_Scale: {x: 0.17, y: 2}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NoiseFoam:
-        m_Texture: {fileID: 2800000, guid: 6148c6aea9e36d94c8e1c0e3576fed1a, type: 3}
-        m_Scale: {x: 2, y: 0.49}
-        m_Offset: {x: 0, y: 0}
-    - _NoiseTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 0f33303dd893c374483a01f02618de00, type: 3}
+        m_Scale: {x: 1, y: 0.16}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
@@ -69,42 +61,33 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
-    - _Contrast: 0.15
+    - _Contrast: 0
     - _Cutoff: 0.5
-    - _Cutout: 0
+    - _Cutout: 0.19
     - _DetailNormalMapScale: 1
-    - _DistAmnt: 1
     - _DstBlend: 0
-    - _FresnelInt: 0.01
-    - _FresnelPow: 0.42
     - _GlossMapScale: 1
-    - _Glossiness: 1
+    - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _HardnessVC: 10
-    - _Intensity: 1
+    - _HardnessVC: 0.7
     - _IntensityEmiss: 1
-    - _IntensityNoise: 1
-    - _Max: 1.32
+    - _Max: 2.37
     - _Metallic: 0
-    - _Min: 0.27
+    - _Min: 1.42
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _Opacity: 0
     - _Parallax: 0.02
-    - _Push: 0.292
+    - _Push: 0
+    - _RangeFoam: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _TileX: 1
+    - _TileY: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorFoam: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorFresnel: {r: 0.9292453, g: 1, b: 0.99608755, a: 1}
-    - _ColorWater: {r: 0, g: 0.95862055, b: 1, a: 1}
-    - _ColorWater1: {r: 0.48313457, g: 0.6588372, b: 0.7264151, a: 1}
-    - _ColorWater2: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Speed: {r: 0, g: 0, b: 0, a: 0}
-    - _SpeedNoise: {r: 5, g: 20, b: 0, a: 0}
-    - _SpeedTex: {r: 0.05, g: 20, b: 0, a: 0}
+    - _SpeedNoise: {r: 1, g: 2, b: 0, a: 0}

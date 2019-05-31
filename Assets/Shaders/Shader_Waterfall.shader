@@ -23,11 +23,63 @@
 	SubShader {
 		Tags { "RenderType"="Cutout" }
 		LOD 200
-
-		Cull Off
+		
+		Cull Front
 
 		CGPROGRAM
-		#pragma surface surf Standard //vertex:vert addshadow
+		#pragma surface surf Standard vertex:vert addshadow
+		#pragma target 3.0
+		#include "UnityCG.cginc"
+
+		sampler2D _MainTex;
+		sampler2D _NoiseFoam;
+
+		half _Glossiness;
+		half _Metallic;
+		half _HardnessVC;
+		half _Contrast;
+		half _Push;
+		half _Cutout;
+		float _IntensityEmiss;
+		float _Min;
+		float _Max;
+
+		fixed4 _ColorWater1;
+		fixed4 _ColorWater2;
+		fixed4 _SpeedTex;
+		fixed4 _ColorFoam;
+		fixed4 _SpeedNoise;
+
+		half3 Contrast (half3 color, half contrast)
+		{
+			float3 newColor = saturate (lerp (half3 (0.3, 0.5, 0.5), color, contrast));
+			newColor = GammaToLinearSpace (newColor);
+			return newColor;
+		}
+
+		struct Input {
+			float2 uv_MainTex;
+		};
+
+		void vert (inout appdata_full v)
+		{
+			fixed2 uvNoise = float2 (v.texcoord.x + _Time.x * _SpeedNoise.x, v.texcoord.y + _Time.x * _SpeedNoise.y);
+			fixed noise = saturate (Contrast ((v.color.r * _HardnessVC) * tex2Dlod (_NoiseFoam, float4 (uvNoise, 0, 0)).rgb, _Contrast).r);
+			v.vertex.xyz += v.normal * noise * _Push;
+		}
+
+		void surf (Input IN, inout SurfaceOutputStandard o) {
+			o.Albedo = fixed3 (1,1,1);
+			o.Emission = o.Albedo;
+			o.Metallic = 0;
+			o.Smoothness = 0;
+		}
+		ENDCG
+
+		Cull Back
+
+		CGPROGRAM
+		#pragma surface surf Standard addshadow
 		#pragma target 3.0
 		#include "UnityCG.cginc"
 
@@ -65,14 +117,6 @@
 			float3 viewDir;
 		};
 
-//		void vert (inout appdata_full v)
-//		{
-//			fixed2 uvNoise = float2 (v.texcoord.x + _Time.x * _SpeedNoise.x, v.texcoord.y + _Time.x * _SpeedNoise.y);
-//			fixed noise = saturate (Contrast ((v.color.r * _HardnessVC) * tex2Dlod (_NoiseFoam, float4 (uvNoise, 0, 0)).rgb, _Contrast).r);
-//
-//			v.vertex.xyz += v.normal * noise * _Push;
-//		}
-
 		void surf (Input IN, inout SurfaceOutputStandard o) {
 			fixed2 uvWaterTex = float2 (IN.uv_MainTex.x + _Time.x * _SpeedTex.x, IN.uv_MainTex.y + _Time.x * _SpeedTex.y);
 			fixed4 c = tex2D (_MainTex, uvWaterTex);
@@ -82,18 +126,12 @@
 			c = saturate (c);
 
             half mask =  pow (saturate(IN.color.r - _Contrast), _HardnessVC);
-			float3 finalColor = lerp (_ColorWater1.rgb, _ColorWater2.rgb, smoothstep (_Min, _Max, c.r + pow (IN.color.r, _HardnessVC)));
+			float3 finalColor = lerp (_ColorWater1.rgb, _ColorWater2.rgb, smoothstep (_Min, _Max, saturate (c.r + pow (IN.color.r + _Contrast, _HardnessVC))));
 
-//			fixed2 uvNoise = float2 (IN.uv_NoiseFoam.x + _Time.x * _SpeedNoise.x, IN.uv_NoiseFoam.y + _Time.x * _SpeedNoise.y);
-//			fixed noise = saturate (Contrast ((IN.color.r * _HardnessVC) * tex2D (_NoiseFoam, uvNoise).rgb, _Contrast).r);
-//			fixed noiseClip = saturate (Contrast ((IN.color.g * _HardnessVC) * tex2D (_NoiseFoam, uvNoise).rgb, _Contrast).r);
-
-//			o.Albedo = lerp (finalColor, _ColorFoam.rgb, noise);
 			o.Albedo = finalColor;
-			o.Emission = o.Albedo;
+			o.Emission = finalColor;
 			o.Metallic = 0;
 			o.Smoothness = 0;
-//			clip (noiseClip - _Cutout);
 		}
 		ENDCG
 	}

@@ -1,4 +1,4 @@
-﻿Shader "Custom/SHADER_Waterfall_FoamSkirt"
+﻿Shader "Custom/SHADER_Waterfall_FoamTop"
 {
     Properties
     {
@@ -8,7 +8,6 @@
         _IntensityEmiss ("Intensity Emiss", float) = 1
         _HardnessVC ("Hardness Vertex Color", float) = 1.0
         _RangeVC ("Range Vertex Color", float) = 1.0
-        _PushVertex ("Push Vertex", float) = 1.0
         _Cutout ("Cutout", Range(0,1)) = 0.0
     }
     SubShader
@@ -19,7 +18,7 @@
         Cull Off
 
         CGPROGRAM
-        #pragma surface surf Standard vertex:vert addshadow 
+        #pragma surface surf Standard fullforwardshadows
         #pragma target 3.0
         #include "UnityCG.cginc"
 
@@ -35,19 +34,9 @@
         half _IntensityEmiss;
         half _HardnessVC;
         half _RangeVC;
-        half _PushVertex;
         
         fixed4 _Color;
         fixed4 _SpeedTex;
-        
-        void vert (inout appdata_full v)
-        {    
-            half4 uv = v.texcoord;
-            uv.x = _Time.x * _SpeedTex.x;
-            uv.y = _Time.x * _SpeedTex.y;
-            half mask = tex2Dlod (_MainTex, uv);
-            v.vertex.xyz += mask * (1 - v.color.r) * _PushVertex * v.normal;        
-        }
 
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
@@ -65,7 +54,7 @@
             
             o.Emission = _Color * _IntensityEmiss;
             //o.Emission = IN.color.r;
-            clip (saturate((c.r * IN.color.r) + IN.color.r*2) - _Cutout);
+            clip (saturate((c.r * IN.color.r) + IN.color.r) - _Cutout);
         }
         ENDCG
     }

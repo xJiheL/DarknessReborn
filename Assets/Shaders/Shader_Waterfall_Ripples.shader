@@ -51,8 +51,8 @@
 			fixed2 uvWaterTex = float2 (IN.uv_NoiseFoam.x + _Time.x * _SpeedNoise.x, IN.uv_NoiseFoam.y + _Time.x * _SpeedNoise.y);
 			fixed4 c = tex2D (_NoiseFoam, uvWaterTex);
 			
-			uvWaterTex = float2 (IN.uv_NoiseFoam.x + _Time.x * _SpeedNoise.x*10, IN.uv_NoiseFoam.y + _Time.x * _SpeedNoise.y*2);
-			c *= tex2D (_NoiseFoam, uvWaterTex*2);
+			uvWaterTex = float2 (IN.uv_NoiseFoam.x + _Time.x * _SpeedNoise.x* -1.5, IN.uv_NoiseFoam.y + _Time.x * _SpeedNoise.y*1.5);
+			c += tex2D (_NoiseFoam, uvWaterTex);
 			c = saturate (c);
 
             half mask =  c * pow (saturate(IN.color.r - _Contrast), _HardnessVC);
@@ -62,7 +62,7 @@
 			o.Emission = o.Albedo;
 			o.Metallic = 0;
 			o.Smoothness = 0;
-			clip (mask - _Cutout);
+			clip (mask * IN.color.a - _Cutout);
 		}
 		ENDCG
 	}
