@@ -76,7 +76,7 @@
         CGPROGRAM
         // Doc: https://docs.unity3d.com/Manual/SL-SurfaceShaders.html
         #include "DustyroomStylizedLighting.cginc"
-        #pragma surface surfObject DustyroomStylized addshadow
+        #pragma surface surfObject DustyroomStylized addshadow fullforwardshadows
         #pragma target 3.0
         #pragma require interpolators15
         #define Input InputObject
