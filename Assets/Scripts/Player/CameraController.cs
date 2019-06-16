@@ -19,7 +19,10 @@ public class CameraController : MonoBehaviour
 
     [SerializeField]
     private float startAngleY = 45;
-    
+
+    [SerializeField]
+    private float offsetPos = 5f;
+
     private Vector2 _currentRotation;
 
     private Vector3 _pivotOffset;
@@ -45,10 +48,10 @@ public class CameraController : MonoBehaviour
 
     private void Rotate(Vector2 inputValue) 
     {
-        _currentRotation.x = Mathf.Clamp(
+       /* _currentRotation.x = Mathf.Clamp(
             _currentRotation.x - inputValue.y * (Command.Instance.joystickConnected ? Time.deltaTime * rotateSpeed.y : 1f),
             -90f,
-            90f);
+            90f);*/
         
         _currentRotation.y = Mathf.Repeat(
             _currentRotation.y + inputValue.x * (Command.Instance.joystickConnected ? Time.deltaTime * rotateSpeed.x : 1f),
@@ -79,10 +82,14 @@ public class CameraController : MonoBehaviour
         Quaternion cameraDirection = Quaternion.Euler(_currentRotation);
         Vector3 direction = cameraDirection * Vector3.back;
 
+        // Player direction
+        Vector3 playerDirection = Quaternion.Euler(playerController.transform.eulerAngles) * playerController.transform.forward;
+
         /* End */
         
         Transform cameraTransform = transform;
-        cameraTransform.position = playerController.transform.position + _pivotOffset * pivotOffsetDistance + direction * distanceToPlayer;
+
+        cameraTransform.position = playerController.transform.position + _pivotOffset * pivotOffsetDistance + direction * distanceToPlayer + playerDirection * offsetPos;
         cameraTransform.rotation = cameraDirection;
         
         _updateCamera = false;
